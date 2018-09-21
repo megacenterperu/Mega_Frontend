@@ -4,7 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "start-hmr": "ng serve --hmr -e=hmr -sm=false",
+    "start-hmr-sourcemaps": "ng serve --hmr -e=hmr",
+    "build": "node --max_old_space_size=6144 ./node_modules/@angular/cli/bin/ng build --dev",
+    "build-prod": "node --max_old_space_size=6144 ./node_modules/@angular/cli/bin/ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -23,8 +26,11 @@
     "@angular/platform-browser": "^6.1.0",
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
+    "@angularclass/hmr": "^2.1.3",
     "@swimlane/ngx-datatable": "^13.1.0",
+    "bootstrap": "^4.1.3",
     "core-js": "^2.5.4",
+    "hammerjs": "^2.0.8",
     "ngx-cookie-service": "^1.0.10",
     "perfect-scrollbar": "^1.4.0",
     "rxjs": "^6.0.0",
