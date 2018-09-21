@@ -1,0 +1,11 @@
+<div id="main-navigation" class="nav vertical">
+    <!-- Vertical Navigation Layout -->
+    <ng-container>
+        <ng-container *ngFor="let item of navigationModel">
+            <ms-nav-group *ngIf="item.type=='group'" [item]="item"></ms-nav-group>
+            <ms-nav-collapse *ngIf="item.type=='collapse'" [item]="item"></ms-nav-collapse>
+            <ms-nav-item *ngIf="item.type=='item'" [item]="item"></ms-nav-item>
+        </ng-container>
+    </ng-container>
+    <!-- / Vertical Navigation Layout -->
+</div>

@@ -1,0 +1,10 @@
+<div class="group-title">
+  <span class="hint-text">{{ item.title }}</span>
+</div>
+<div class="group-items">
+  <ng-container *ngFor="let item of item.children">
+      <ms-nav-group *ngIf="item.type=='group'" [item]="item"></ms-nav-group>
+      <ms-nav-collapse *ngIf="item.type=='collapse'" [item]="item"></ms-nav-collapse>
+      <ms-nav-item *ngIf="item.type=='item'" [item]="item"></ms-nav-item>
+  </ng-container>
+</div>

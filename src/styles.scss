@@ -1,0 +1,12 @@
+/* You can add global styles to this file, and also import other style files */
+// Import Mega main library
+@import "app/shared/scss/core";
+
+.container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .container > * {
+    width: 100%;
+  }

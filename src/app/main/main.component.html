@@ -1,0 +1,17 @@
+<mat-sidenav-container>
+  <div id="ms-main-content">
+    <div id="wrapper">
+      <ms-navbar [folded]="megaSettings.layout.navigationFolded" class="left-navbar" [ngClass]="megaSettings.colorClasses.navbar">
+      </ms-navbar>
+      <div class="content-wrapper">
+        <ng-container>
+          <ms-toolbar class="below" [ngClass]="megaSettings.colorClasses.toolbar"></ms-toolbar>
+        </ng-container>
+        <ms-content></ms-content>
+        <ng-container>
+          <ms-footer class="below" [ngClass]="megaSettings.colorClasses.footer"></ms-footer>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</mat-sidenav-container>
