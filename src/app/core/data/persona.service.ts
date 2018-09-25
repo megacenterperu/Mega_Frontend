@@ -1,13 +1,11 @@
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { GenericService } from './generic.service';
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { Proveedor } from '../model/proveedor.model';
-const basePath = "proveedores";
+const  basePath= "personas"
 @Injectable({
   providedIn: 'root'
 })
-export class ProveedorService {
+export class PersonaService {
 
   constructor(private generic: GenericService) { }
 
@@ -20,18 +18,19 @@ export class ProveedorService {
   }
 
   findById(id: number): Observable<any> {
-    return this.generic.one(basePath, id).get();
+    return this.generic.all(basePath).one("", id).get();
   }
 
   create(data: any): Observable<any> {
-    return this.generic.all(basePath).all("registrar").post(data);
+    return this.generic.all(basePath).all("").post(data);
   }
 
   update(data: any): Observable<any> {
-    return this.generic.all(basePath).all("actualizar").put(data);
+    return this.generic.all(basePath).all("").put(data);
   }
 
   delete(id: number): Observable<any> {
-    return this.generic.all(basePath).one("eliminar", id).delete();
+    return this.generic.all(basePath).one("", id).delete();
   }
+
 }

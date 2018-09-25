@@ -1,5 +1,13 @@
+import { Observable } from 'rxjs';
+import { Persona } from './../../../../core/model/persona.model';
+import { GenericService } from './../../../../core/data/generic.service';
+
+import { Router, Params, ActivatedRoute } from '@angular/router';
+import { DataService } from './../../../../core/data/data.service';
+import { Proveedor } from './../../../../core/model/proveedor.model';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { startWith, map, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'ms-proveedor-edit',
@@ -8,32 +16,97 @@ import { FormGroup } from '@angular/forms';
 })
 export class ProveedorEditComponent implements OnInit {
   id: number;
- // proveedor: Proveedor;
+  personas: any[] = [];
   form: FormGroup;
   edicion: boolean = false;
 
-  ngOnInit() {
+  myControlPersona: FormControl = new FormControl();
+  filteredOptions: Observable<any[]>;
+
+  constructor(
+    private dataService: DataService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private formBuilder: FormBuilder) {
   }
 
-  //private initForm() {
-    //if (this.edicion) {
-    //  this.pacienteService.listarPacientePorId(this.id).subscribe(data => {
-     //   let id = data.idPaciente;
-      //  let nombres = data.nombres;
-      //  let apellidos = data.apellidos;
-       // let dni = data.dni;
-       // let direccion = data.direccion;
-        //let telefono = data.telefono;
+  ngOnInit() {
+    this.initFormBuilder();
+    this.listarPersonas();
+    this.route.params.subscribe((params: Params) => {
+      this.id = params['id'];
+      this.edicion = params['id'] != null;
+      this.loadDataFrom();
+    });
+    this.filteredOptions = this.myControlPersona.valueChanges
+      .pipe(
+        startWith( ''),       
+        map(val => this.filter(val))
+      );
+  }
 
-       // this.form = new FormGroup({
-        //  'id': new FormControl(id),
-        //  'nombres': new FormControl(nombres),
-        //  'apellidos': new FormControl(apellidos),
-        //  'dni': new FormControl(dni),
-       //   'direccion': new FormControl(direccion),
-     //     'telefono': new FormControl(telefono)
-     //   });
-    //  });
-   // }
-  //}
+  initFormBuilder() {
+    this.form = this.formBuilder.group({
+      idProveedor: [null],
+      nombreComercial: [null, Validators.compose([Validators.required, Validators.maxLength(20)])],
+      razonSocial: [null, Validators.compose([Validators.required])],
+      telfEmpresa: [null, Validators.compose([Validators.maxLength(20)])],
+      persona: this.myControlPersona
+    });
+  }
+
+  private loadDataFrom() {
+    if (this.edicion) {
+      this.dataService.proveedores().findById(this.id).subscribe(data => {
+        this.form.patchValue(data);
+      });
+    }
+  }
+
+  filter(val: any) { 
+    if (val != null && val.idPersona > 0) {
+      return this.personas.filter(option =>
+        option.nombre.toLowerCase().includes(val.nombre.toLowerCase()) || option.numeroDocumento.includes(val.numeroDocumento));
+    } else {
+      return this.personas.filter(option =>
+        option.nombre.toLowerCase().includes(val.toLowerCase())  || option.numeroDocumento.includes(val));
+    }
+  }
+  listarPersonas() {
+    this.dataService.personas().getAll().subscribe(data => {
+      this.personas = data;
+    });
+  }
+
+  displayFn(val: any) {
+    return val ? `${val.nombre}` : val;
+  }
+
+  cancel(){
+    if (this.edicion) {
+      this.router.navigate(['../../'], { relativeTo: this.route });
+    }else{
+      this.router.navigate(['../'], { relativeTo: this.route })
+    }
+  }
+  save() {
+    if (this.edicion) {
+      //update
+      this.dataService.proveedores().update(this.form.value).subscribe(data => {
+        this.dataService.proveedores().getAll().subscribe(p => {
+          this.dataService.providers().cambio.next(p);
+          this.dataService.providers().mensaje.next('se modifico')
+        });
+      });      
+    } else {
+      //insert
+      this.dataService.proveedores().create(this.form.value).subscribe(data => {
+        this.dataService.proveedores().getAll().subscribe(p => {
+          this.dataService.providers().cambio.next(p);
+          this.dataService.providers().mensaje.next('se registro');
+        });
+      });
+    }
+    this.cancel();
+  }
 }

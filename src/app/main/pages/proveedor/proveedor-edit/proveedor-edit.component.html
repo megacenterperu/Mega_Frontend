@@ -1,39 +1,43 @@
 <div class="page-layout blank p-24" fusePerfectScrollbar>
-<mat-toolbar>Ingrese los datos del paciente</mat-toolbar>
+  <mat-toolbar>Ingrese los datos del proveedor</mat-toolbar>
 
-<br/>
+  <br />
 
-<form class="container" [formGroup]="form" (ngSubmit)="operar()" #loginForm="ngForm">
+  <form class="container" [formGroup]="form" (ngSubmit)="save()" #f="ngForm">
 
-  <div [hidden]="true">
-    <mat-form-field >
-      <input matInput placeholder="ID" required formControlName="id">
+    <mat-form-field>
+      <input type="text" placeholder="nombre del representante" aria-label="nombre" matInput [formControl]="myControlPersona" formControlName="persona"
+        [matAutocomplete]="autoPersona">
+      <mat-autocomplete #autoPersona="matAutocomplete" [displayWith]="displayFn">
+        <mat-option *ngFor="let pe of filteredOptions | async" [value]="pe">
+            {{pe.numeroDocumento}} {{pe.nombre}}
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
-  </div>
 
-  <mat-form-field >
-    <input matInput placeholder="nombreComercial" required formControlName="nombreComercial">
-  </mat-form-field>
-  
+    <mat-form-field>
+      <input matInput placeholder="nombre Comercial" required formControlName="nombreComercial" maxlength="20">
+    </mat-form-field>
 
-  <mat-form-field >
-    <input matInput placeholder="razonSocial" required formControlName="razonSocial">
-  </mat-form-field>
 
-  <mat-form-field >
-    <input matInput placeholder="telefonoEmpresiarial" required formControlName="telefonoEmpresiarial" type="number">
-  </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="razon Social" required formControlName="razonSocial" maxlength="20">
+    </mat-form-field>
 
- 
-  <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">
-    <mat-icon>done</mat-icon>
-    <span>Aceptar</span>
-  </button>
-  <button mat-raised-button color="accent" routerLink='./proveedor' type="button">
-    <mat-icon>close</mat-icon>
-    <span>Cancelar</span>
-  </button>
-</form>
+    <mat-form-field>
+      <input matInput placeholder="telf Empresa" required formControlName="telfEmpresa" type="number" maxlength="20">
+    </mat-form-field>
 
-<br/>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
+      <mat-icon>done</mat-icon>
+      <span>Aceptar</span>
+    </button>
+    <button mat-raised-button color="accent" (click)="cancel()" type="button">
+      <mat-icon>close</mat-icon>
+      <span>Cancelar</span>
+    </button>
+  </form>
+
+  <br />
 </div>

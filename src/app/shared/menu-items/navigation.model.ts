@@ -9,11 +9,11 @@ export class NavigationModel {
                 'type': 'group',
                 'children': [
                     {
-                        'id': 'sample',
-                        'title': 'SAMPLE 1',
+                        'id': 'persona',
+                        'title': 'PERSONA',
                         'type': 'item',
                         'icon': 'email',
-                        'url': '/mega/ventas/sample',
+                        'url': '/mega/ventas/persona',
                         'badge': {
                             'title': 25,
                             'bg': '#F44336',
