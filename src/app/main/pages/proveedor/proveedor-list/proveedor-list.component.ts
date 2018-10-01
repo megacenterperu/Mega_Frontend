@@ -1,6 +1,6 @@
 
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
+import { MatTableDataSource, MatPaginator, MatSort, MatSnackBar } from '@angular/material';
 import { DataService } from '../../../../core/data/data.service';
 
 @Component({
@@ -16,32 +16,33 @@ export class ProveedorListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
-
-    
-
-    this.dataService.proveedores().getAll().subscribe(data => {
-      console.log(data);
-      let r = data;
-      this.cantidad = JSON.parse(JSON.stringify(data)).length;
-      this.dataSource = new MatTableDataSource(r);
-      this.dataSource.sort = this.sort;
-    })
+    this.dataService.proveedores().getAll().subscribe(data => this.setData(data));
+    this.dataService.providers().cambio.subscribe(data => this.setData(data));
+    this.dataService.providers().mensaje.subscribe(data => {
+      this.snackBar.open(data, 'Aviso', { duration: 2000 });
+    });
   }
-
-
+  setData(data) {
+    let r = data;
+    this.cantidad = JSON.parse(JSON.stringify(data)).length;
+    this.dataSource = new MatTableDataSource(r);
+    this.dataSource.sort = this.sort;
+  }
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim();
     filterValue = filterValue.toLowerCase();
     this.dataSource.filter = filterValue;
   }
+
+  eliminar(id) {
+    this.dataService.proveedores().delete(id).subscribe(r => {
+      this.snackBar.open("Proveedor Eliminado", 'Aviso', { duration: 2000 });
+      this.dataService.proveedores().getAll().subscribe(data => this.setData(data));
+    });
+  }
 }
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
+

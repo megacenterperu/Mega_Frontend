@@ -9,7 +9,7 @@ const routes: Routes = [
         component: ProveedorListComponent
     },
     {
-        path: 'edicion:id',
+        path: 'edicion/:id',
         component: ProveedorEditComponent
 
     },
