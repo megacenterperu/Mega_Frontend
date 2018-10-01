@@ -1,0 +1,29 @@
+<div class="page-layout blank p-24" fusePerfectScrollbar>
+  <mat-toolbar>Ingrese los datos del TipoDocumento</mat-toolbar>
+  
+  <br />
+
+  <form class="container" [formGroup]="form" (ngSubmit)="operar()" #f="ngForm">
+    
+    <mat-form-field>
+      <input matInput placeholder="Abreviatura" required formControlName="abreviatura">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Denominacion" required formControlName="denominacion">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
+      <mat-icon>done</mat-icon>
+      <span>Aceptar</span>
+    </button>
+
+    <button mat-raised-button color="accent" (click)="cancel()" type="button">
+      <mat-icon>close</mat-icon>
+      <span>Cancelar</span>
+    </button>
+  </form>
+
+  <br />
+
+</div>
