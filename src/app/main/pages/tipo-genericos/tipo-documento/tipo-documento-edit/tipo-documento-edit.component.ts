@@ -47,7 +47,7 @@ export class TipoDocumentoEditComponent implements OnInit {
 
   cancel(){
     if(this.edicion){
-      this.router.navigate(['../../../'],{relativeTo: this.route});
+      this.router.navigate(['../../'],{relativeTo: this.route});
     }else{
       this.router.navigate(['../'],{ relativeTo: this.route});
     }
