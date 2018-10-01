@@ -49,6 +49,27 @@ export class NavigationModel {
                         'url': '/mega/ventas/compra'// RUTA DEL MODULO por ahora no existe
                     }
                 ]
+            },
+            {
+                'id': 'idmenuT',//el nombre del grupo o menu donde van estar
+                'title': 'TIPOS GENERICOS',
+                'type': 'collapse',
+                'children':[
+                    {
+                        'id': 'tipoproducto',
+                        'title': 'Tipo Producto',
+                        'type': 'item',
+                        'icon': 'store',//NOMBRE DEL ICONO
+                        'url': '/mega/ventas/tipo/t-produto'// RUTA DEL MODULO por ahora no existe
+                    },
+                    {
+                        'id': 'tipodocumento',
+                        'title': 'Tipo Documento',
+                        'type': 'item',
+                        'icon': 'store',//NOMBRE DEL ICONO
+                        'url': '/mega/ventas/tipo/t-documento'// RUTA DEL MODULO por ahora no existe 
+                    }
+                ]
             }
         ];
     }
