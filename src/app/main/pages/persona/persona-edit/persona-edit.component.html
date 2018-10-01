@@ -1,3 +1,40 @@
-<p>
-  persona-edit works!
-</p>
+<div class="page-layout blank p-24" fusePerfectScrollbar>
+  <mat-toolbar>Ingrese los datos del persona</mat-toolbar>
+
+  <br />
+
+  <form class="container" [formGroup]="form" (ngSubmit)="save()" #f="ngForm">
+
+      <mat-form-field>
+      <input matInput placeholder="Nombre y Apellido" required formControlName="nombre" maxlength="50">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Numero Documento" required formControlName="numeroDocumento"  minLength="8" maxlength="20">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="N° Celular" required formControlName="telfMovil" type="number" maxlength="20">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Direccion" required formControlName="direccion" type="number" maxlength="20">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Correo Electronico" required formControlName="email" type="number" maxlength="20">
+    </mat-form-field>
+
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
+      <mat-icon>done</mat-icon>
+      <span>Aceptar</span>
+    </button>
+    <button mat-raised-button color="accent" (click)="cancel()" type="button">
+      <mat-icon>close</mat-icon>
+      <span>Cancelar</span>
+    </button>
+  </form>
+
+  <br />
+</div>
