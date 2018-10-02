@@ -1,10 +1,6 @@
 import { Observable } from 'rxjs';
-import { Persona } from './../../../../core/model/persona.model';
-import { GenericService } from './../../../../core/data/generic.service';
-
 import { Router, Params, ActivatedRoute } from '@angular/router';
 import { DataService } from './../../../../core/data/data.service';
-import { Proveedor } from './../../../../core/model/proveedor.model';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { startWith, map, filter } from 'rxjs/operators';

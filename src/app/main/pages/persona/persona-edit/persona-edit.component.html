@@ -10,6 +10,14 @@
     </mat-form-field>
 
     <mat-form-field>
+      <mat-select placeholder="Tipo Documento" formControlName="tipoDocumeto" >
+        <mat-option *ngFor="let Tipodocumento of tipodocumentos" [value]="Tipodocumento"  >
+          {{Tipodocumento.abreviatura}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>    
+
+    <mat-form-field>
       <input matInput placeholder="Numero Documento" required formControlName="numeroDocumento"  minLength="8" maxlength="20">
     </mat-form-field>
 
@@ -18,11 +26,11 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="Direccion" required formControlName="direccion" type="number" maxlength="20">
+      <input matInput placeholder="Direccion" required formControlName="direccion"  maxlength="20">
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="Correo Electronico" required formControlName="email" type="number" maxlength="20">
+      <input matInput placeholder="Correo Electronico" required formControlName="email" maxlength="20">
     </mat-form-field>
 
 

@@ -26,7 +26,7 @@ export class PersonaService {
   }
 
   update(data: any): Observable<any> {
-    return this.generic.all(basePath).all("acrualizar").put(data);
+    return this.generic.all(basePath).all("actualizar").put(data);
   }
 
   delete(id: number): Observable<any> {
