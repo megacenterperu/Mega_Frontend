@@ -58,16 +58,16 @@ export class TipoDocumentoEditComponent implements OnInit {
       this.dataService.tipoDocumentos().update(this.form.value).subscribe(data =>{
         console.log(data);
         this.dataService.tipoDocumentos().getAll().subscribe(td =>{
-          this.dataService.tipoDocumentos().tipodocumentoCambio.next(td);
-          this.dataService.tipoDocumentos().mensaje.next("Se Modifico");
+          this.dataService.providers().cambio.next(td);
+          this.dataService.providers().mensaje.next("se Actualizo con éxito!");
         });
       });
     }else{
       this.dataService.tipoDocumentos().create(this.form.value).subscribe(data =>{
         console.log(data);
         this.dataService.tipoDocumentos().getAll().subscribe(tipodoc =>{
-          this.dataService.tipoDocumentos().tipodocumentoCambio.next(tipodoc);
-          this.dataService.tipoDocumentos().mensaje.next("Se Registro");
+          this.dataService.providers().cambio.next(tipodoc);
+          this.dataService.providers().mensaje.next("Se Registro con éxito!");
         });
       });
     }

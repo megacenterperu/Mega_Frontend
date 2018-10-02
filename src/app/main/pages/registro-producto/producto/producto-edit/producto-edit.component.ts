@@ -4,11 +4,11 @@ import { DataService } from "../../../../../core/data/data.service";
 import { ActivatedRoute, Router, Params } from "@angular/router";
 
 @Component({
-  selector: "ms-tipo-producto-edit",
-  templateUrl: "./tipo-producto-edit.component.html",
-  styleUrls: ["./tipo-producto-edit.component.scss"]
+  selector: "ms-producto-edit",
+  templateUrl: "./producto-edit.component.html",
+  styleUrls: ["./producto-edit.component.scss"]
 })
-export class TipoProductoEditComponent implements OnInit {
+export class ProductoEditComponent implements OnInit {
   id: number;
   form: FormGroup;
   edicion: boolean = false;
@@ -31,14 +31,23 @@ export class TipoProductoEditComponent implements OnInit {
 
   initFormBuilder(){
     this.form=this.formBuilder.group({
-      idTipoproducto:[null],
-      descripcion:[null,Validators.compose([Validators.required])]
+      idProducto:[null],
+      codProducto:[null,Validators.compose([Validators.required])],
+      nombre:[null,Validators.compose([Validators.required])],
+      marcaProducto:[null,Validators.compose([Validators.required])],
+      stock:[null,Validators.compose([Validators.required])],
+      precioCompra:[null,Validators.compose([Validators.required])],
+      precioVenta:[null,Validators.compose([Validators.required])],
+      unidadMedida:[null,Validators.compose([Validators.required])],
+      categoria:[null,Validators.compose([Validators.required])],
+      tipoProducto:[null,Validators.compose([Validators.required])],
+      organizacion:[null,Validators.compose([Validators.required])]
     });
   }
 
   private loadDataFrom(){
     if(this.edicion){
-      this.dataService.tipoProductos().findById(this.id).subscribe(data =>{
+      this.dataService.productos().findById(this.id).subscribe(data =>{
         this.form.patchValue(data);
       });
     }
@@ -54,18 +63,18 @@ export class TipoProductoEditComponent implements OnInit {
 
   operar(){
     if(this.edicion){
-      this.dataService.tipoProductos().update(this.form.value).subscribe(data =>{
+      this.dataService.productos().update(this.form.value).subscribe(data =>{
         console.log(data);
-        this.dataService.tipoProductos().getAll().subscribe(tp =>{
-          this.dataService.providers().cambio.next(tp);
+        this.dataService.productos().getAll().subscribe(cat =>{
+          this.dataService.providers().cambio.next(cat);
           this.dataService.providers().mensaje.next("se Actualizo con éxito!");
         });
       });
     }else{
-      this.dataService.tipoProductos().create(this.form.value).subscribe(data =>{
+      this.dataService.productos().create(this.form.value).subscribe(data =>{
         console.log(data);
-        this.dataService.tipoProductos().getAll().subscribe(tdoc =>{
-          this.dataService.providers().cambio.next(tdoc);
+        this.dataService.productos().getAll().subscribe(cate =>{
+          this.dataService.providers().cambio.next(cate);
           this.dataService.providers().mensaje.next("Se Registro con éxito!");
         });
       });

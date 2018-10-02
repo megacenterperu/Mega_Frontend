@@ -7,6 +7,9 @@ import { TipoproductoService } from './tipoproducto.service';
 import { TipodocumentoService } from './tipodocumento.service';
 
 import { ProviderService } from '../provider/provider.service';
+import { CategoriaService } from './categoria.service';
+import { UnidadmedidaService } from './unidadmedida.service';
+import { ProductoService } from './producto.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +24,10 @@ export class DataService {
     private tipodocumento: TipodocumentoService,
 
     private persona: PersonaService,
-    private provider: ProviderService
+    private provider: ProviderService,
+    private categoria: CategoriaService,
+    private unidadmedida: UnidadmedidaService,
+    private producto:ProductoService
 
   ) { }
 
@@ -47,6 +53,18 @@ export class DataService {
 
   personas(): PersonaService {
     return this.persona;
+  }
+
+  categorias(): CategoriaService{
+    return this.categoria;
+  }
+
+  unidadMedidas(): UnidadmedidaService{
+    return this.unidadmedida;
+  }
+
+  productos():ProductoService{
+    return this.producto;
   }
 
 }

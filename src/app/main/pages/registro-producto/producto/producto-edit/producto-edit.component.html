@@ -1,0 +1,61 @@
+<div class="page-layout blank p-24" fusePerfectScrollbar>
+  <mat-toolbar>Ingrese los datos del Producto</mat-toolbar>
+  
+  <br />
+
+  <form class="container" [formGroup]="form" (ngSubmit)="operar()" #f="ngForm">
+
+    <mat-form-field>
+      <input matInput placeholder="Cod Producto" required formControlName="codProducto">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Nombre Producto" required formControlName="nombre">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Marca Producto" required formControlName="marcaProducto">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Stock" required formControlName="stock">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Precio Compra" required formControlName="precioCompra">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Precio Venta" required formControlName="precioVenta">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Unidad Medida" required formControlName="unidadMedida.idUnidadmedida">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Categoria" required formControlName="categoria.idCategoria">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Tipo Producto" required formControlName="tipoProducto.idTipoproducto">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Organizacion" required formControlName="organizacion.idOrganizacion">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
+      <mat-icon>done</mat-icon>
+      <span>Aceptar</span>
+    </button>
+
+    <button mat-raised-button color="accent" (click)="cancel()" type="button">
+      <mat-icon>close</mat-icon>
+      <span>Cancelar</span>
+    </button>
+  </form>
+
+  <br />
+
+</div>

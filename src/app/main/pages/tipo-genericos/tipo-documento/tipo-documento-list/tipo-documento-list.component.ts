@@ -25,8 +25,8 @@ export class TipoDocumentoListComponent implements OnInit {
 
   ngOnInit() {
     this.dataService.tipoDocumentos().getAll().subscribe(data => this.setData(data));
-    this.dataService.tipoDocumentos().tipodocumentoCambio.subscribe(data => this.setData(data));
-    this.dataService.tipoDocumentos().mensaje.subscribe(data =>{
+    this.dataService.providers().cambio.subscribe(data => this.setData(data));
+    this.dataService.providers().mensaje.subscribe(data =>{
       this.snackBar.open(data,'Mensaje',{duration:3000});
     });
   }

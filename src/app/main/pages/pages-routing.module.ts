@@ -6,9 +6,9 @@ const routes: Routes = [
    { path: 'persona', loadChildren: '../../main/pages/persona/persona.module#PersonaModule' },
     { path: 'proveedor', loadChildren: '../../main/pages/proveedor/proveedor.module#ProveedorModule' },
     { path: 'compra', loadChildren: '../../main/pages/compra/compra.module#CompraModule' },
-    { path: 'tipo', loadChildren: '../../main/pages/tipo-genericos/tipo-genericos.module#TipoGenericosModule' },    
+    { path: 'tipo', loadChildren: '../../main/pages/tipo-genericos/tipo-genericos.module#TipoGenericosModule' },
+    { path: 'rproducto', loadChildren: '../../main/pages/registro-producto/registro-producto.module#RegistroProductoModule' }    
     
-    { path: 'unidadmedida', loadChildren: '../../main/pages/unidadmedida/unidadmedida.module#UnidadmedidaModule' }
 ];
 
 @NgModule({

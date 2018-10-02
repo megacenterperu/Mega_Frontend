@@ -1,9 +1,13 @@
 <div class="page-layout blank p-24" fusePerfectScrollbar>
-  <mat-toolbar>Ingrese los datos de Tipo Producto</mat-toolbar>
+  <mat-toolbar>Ingrese los datos de Unidad Medida</mat-toolbar>
   
   <br />
 
   <form class="container" [formGroup]="form" (ngSubmit)="operar()" #f="ngForm">
+
+    <mat-form-field>
+      <input matInput placeholder="Cod Unidad Medida" required formControlName="codUnidadmedida">
+    </mat-form-field>
 
     <mat-form-field>
       <input matInput placeholder="Descripcion" required formControlName="descripcion">

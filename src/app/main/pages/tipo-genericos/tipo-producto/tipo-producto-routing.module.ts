@@ -9,7 +9,7 @@ const routes: Routes = [
     component: TipoProductoListComponent
   },
   {
-    path: "edicion:id",
+    path: "edicion/:id",
     component: TipoProductoEditComponent
   },
   { path: "nuevo", component: TipoProductoEditComponent }

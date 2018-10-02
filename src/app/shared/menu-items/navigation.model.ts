@@ -70,6 +70,35 @@ export class NavigationModel {
                         'url': '/mega/ventas/tipo/t-documento'// RUTA DEL MODULO por ahora no existe 
                     }
                 ]
+            },
+            {
+                'id': 'idmenuProducto',//el nombre del grupo o menu donde van estar
+                'title': 'PRODUCTO',
+                'type': 'collapse', 
+                'icon': 'laptop',
+                'children':[
+                    {
+                        'id': 'categoria',
+                        'title': 'Categoria',
+                        'type': 'item',
+                        'icon': 'category',//NOMBRE DEL ICONO
+                        'url': '/mega/ventas/rproducto/r-categoria'// RUTA DEL MODULO por ahora no existe
+                    },
+                    {
+                        'id': 'unidadmedida',
+                        'title': 'Unidad Medida',
+                        'type': 'item',
+                        'icon': 'note_add',//NOMBRE DEL ICONO
+                        'url': '/mega/ventas/rproducto/r-unidadmedida'// RUTA DEL MODULO por ahora no existe
+                    },
+                    {
+                        'id': 'producto',
+                        'title': 'Registrar Producto',
+                        'type': 'item',
+                        'icon': 'note_add',//NOMBRE DEL ICONO
+                        'url': '/mega/ventas/rproducto/r-producto'// RUTA DEL MODULO por ahora no existe
+                    }
+                ]
             }
         ];
     }
