@@ -18,19 +18,19 @@ export class PersonaService {
   }
 
   findById(id: number): Observable<any> {
-    return this.generic.all(basePath).one("", id).get();
+    return this.generic.one(basePath, id).get();
   }
 
   create(data: any): Observable<any> {
-    return this.generic.all(basePath).all("").post(data);
+    return this.generic.all(basePath).all("registrar").post(data);
   }
 
   update(data: any): Observable<any> {
-    return this.generic.all(basePath).all("").put(data);
+    return this.generic.all(basePath).all("actualizar").put(data);
   }
 
   delete(id: number): Observable<any> {
-    return this.generic.all(basePath).one("", id).delete();
+    return this.generic.all(basePath).one("eliminar", id).delete();
   }
 
 }

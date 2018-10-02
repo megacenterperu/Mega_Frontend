@@ -11,7 +11,7 @@ export class TipodocumentoService {
   constructor(private generic:GenericService) { }
 
   getAll(): Observable<any> {
-    return this.generic.all(basePath).get();
+    return this.generic.all(basePath).all("listar").get();
   }
 
   getAllPageable(p: number, s: number): Observable<any> {

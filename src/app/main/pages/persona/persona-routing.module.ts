@@ -9,7 +9,7 @@ const routes: Routes = [
         component: PersonaListComponent
     },
     {
-        path: 'edicion:id',
+        path: 'edicion/:id',
         component: PersonaEditComponent
 
     },
