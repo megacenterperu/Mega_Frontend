@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { GenericService } from './generic.service';
 import { Observable } from 'rxjs';
-const basePath = "unidadMedidas";
+const basePath = "organizaciones";
 
 @Injectable({
   providedIn: 'root'
 })
-export class UnidadmedidaService {
+export class OrganizacionService {
 
   constructor(private generic:GenericService) { }
 

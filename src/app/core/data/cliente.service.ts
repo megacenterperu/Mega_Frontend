@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
 import { GenericService } from './generic.service';
 import { Observable } from 'rxjs';
-const basePath = "unidadMedidas";
+const basePath = "clientes";
 
 @Injectable({
   providedIn: 'root'
 })
-export class UnidadmedidaService {
+export class ClienteService {
 
-  constructor(private generic:GenericService) { }
+  constructor(private generic: GenericService) { }
 
   getAll(): Observable<any> {
     return this.generic.all(basePath).get();
-    //return this.generic.all(basePath).all("listar").get();
   }
 
   getAllPageable(p: number, s: number): Observable<any> {

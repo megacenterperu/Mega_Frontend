@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { DataService } from "../../../../../core/data/data.service";
 import { ActivatedRoute, Router, Params } from "@angular/router";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "ms-producto-edit",
@@ -12,6 +13,11 @@ export class ProductoEditComponent implements OnInit {
   id: number;
   form: FormGroup;
   edicion: boolean = false;
+  lstunidadmedidas: any[]=[];
+  lstcategorias: any[]=[];
+  lsttipoProductos: any[]=[];
+  lstorganizacions: any[]=[];
+  filteredOptions: Observable<any[]>;
 
   constructor(
     private dataService: DataService,
@@ -22,6 +28,10 @@ export class ProductoEditComponent implements OnInit {
 
   ngOnInit() {
     this.initFormBuilder();
+    this.listarUnidadMedida();
+    this.listarCategoria();
+    this.listarTipoProducto();
+    this.listarOrganizacion();
     this.route.params.subscribe((params:Params)=>{
       this.id=params['id'];
       this.edicion=params['id'] !=null;
@@ -51,6 +61,30 @@ export class ProductoEditComponent implements OnInit {
         this.form.patchValue(data);
       });
     }
+  }
+
+  listarUnidadMedida() {
+    this.dataService.unidadMedidas().getAll().subscribe(data => {
+      this.lstunidadmedidas = data;
+    });
+  }
+
+  listarCategoria() {
+    this.dataService.categorias().getAll().subscribe(data => {
+      this.lstcategorias = data;
+    });
+  }
+
+  listarTipoProducto() {
+    this.dataService.tipoProductos().getAll().subscribe(data => {
+      this.lsttipoProductos = data;
+    });
+  }
+
+  listarOrganizacion() {
+    this.dataService.organizaciones().getAll().subscribe(data => {
+      this.lstorganizacions = data;
+    });
   }
 
   cancel(){

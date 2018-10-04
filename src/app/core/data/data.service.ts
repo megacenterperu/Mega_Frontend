@@ -10,6 +10,9 @@ import { ProviderService } from '../provider/provider.service';
 import { CategoriaService } from './categoria.service';
 import { UnidadmedidaService } from './unidadmedida.service';
 import { ProductoService } from './producto.service';
+import { OrganizacionService } from './organizacion.service';
+import { ClienteService } from './cliente.service';
+import { SucursalService } from './sucursal.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +30,10 @@ export class DataService {
     private provider: ProviderService,
     private categoria: CategoriaService,
     private unidadmedida: UnidadmedidaService,
-    private producto:ProductoService
+    private producto:ProductoService,
+    private organizacion:OrganizacionService,
+    private cliente:ClienteService,
+    private sucursal:SucursalService
 
   ) { }
 
@@ -65,6 +71,18 @@ export class DataService {
 
   productos():ProductoService{
     return this.producto;
+  }
+
+  organizaciones():OrganizacionService{
+    return this.organizacion;
+  }
+
+  clientes():ClienteService{
+    return this.cliente;
+  }
+
+  sucursales():SucursalService{
+    return this.sucursal;
   }
 
 }

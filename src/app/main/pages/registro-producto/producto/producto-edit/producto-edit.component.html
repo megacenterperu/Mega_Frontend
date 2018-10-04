@@ -30,20 +30,36 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="Unidad Medida" required formControlName="unidadMedida.idUnidadmedida">
+      <mat-select placeholder="Unidad Medida" formControlName="unidadMedida" >
+        <mat-option *ngFor="let Unidadmedida of lstunidadmedidas" [value]="Unidadmedida"  >
+          {{Unidadmedida.descripcion}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>  
+
+    <mat-form-field>
+      <mat-select placeholder="Categoria" formControlName="categoria" >
+        <mat-option *ngFor="let Categoria of lstcategorias" [value]="Categoria"  >
+          {{Categoria.descripcion}}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="Categoria" required formControlName="categoria.idCategoria">
-    </mat-form-field>
+      <mat-select placeholder="Tipo Producto" formControlName="tipoProducto" >
+        <mat-option *ngFor="let Tipoproducto of lsttipoProductos" [value]="Tipoproducto"  >
+          {{Tipoproducto.descripcion}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>    
 
     <mat-form-field>
-      <input matInput placeholder="Tipo Producto" required formControlName="tipoProducto.idTipoproducto">
-    </mat-form-field>
-
-    <mat-form-field>
-      <input matInput placeholder="Organizacion" required formControlName="organizacion.idOrganizacion">
-    </mat-form-field>
+      <mat-select placeholder="Organizacion" formControlName="organizacion" >
+        <mat-option *ngFor="let Organizacion of lstorganizacions" [value]="Organizacion"  >
+          {{Organizacion.nombreComercial}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>  
 
     <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
       <mat-icon>done</mat-icon>

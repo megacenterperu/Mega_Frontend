@@ -26,6 +26,13 @@ export class NavigationModel {
                         'type': 'item',
                         'icon': 'email',
                         'url': '/sample2'
+                    },
+                    {
+                        'id': 'persona',
+                        'title': 'CLIENTE',
+                        'type': 'item',
+                        'icon': 'group_add',
+                        'url': '/mega/ventas/cliente',
                     }
                 ]
             },
@@ -72,7 +79,7 @@ export class NavigationModel {
                 ]
             },
             {
-                'id': 'idmenuProducto',//el nombre del grupo o menu donde van estar
+                'id': 'idmenuProducto',
                 'title': 'PRODUCTO',
                 'type': 'collapse', 
                 'icon': 'laptop',
@@ -81,22 +88,44 @@ export class NavigationModel {
                         'id': 'categoria',
                         'title': 'Categoria',
                         'type': 'item',
-                        'icon': 'category',//NOMBRE DEL ICONO
-                        'url': '/mega/ventas/rproducto/r-categoria'// RUTA DEL MODULO por ahora no existe
+                        'icon': 'category',
+                        'url': '/mega/ventas/rproducto/r-categoria'
                     },
                     {
                         'id': 'unidadmedida',
                         'title': 'Unidad Medida',
                         'type': 'item',
-                        'icon': 'note_add',//NOMBRE DEL ICONO
-                        'url': '/mega/ventas/rproducto/r-unidadmedida'// RUTA DEL MODULO por ahora no existe
+                        'icon': 'note_add',
+                        'url': '/mega/ventas/rproducto/r-unidadmedida'
                     },
                     {
                         'id': 'producto',
                         'title': 'Registrar Producto',
                         'type': 'item',
-                        'icon': 'note_add',//NOMBRE DEL ICONO
-                        'url': '/mega/ventas/rproducto/r-producto'// RUTA DEL MODULO por ahora no existe
+                        'icon': 'note_add',
+                        'url': '/mega/ventas/rproducto/r-producto'
+                    }
+                ]
+            },
+            {
+                'id': 'idmenuOrganizacion',
+                'title': 'ORGANIZACION',
+                'type': 'collapse', 
+                'icon': 'domain',
+                'children':[
+                    {
+                        'id': 'organizacion',
+                        'title': 'Empresa',
+                        'type': 'item',
+                        'icon': 'location_city',
+                        'url': '/mega/ventas/organizacion/empresa'
+                    },
+                    {
+                        'id': 'sucursal',
+                        'title': 'Sucursal',
+                        'type': 'item',
+                        'icon': 'domain',
+                        'url': '/mega/ventas/organizacion/sucursal'
                     }
                 ]
             }

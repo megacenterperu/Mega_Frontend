@@ -1,0 +1,37 @@
+<div class="page-layout blank p-24" fusePerfectScrollbar>
+  <mat-toolbar>Ingrese los datos del Sucursal de la Empresa</mat-toolbar>
+  
+  <br />
+
+  <form class="container" [formGroup]="form" (ngSubmit)="operar()" #f="ngForm">
+
+    <mat-form-field>
+      <input matInput placeholder="Nombre" required formControlName="nombre">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Direccion" required formControlName="direccion">
+    </mat-form-field>  
+
+    <mat-form-field>
+      <mat-select placeholder="Organizacion" formControlName="organizacion" >
+        <mat-option *ngFor="let Organizacion of lstorganizacions" [value]="Organizacion"  >
+          {{Organizacion.nombreComercial}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>  
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
+      <mat-icon>done</mat-icon>
+      <span>Aceptar</span>
+    </button>
+
+    <button mat-raised-button color="accent" (click)="cancel()" type="button">
+      <mat-icon>close</mat-icon>
+      <span>Cancelar</span>
+    </button>
+  </form>
+
+  <br />
+
+</div>

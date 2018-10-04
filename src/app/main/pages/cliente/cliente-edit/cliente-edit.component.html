@@ -1,0 +1,29 @@
+<div class="page-layout blank p-24" fusePerfectScrollbar>
+  <mat-toolbar>Ingrese los datos del Cliente</mat-toolbar>
+
+  <br />
+
+  <form class="container" [formGroup]="form" (ngSubmit)="save()" #f="ngForm">
+
+    <mat-form-field>
+      <input type="text" placeholder="nombre del Cliente" aria-label="nombre" matInput [formControl]="myControlPersona" formControlName="persona"
+        [matAutocomplete]="autoPersona">
+      <mat-autocomplete #autoPersona="matAutocomplete" [displayWith]="displayFn">
+        <mat-option *ngFor="let pe of filteredOptions | async" [value]="pe">
+            {{pe.numeroDocumento}} {{pe.nombre}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
+      <mat-icon>done</mat-icon>
+      <span>Aceptar</span>
+    </button>
+    <button mat-raised-button color="accent" (click)="cancel()" type="button">
+      <mat-icon>close</mat-icon>
+      <span>Cancelar</span>
+    </button>
+  </form>
+
+  <br />
+</div>

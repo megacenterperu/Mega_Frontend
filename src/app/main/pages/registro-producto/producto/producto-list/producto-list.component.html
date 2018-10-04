@@ -7,57 +7,57 @@
   </div>
   <mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="codProducto">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> cod Producto </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header> COD PROD </mat-header-cell>
           <mat-cell *matCellDef="let element"> {{element.codProducto}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="nombre">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> PRODUCTO </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.nombre}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="marcaProducto">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> marca Producto </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> MARCA </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.marcaProducto}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="stock">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Stock </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> STOCK </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.stock}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="precioCompra">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Precio Compra </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> PREC. COMPRA </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.precioCompra}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="precioVenta">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Precio Venta </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> PREC. VENTA </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.precioVenta}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="unidadMedida.codUnidadmedida">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> unidadMedida </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> UNIDAD M. </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.unidadMedida.codUnidadmedida}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="categoria.descripcion">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Categoria </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> CATEGORIA </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.categoria.descripcion}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="tipoProducto.descripcion">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Tipo Producto </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> TIPO PRODUCTO </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.tipoProducto.descripcion}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="organizacion.nombreComercial">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Organizacion </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> ORGANIZACION </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.organizacion.nombreComercial}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="acciones">
-          <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef>ACCIONES</mat-header-cell>
           <mat-cell *matCellDef="let row">
               <button mat-button color="primary" [routerLink]="['edicion', row.idProducto]">Actualizar</button>
               <button mat-button color="accent" (click)="eliminar(row.idProducto)">Eliminar</button>
