@@ -1,3 +1,111 @@
-<p>
-  compra-edit works!
-</p>
+<div class="page-layout blank p-24" fusePerfectScrollbar>
+  <mat-toolbar>Registrar Compra</mat-toolbar>
+
+  <br />
+
+  <form class="container" [formGroup]="form" (ngSubmit)="save()" #f="ngForm">
+    <div>
+      <mat-form-field>
+      <input type="text" placeholder="proveedor" aria-label="nombreComercial" matInput [formControl]="myControlPersona"
+        formControlName="proveedor" [matAutocomplete]="autoProveedor">
+      <mat-autocomplete #autoProveedor="matAutocomplete" [displayWith]="displayFn">
+        <mat-option *ngFor="let pro of filteredOptions | async" [value]="pro">
+          {{pro.nombreComercial}} {{pro.razonSocial}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="Sucursal" formControlName="sucursal">
+        <mat-option *ngFor="let sucursal of sucursales" [value]="sucursal">
+          {{sucursal.nombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="Tipo comprobante " formControlName="tipoComprobante">
+        <mat-option *ngFor="let TipoCom of tipodocumentos" [value]="TipoCom">
+          {{TipoCom.nombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker" placeholder="fecha de Compra ">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Monto Total" required formControlName="numeroDocumento" type="number" maxlength="20">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="numeroComprobante" required formControlName="telfMovil" maxlength="20">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="detalle" required formControlName="telfMovil" type="number" maxlength="20">
+
+    </mat-form-field> 
+    </div>
+
+    <!--formulario detalle-->
+    <div>
+      <button matSuffix mat-raised-button color="warn" type="button" (click)="AgregarProducto()"> Agregar Producto</button>
+    </div>
+    <br>
+    <div>
+      <mat-table [dataSource]="dataSource" matSort>
+
+        <ng-container matColumnDef="codProducto">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> codigo </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.codProducto}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="nombre">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Producto </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.nombre}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="marcaProducto">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> marca </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.marcaProducto}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="stock">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> marca </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.stock}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="precioVenta">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> marca </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.precioVenta}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="acciones">
+          <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
+          <mat-cell *matCellDef="let row; let i = index;">
+            <button mat-button color="primary" (click)="eliminar(i)">eliminar</button>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    </div>
+
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
+      <mat-icon>done</mat-icon>
+      <span>Aceptar</span>
+    </button>
+    <button mat-raised-button color="accent" (click)="cancel()" type="button">
+      <mat-icon>close</mat-icon>
+      <span>Cancelar</span>
+    </button>
+  </form>
+
+  <br />
+
+</div>

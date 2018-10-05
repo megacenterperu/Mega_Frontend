@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { CompraListComponent } from './compra-list/compra-list.component';
 import { CompraEditComponent } from './compra-edit/compra-edit.component';
 import { CompraWiewComponent } from './compra-wiew/compra-wiew.component';
+import { ProductoDialogoComponent } from './compra-edit/producto-dialogo/producto-dialogo.component';
 
 @NgModule({
   imports: [
@@ -12,6 +13,6 @@ import { CompraWiewComponent } from './compra-wiew/compra-wiew.component';
     SharedModule,
     CompraRoutingModule
   ],
-  declarations: [CompraListComponent, CompraEditComponent, CompraWiewComponent]
+  declarations: [CompraListComponent, CompraEditComponent, CompraWiewComponent, ProductoDialogoComponent]
 })
 export class CompraModule { }

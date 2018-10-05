@@ -1,18 +1,17 @@
-import { Injectable } from '@angular/core';
-import { GenericService } from './generic.service';
 import { Observable } from 'rxjs';
-const basePath = "unidadMedidas";
-
+import { GenericService } from './generic.service';
+import { Injectable } from '@angular/core';
+const basePath = "tipocomprobantes";
 @Injectable({
   providedIn: 'root'
 })
-export class UnidadmedidaService {
+export class TipoComprobanteService {
 
+   
   constructor(private generic:GenericService) { }
 
   getAll(): Observable<any> {
-  return this.generic.all(basePath).get();
-   //return this.generic.all(basePath).all("listar").get();
+    return this.generic.all(basePath).all("listar").get();
   }
 
   getAllPageable(p: number, s: number): Observable<any> {
@@ -34,5 +33,4 @@ export class UnidadmedidaService {
   delete(id: number): Observable<any> {
     return this.generic.all(basePath).one("eliminar", id).delete();
   }
-  
 }

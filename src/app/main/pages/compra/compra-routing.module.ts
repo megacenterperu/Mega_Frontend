@@ -1,3 +1,4 @@
+import { ProductoDialogoComponent } from './compra-edit/producto-dialogo/producto-dialogo.component';
 import { CompraEditComponent } from './compra-edit/compra-edit.component';
 import { CompraListComponent } from './compra-list/compra-list.component';
 import { NgModule } from '@angular/core';
@@ -14,7 +15,9 @@ const routes: Routes = [
         component: CompraEditComponent
 
     },
-    { path: 'nuevo', component: CompraEditComponent }
+    { path: 'nuevo', component: CompraEditComponent },
+
+    { path: 'NuevoPaciente', component: ProductoDialogoComponent }
 ];
 
 @NgModule({

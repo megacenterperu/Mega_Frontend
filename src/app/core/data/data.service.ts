@@ -1,3 +1,4 @@
+import { TipoComprobanteService } from './tipocomprobante.service';
 
 import { PersonaService } from './../data/persona.service';
 import { Injectable } from '@angular/core';
@@ -33,7 +34,8 @@ export class DataService {
     private producto:ProductoService,
     private organizacion:OrganizacionService,
     private cliente:ClienteService,
-    private sucursal:SucursalService
+    private sucursal:SucursalService,
+    private tipocomprobante:TipoComprobanteService
 
   ) { }
 
@@ -83,6 +85,10 @@ export class DataService {
 
   sucursales():SucursalService{
     return this.sucursal;
+  }
+  tipocomprobantes():TipoComprobanteService{
+    return this.tipocomprobante;
+    
   }
 
 }
