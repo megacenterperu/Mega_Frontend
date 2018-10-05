@@ -6,7 +6,8 @@ export class NavigationModel {
             {
                 'id': 'ventas',
                 'title': 'VENTAS',
-                'type': 'group',
+                'type': 'collapse',
+                'icon': 'shopping_cart',
                 'children': [
                     {
                         'id': 'persona',
@@ -21,18 +22,18 @@ export class NavigationModel {
                         }
                     },
                     {
-                        'id': 'sample2',
-                        'title': 'SAMPLE 2',
-                        'type': 'item',
-                        'icon': 'email',
-                        'url': '/sample2'
-                    },
-                    {
                         'id': 'persona',
                         'title': 'CLIENTE',
                         'type': 'item',
                         'icon': 'group_add',
                         'url': '/mega/ventas/cliente',
+                    },
+                    {
+                        'id': 'proforma',
+                        'title': 'PROFORMA',
+                        'type': 'item',
+                        'icon': 'add_shopping_cart',
+                        'url': '/mega/ventas/proforma'
                     }
                 ]
             },

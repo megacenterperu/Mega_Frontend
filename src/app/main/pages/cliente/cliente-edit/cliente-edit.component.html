@@ -5,15 +5,40 @@
 
   <form class="container" [formGroup]="form" (ngSubmit)="save()" #f="ngForm">
 
-    <mat-form-field>
-      <input type="text" placeholder="nombre del Cliente" aria-label="nombre" matInput [formControl]="myControlPersona" formControlName="persona"
-        [matAutocomplete]="autoPersona">
-      <mat-autocomplete #autoPersona="matAutocomplete" [displayWith]="displayFn">
-        <mat-option *ngFor="let pe of filteredOptions | async" [value]="pe">
-            {{pe.numeroDocumento}} {{pe.nombre}}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
+    <div formGroupName="cliente">
+
+    </div>
+
+    <div formGroupName="persona">
+      <mat-form-field>
+        <input matInput placeholder="Nombre y Apellido" required formControlName="nombre" maxlength="50">
+      </mat-form-field>
+  
+      <mat-form-field>
+        <mat-select placeholder="Tipo Documento" formControlName="tipoDocumeto" >
+          <mat-option *ngFor="let Tipodocumento of tipodocumentos" [value]="Tipodocumento"  >
+            {{Tipodocumento.abreviatura}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>    
+  
+      <mat-form-field>
+        <input matInput placeholder="Numero Documento" required formControlName="numeroDocumento"  minLength="8" maxlength="20">
+      </mat-form-field>
+  
+      <mat-form-field>
+        <input matInput placeholder="N° Celular" required formControlName="telfMovil" type="number" maxlength="20">
+      </mat-form-field>
+  
+      <mat-form-field>
+        <input matInput placeholder="Direccion" required formControlName="direccion"  maxlength="20">
+      </mat-form-field>
+  
+      <mat-form-field>
+        <input matInput placeholder="Correo Electronico" required formControlName="email" maxlength="20">
+      </mat-form-field>
+  
+    </div>
 
     <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
       <mat-icon>done</mat-icon>
