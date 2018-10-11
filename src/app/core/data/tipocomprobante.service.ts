@@ -11,7 +11,7 @@ export class TipoComprobanteService {
   constructor(private generic:GenericService) { }
 
   getAll(): Observable<any> {
-    return this.generic.all(basePath).all("listar").get();
+    return this.generic.all(basePath).get();
   }
 
   getAllPageable(p: number, s: number): Observable<any> {

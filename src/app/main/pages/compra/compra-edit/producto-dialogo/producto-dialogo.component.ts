@@ -9,7 +9,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 export class ProductoDialogoComponent implements OnInit {
   lista: any[] = [];
-  displayedColumns: string[] = ['codProducto', 'nombre', 'marcaProducto', 'stock', 'precioVenta', 'acciones'];
+  displayedColumns: string[] = ['codProducto', 'nombre', 'marcaProducto', 'stock', 'precioCompra', 'acciones'];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -23,6 +23,20 @@ export class ProductoDialogoComponent implements OnInit {
     this.dataService.productos().getAll().subscribe(data => this.setData(data));
   }
 
+  update(el: any, precioCompra: string) {
+    if (precioCompra == null) { return; }
+    console.log(precioCompra);
+    // copy and mutate
+    // const copy = this.dataSource.Data().slice()
+    //   el.precioCompra = precioCompra;
+    //  this.dataSource.update(copy);
+  }
+
+  updat(data) {
+    this.dataService.providers().dialogo.next(data);
+  }
+
+  
   setData(data) {
     if (data) {
       let r = data;

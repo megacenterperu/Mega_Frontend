@@ -1,3 +1,4 @@
+import { startWith, map } from 'rxjs/operators';
 import { MatSort } from '@angular/material';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -21,14 +22,14 @@ export class CompraEditComponent implements OnInit {
   edicion: boolean = false;
   detalleCompra: any[] = [];
   proveedores: any[] = [];
-  tipoComprobantes: any[] = [];
+  tipocomprobantes: any[] = [];
   sucursales: any[] = [];
   filteredOptions: Observable<any[]>;
   myControlProveedor: FormControl = new FormControl();
 
 
   lista: any[] = [];
-  displayedColumns: string[] = ['codProducto', 'nombre', 'marcaProducto', 'stock', 'precioVenta', 'acciones'];
+  displayedColumns: string[] = ['codProducto', 'nombre', 'marcaProducto', 'stock', 'precioCompra' , 'acciones'];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -39,15 +40,28 @@ export class CompraEditComponent implements OnInit {
     public dialog: MatDialog,
     private router: Router,
     private formBuilder: FormBuilder) { }
-
+   
 
   ngOnInit() {
     this.initFormBuilder();
+    this.listaProveedors();
+    this.listaSucrusal();
+    this.listaTipoComprobante();
     this.dataService.providers().dialogo.subscribe(data => {
       this.lista.push(data);
       this.setData(this.lista);
     });
+    this.filteredOptions = this.myControlProveedor.valueChanges
+      .pipe(
+        startWith( ''),       
+        map(val => this.filter(val))
+      );
   }
+
+ // this.route.params.subscribe((params: Params) => {
+    //this.id = params['id'];
+    //this.edicion = params['id'] != null;
+  //  this.loadDataFrom();
   setData(data) {
     if (data) {
       let r = data;
@@ -69,6 +83,7 @@ export class CompraEditComponent implements OnInit {
       numeroComprobante: [null, Validators.compose([Validators.maxLength(20)])],
       tipoComprobante: [null, Validators.compose([Validators.required])],
       sucursal: [null, Validators.compose([Validators.required])],
+      guiaRemision: [null, Validators.compose([Validators.required])],
       proveedor: this.myControlProveedor,
     });
   }
@@ -77,10 +92,24 @@ export class CompraEditComponent implements OnInit {
 
   }
 
-  listaProveedor() {
+  filter(val: any) { 
+    if (val != null && val.idProveedor > 0) {
+      return this.proveedores.filter(option =>
+        option.nombreComercial.toLowerCase().includes(val.nombreComercial.toLowerCase()) || option.razonSocial.includes(val.razonSocial));
+    } else {
+      return this.proveedores.filter(option =>
+        option.nombreComercial.toLowerCase().includes(val.toLowerCase())  || option.razonSocial.includes(val));
+    }
+  }
+  
+  listaProveedors() {
     this.dataService.proveedores().getAll().subscribe(data => {
       this.proveedores = data
     });
+  }
+  
+  displayFn(val: any) {
+    return val ? `${val.nombreComercial}` : val;
   }
   listaSucrusal() {
     this.dataService.sucursales().getAll().subscribe(data => {
@@ -90,7 +119,7 @@ export class CompraEditComponent implements OnInit {
 
   listaTipoComprobante() {
     this.dataService.tipocomprobantes().getAll().subscribe(data => {
-      this.tipoComprobantes = data
+      this.tipocomprobantes = data
     });
   }
 

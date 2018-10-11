@@ -14,6 +14,7 @@ import { SharedModule } from './shared/shared.module';
 import { Configuration } from '../config/mega.config';
 
 
+
 @NgModule({
   declarations: [
     AppComponent
@@ -27,6 +28,7 @@ import { Configuration } from '../config/mega.config';
     BrowserAnimationsModule,
     SharedModule,
     MainModule
+    
   ],
   providers: [
     SplashScreenService,
