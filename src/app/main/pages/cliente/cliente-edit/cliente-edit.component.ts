@@ -16,11 +16,14 @@ export class ClienteEditComponent implements OnInit {
   form: FormGroup;
   edicion: boolean = false;
   tipodocumentos:any[] = [];
+  filteredOptions: Observable<any[]>;
+
   constructor(
     private dataService: DataService,
     private route: ActivatedRoute,
     private router: Router,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder
+    ) { }
 
   ngOnInit() {
     this.initFormBuilder();
@@ -52,12 +55,25 @@ export class ClienteEditComponent implements OnInit {
   private loadDataFrom() {
     if (this.edicion) {
       this.dataService.clientes().findById(this.id).subscribe(data => {
-        this.form.controls.cliente.patchValue(data);
-        this.form.controls.persona.patchValue(data.persona);       
-       // this.form.controls.persona.patchValue({tipoDocumeto:data.persona.tipoDocumeto})
+        this.form.controls.cliente.patchValue({
+          idCliente:data.idCliente
+        });
+        this.buildData(data.persona);       
       });     
-
     }
+  }
+
+  buildData(data) {
+    this.form.controls.persona.patchValue({
+      idPersona: data.idPersona,
+      nombre:data.nombre,
+      numeroDocumento:data.numeroDocumento,
+      telfMovil: data.telfMovil,
+      direccion:data.direccion,
+      email:data.email
+    });
+   const tipoDocumeto=this.tipodocumentos.find(t=>t.idTipodocumento==data.tipoDocumeto.idTipodocumento);
+    this.form.controls.persona.get('tipoDocumeto').setValue(tipoDocumeto);
   }
 
   loadTipodocumento() {

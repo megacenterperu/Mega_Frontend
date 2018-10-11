@@ -3,14 +3,14 @@ import { MatTableDataSource, MatPaginator, MatSort, MatSnackBar } from '@angular
 import { DataService } from '../../../../core/data/data.service';
 
 @Component({
-  selector: 'ms-cliente-list',
-  templateUrl: './cliente-list.component.html',
-  styleUrls: ['./cliente-list.component.scss']
+  selector: 'ms-personal-list',
+  templateUrl: './personal-list.component.html',
+  styleUrls: ['./personal-list.component.scss']
 })
-export class ClienteListComponent implements OnInit {
+export class PersonalListComponent implements OnInit {
 
   lista: any[] = [];
-  displayedColumns: string[] = ['persona.nombre', 'persona.numeroDocumento', 'persona.direccion', 'acciones'];
+  displayedColumns: string[] = ['persona.nombre','persona.telfMovil', 'persona.numeroDocumento', 'persona.direccion','fechaIngreso', 'acciones'];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -19,7 +19,7 @@ export class ClienteListComponent implements OnInit {
   constructor(private dataService: DataService, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
-    this.dataService.clientes().getAll().subscribe(data => this.setData(data));
+    this.dataService.personales().getAll().subscribe(data =>this.setData(data));
     this.dataService.providers().cambio.subscribe(data => this.setData(data));
     this.dataService.providers().mensaje.subscribe(data => {
       this.snackBar.open(data, 'Mensaje', { duration: 3000 });
@@ -42,10 +42,11 @@ export class ClienteListComponent implements OnInit {
 
   eliminar(id) {
     if(confirm('¿Seguro que quieres Eliminar?')){
-      this.dataService.clientes().delete(id).subscribe(r => {
+      this.dataService.personales().delete(id).subscribe(r => {
         this.snackBar.open("Cliente Eliminado", 'Mensaje', { duration: 3000 });
-          this.dataService.clientes().getAll().subscribe(data => this.setData(data));
+          this.dataService.personales().getAll().subscribe(data => this.setData(data));
       });
     }
   }
+
 }

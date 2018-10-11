@@ -45,9 +45,11 @@ export class TipoDocumentoListComponent implements OnInit {
   }
 
   eliminar(id){
-    this.dataService.tipoDocumentos().delete(id).subscribe(r =>{
-      this.snackBar.open("Tipo Eliminado",'Mensaje',{duration:3000});
-      this.dataService.tipoDocumentos().getAll().subscribe(data => this.setData(data));
-    });
+    if(confirm('¿Seguro que quieres Eliminar?')){
+      this.dataService.tipoDocumentos().delete(id).subscribe(r =>{
+        this.snackBar.open("Tipo Eliminado",'Mensaje',{duration:3000});
+        this.dataService.tipoDocumentos().getAll().subscribe(data => this.setData(data));
+      });
+    }
   }
 }

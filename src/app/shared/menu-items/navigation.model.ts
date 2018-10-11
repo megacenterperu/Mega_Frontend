@@ -129,6 +129,21 @@ export class NavigationModel {
                         'url': '/mega/ventas/organizacion/sucursal'
                     }
                 ]
+            },
+            {
+                'id': 'admintrarpersonal',
+                'title': 'ADMINISTRAR PERSONAL',
+                'type': 'collapse',
+                'icon': 'person',
+                'children': [
+                    {
+                        'id': 'personal',
+                        'title': 'PERSONAL',
+                        'type': 'item',
+                        'icon': 'person_add',
+                        'url': '/mega/ventas/personal',
+                    }
+                ]
             }
         ];
     }

@@ -1,11 +1,20 @@
 <div class="page-layout blank p-24" fusePerfectScrollbar>
-  <mat-toolbar>Ingrese los datos del Cliente</mat-toolbar>
-
+  <mat-toolbar>Ingrese los datos del Personal</mat-toolbar>
   <br />
 
   <form class="container" [formGroup]="form" (ngSubmit)="save()" #f="ngForm">
 
-    <div formGroupName="cliente">
+    <div formGroupName="personal" class="container">
+
+      <mat-form-field class="of-full-width i-space">
+        <input matInput formControlName="fechaIngreso" [matDatepicker]="picker" [max]="maxDate" placeholder="Fecha Ingreso">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker touchUi="true" #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Sueldo" required formControlName="sueldo">
+      </mat-form-field>
 
     </div>
 
@@ -13,31 +22,33 @@
       <mat-form-field>
         <input matInput placeholder="Nombre y Apellido" required formControlName="nombre" maxlength="50">
       </mat-form-field>
-  
+
       <mat-form-field>
-        <mat-select placeholder="Tipo Documento" formControlName="tipoDocumeto" >
-          <mat-option *ngFor="let tipoDocumeto of tipodocumentos" [value]="tipoDocumeto"  >
+        <mat-select placeholder="Tipo Documento" formControlName="tipoDocumeto">
+          <mat-option *ngFor="let tipoDocumeto of tipodocumentos" [value]="tipoDocumeto">
             {{tipoDocumeto.abreviatura}}
           </mat-option>
         </mat-select>
-      </mat-form-field>    
-  
-      <mat-form-field>
-        <input matInput placeholder="Numero Documento" required formControlName="numeroDocumento"  minLength="8" maxlength="20">
       </mat-form-field>
-  
+
+      <mat-form-field>
+        <input matInput placeholder="Numero Documento" required formControlName="numeroDocumento" minLength="8"
+          maxlength="20">
+
+      </mat-form-field>
+
       <mat-form-field>
         <input matInput placeholder="N° Celular" required formControlName="telfMovil" type="number" maxlength="20">
       </mat-form-field>
-  
+
       <mat-form-field>
-        <input matInput placeholder="Direccion" required formControlName="direccion"  maxlength="20">
+        <input matInput placeholder="Direccion" required formControlName="direccion" maxlength="20">
       </mat-form-field>
-  
+
       <mat-form-field>
         <input matInput placeholder="Correo Electronico" required formControlName="email" maxlength="20">
       </mat-form-field>
-  
+
     </div>
 
     <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">

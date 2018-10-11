@@ -1,3 +1,4 @@
+import { PersonalService } from './personal.service';
 
 import { PersonaService } from './../data/persona.service';
 import { Injectable } from '@angular/core';
@@ -35,7 +36,8 @@ export class DataService {
     private organizacion:OrganizacionService,
     private cliente:ClienteService,
     private sucursal:SucursalService,
-    private proforma:ProformaService
+    private proforma:ProformaService,
+    private personal:PersonalService
 
   ) { }
 
@@ -89,6 +91,10 @@ export class DataService {
 
   proformas():ProformaService{
     return this.proforma;
+  }
+
+  personales():PersonalService{
+    return this.personal;
   }
 
 }

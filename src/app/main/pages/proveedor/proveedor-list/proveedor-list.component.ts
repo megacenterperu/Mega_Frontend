@@ -38,10 +38,12 @@ export class ProveedorListComponent implements OnInit {
   }
 
   eliminar(id) {
-    this.dataService.proveedores().delete(id).subscribe(r => {
-      this.snackBar.open("Proveedor Eliminado", 'Aviso', { duration: 2000 });
-      this.dataService.proveedores().getAll().subscribe(data => this.setData(data));
-    });
+    if(confirm('¿Seguro que quieres Eliminar?')){
+      this.dataService.proveedores().delete(id).subscribe(r => {
+        this.snackBar.open("Proveedor Eliminado", 'Aviso', { duration: 2000 });
+        this.dataService.proveedores().getAll().subscribe(data => this.setData(data));
+      });
+    }
   }
 }
 

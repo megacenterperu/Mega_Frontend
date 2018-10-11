@@ -10,7 +10,8 @@ const routes: Routes = [
     { path: 'rproducto', loadChildren: '../../main/pages/registro-producto/registro-producto.module#RegistroProductoModule' },
     { path: 'cliente', loadChildren: '../../main/pages/cliente/cliente.module#ClienteModule' },
     { path: 'organizacion', loadChildren: '../../main/pages/organizacion/organizacion.module#OrganizacionModule' },    
-    { path: 'proforma', loadChildren: '../../main/pages/proforma/proforma.module#ProformaModule' }
+    { path: 'proforma', loadChildren: '../../main/pages/proforma/proforma.module#ProformaModule' },
+    { path: 'personal', loadChildren: '../../main/pages/personal/personal.module#PersonalModule' }
     
 ];
 

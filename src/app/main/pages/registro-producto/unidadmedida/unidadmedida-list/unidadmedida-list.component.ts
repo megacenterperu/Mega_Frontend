@@ -41,10 +41,12 @@ export class UnidadmedidaListComponent implements OnInit {
   }
 
   eliminar(id) {
-    this.dataService.unidadMedidas().delete(id).subscribe(datas => {
+    if(confirm('¿Seguro que quieres Eliminar?')){
+      this.dataService.unidadMedidas().delete(id).subscribe(datas => {
         this.snackBar.open("Categoria Eliminado", "Mensaje", {duration: 3000});
         this.dataService.unidadMedidas().getAll().subscribe(data => this.setData(data));
       });
+    }
   }
 
 }

@@ -9,7 +9,7 @@ import { DataService } from "../../../../../core/data/data.service";
 })
 export class TipoProductoListComponent implements OnInit {
   lista: any[] = [];
-  displayedColumns: string[] = ["descripcion","acciones"];
+  displayedColumns: string[] = ['idTipoproducto',"descripcion","acciones"];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -39,9 +39,11 @@ export class TipoProductoListComponent implements OnInit {
   }
 
   eliminar(id){
-    this.dataService.tipoProductos().delete(id).subscribe(tipop =>{
-      this.snackBar.open('Tipo de Producto Eliminado','Mensaje',{duration:3000});
-      this.dataService.tipoProductos().getAll().subscribe(data => this.setData(data));
-    });
+    if(confirm('¿Seguro que quieres Eliminar?')){
+      this.dataService.tipoProductos().delete(id).subscribe(tipop =>{
+        this.snackBar.open('Tipo de Producto Eliminado','Mensaje',{duration:3000});
+        this.dataService.tipoProductos().getAll().subscribe(data => this.setData(data));
+      });
+    }
   }
 }

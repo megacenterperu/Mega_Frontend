@@ -41,11 +41,12 @@ export class ProductoListComponent implements OnInit {
   }
 
   eliminar(id) {
-    this.dataService.productos().delete(id).subscribe(r => {
-      this.snackBar.open("Producto Eliminado", 'Mensaje', { duration: 3000 });
-      this.dataService.productos().getAll().subscribe(data => this.setData(data));
-    });
+    if(confirm('¿Seguro que quieres Eliminar?')){
+      this.dataService.productos().delete(id).subscribe(r => {
+        this.snackBar.open("Producto Eliminado", 'Mensaje', { duration: 3000 });
+        this.dataService.productos().getAll().subscribe(data => this.setData(data));
+      });
+    }
   }
-
 
 }

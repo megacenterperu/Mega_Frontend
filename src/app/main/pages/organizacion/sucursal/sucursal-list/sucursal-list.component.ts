@@ -41,10 +41,12 @@ export class SucursalListComponent implements OnInit {
   }
 
   eliminar(id) {
-    this.dataService.sucursales().delete(id).subscribe(r => {
-      this.snackBar.open("Sucursal Eliminado", 'Mensaje', { duration: 3000 });
-      this.dataService.sucursales().getAll().subscribe(data => this.setData(data));
-    });
+    if(confirm('¿Seguro que quieres Eliminar?')){
+      this.dataService.sucursales().delete(id).subscribe(r => {
+        this.snackBar.open("Sucursal Eliminado", 'Mensaje', { duration: 3000 });
+        this.dataService.sucursales().getAll().subscribe(data => this.setData(data));
+      });
+    }
   }
 
 }

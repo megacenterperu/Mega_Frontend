@@ -9,7 +9,7 @@ import { DataService } from "../../../../../core/data/data.service";
 })
 export class CategoriaListComponent implements OnInit {
   lista: any[] = [];
-  displayedColumns: string[] = ["descripcion", "acciones"];
+  displayedColumns: string[] = ['idCategoria',"descripcion", "acciones"];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
   @ViewChild(MatPaginator)
@@ -31,6 +31,7 @@ export class CategoriaListComponent implements OnInit {
     let r = data;
     this.cantidad = JSON.parse(JSON.stringify(data)).length;
     this.dataSource = new MatTableDataSource(r);
+    this.dataSource.paginator=this.paginator;
     this.dataSource.sort = this.sort;
   }
 
@@ -41,9 +42,11 @@ export class CategoriaListComponent implements OnInit {
   }
 
   eliminar(id) {
+    if(confirm('¿Seguro que quieres Eliminar?')){
     this.dataService.categorias().delete(id).subscribe(datas => {
         this.snackBar.open("Categoria Eliminado", "Mensaje", {duration: 3000});
         this.dataService.categorias().getAll().subscribe(data => this.setData(data));
       });
+    }
   }
 }
