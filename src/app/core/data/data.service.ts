@@ -14,6 +14,7 @@ import { ProductoService } from './producto.service';
 import { OrganizacionService } from './organizacion.service';
 import { ClienteService } from './cliente.service';
 import { SucursalService } from './sucursal.service';
+import { ProformaService } from './proforma.service';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,11 @@ export class DataService {
     private organizacion:OrganizacionService,
     private cliente:ClienteService,
     private sucursal:SucursalService,
+<<<<<<< HEAD
     private tipocomprobante:TipoComprobanteService
+=======
+    private proforma:ProformaService
+>>>>>>> d69104550248c7bf8be1f802c1cd98cc1647630b
 
   ) { }
 
@@ -89,6 +94,10 @@ export class DataService {
   tipocomprobantes():TipoComprobanteService{
     return this.tipocomprobante;
     
+  }
+
+  proformas():ProformaService{
+    return this.proforma;
   }
 
 }

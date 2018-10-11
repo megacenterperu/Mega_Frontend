@@ -1,6 +1,6 @@
 import { startWith, map } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DataService } from '../../../../core/data/data.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
@@ -12,14 +12,10 @@ import { ActivatedRoute, Router, Params } from '@angular/router';
 })
 export class ClienteEditComponent implements OnInit {
 
-  id: number;
-  personas: any[] = [];
+  id: number; 
   form: FormGroup;
   edicion: boolean = false;
-
-  myControlPersona: FormControl = new FormControl();
-  filteredOptions: Observable<any[]>;
-
+  tipodocumentos:any[] = [];
   constructor(
     private dataService: DataService,
     private route: ActivatedRoute,
@@ -28,52 +24,46 @@ export class ClienteEditComponent implements OnInit {
 
   ngOnInit() {
     this.initFormBuilder();
-    this.listarPersonas();
+    this.loadTipodocumento();
     this.route.params.subscribe((params: Params) => {
       this.id = params['id'];
       this.edicion = params['id'] != null;
       this.loadDataFrom();
     });
-    this.filteredOptions = this.myControlPersona.valueChanges
-      .pipe(
-        startWith( ''),       
-        map(val => this.filter(val))
-      );
   }
 
   initFormBuilder() {
     this.form = this.formBuilder.group({
-      idCliente: [null],
-      persona: this.myControlPersona
+      cliente: this.formBuilder.group({
+        idCliente: [null]      
+      }),
+      persona: this.formBuilder.group({
+        idPersona: [null],
+        nombre: [null, Validators.compose([Validators.required, Validators.maxLength(100)])],
+        numeroDocumento: [null, Validators.compose([Validators.required, Validators.maxLength(150)])],
+        telfMovil: [null, Validators.compose([ Validators.maxLength(150)])],
+        direccion: [null, Validators.compose([ Validators.maxLength(150)])],
+        email: [null, Validators.compose([ Validators.maxLength(150)])],
+        tipoDocumeto: [null, Validators.compose([Validators.required])]
+      })
     });
   }
 
   private loadDataFrom() {
     if (this.edicion) {
       this.dataService.clientes().findById(this.id).subscribe(data => {
-        this.form.patchValue(data);
-      });
+        this.form.controls.cliente.patchValue(data);
+        this.form.controls.persona.patchValue(data.persona);       
+       // this.form.controls.persona.patchValue({tipoDocumeto:data.persona.tipoDocumeto})
+      });     
+
     }
   }
 
-  filter(val: any) { 
-    if (val != null && val.idPersona > 0) {
-      return this.personas.filter(option =>
-        option.nombre.toLowerCase().includes(val.nombre.toLowerCase()) || option.numeroDocumento.includes(val.numeroDocumento));
-    } else {
-      return this.personas.filter(option =>
-        option.nombre.toLowerCase().includes(val.toLowerCase())  || option.numeroDocumento.includes(val));
-    }
-  }
-
-  listarPersonas() {
-    this.dataService.personas().getAll().subscribe(data => {
-      this.personas = data;
+  loadTipodocumento() {
+    this.dataService.tipoDocumentos().getAll().subscribe(data => {
+      this.tipodocumentos = data;
     });
-  }
-
-  displayFn(val: any) {
-    return val ? `${val.nombre}` : val;
   }
 
   cancel(){
