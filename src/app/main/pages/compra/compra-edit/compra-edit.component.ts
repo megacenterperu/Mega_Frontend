@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from './../../../../core/data/data.service';
 import { Observable, Subscription } from 'rxjs';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProductoDialogoComponent } from './producto-dialogo/producto-dialogo.component';
 import { Producto } from '../../../../core/model/producto.model';
@@ -20,16 +20,14 @@ export class CompraEditComponent implements OnInit {
   id: number;
   form: FormGroup;
   edicion: boolean = false;
-  detalleCompra: any[] = [];
+  detalle: any[] = [];
   proveedores: any[] = [];
   tipocomprobantes: any[] = [];
   sucursales: any[] = [];
   filteredOptions: Observable<any[]>;
   myControlProveedor: FormControl = new FormControl();
 
-
-  lista: any[] = [];
-  displayedColumns: string[] = ['codProducto', 'nombre', 'marcaProducto', 'stock', 'precioCompra' , 'acciones'];
+  displayedColumns: string[] = ['codProducto', 'nombre', 'marcaProducto', 'cantidaditem', 'precioItem', 'importeTotalItem', 'acciones'];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -40,7 +38,7 @@ export class CompraEditComponent implements OnInit {
     public dialog: MatDialog,
     private router: Router,
     private formBuilder: FormBuilder) { }
-   
+
 
   ngOnInit() {
     this.initFormBuilder();
@@ -48,31 +46,37 @@ export class CompraEditComponent implements OnInit {
     this.listaSucrusal();
     this.listaTipoComprobante();
     this.dataService.providers().dialogo.subscribe(data => {
-      this.lista.push(data);
-      this.setData(this.lista);
+      const formGroup = this.addDetalleFormControl();
+      formGroup.patchValue({
+        precioItem: data.precioItem,
+        cantidaditem: data.cantidaditem,
+        importeTotalItem: data.importeTotalItem,
+        producto: data.producto
+      });
+      this.detalle.push(data);
+      this.setData();
     });
     this.filteredOptions = this.myControlProveedor.valueChanges
       .pipe(
-        startWith( ''),       
+        startWith(''),
         map(val => this.filter(val))
       );
   }
 
- // this.route.params.subscribe((params: Params) => {
-    //this.id = params['id'];
-    //this.edicion = params['id'] != null;
-  //  this.loadDataFrom();
-  setData(data) {
-    if (data) {
-      let r = data;
-      this.cantidad = JSON.parse(JSON.stringify(data)).length;
+
+  setData() {
+    if (this.detalle) {
+      let r = this.detalle;
+      this.cantidad = JSON.parse(JSON.stringify(this.detalle)).length;
       this.dataSource = new MatTableDataSource(r);
       this.dataSource.sort = this.sort;
     }
   }
+
   eliminar(index) {
-    this.lista.splice(index, 1);
-    this.setData(this.lista);
+    this.detalleCompra.removeAt(index);
+    this.detalle.splice(index, 1);
+    this.setData();
   }
 
   initFormBuilder() {
@@ -85,29 +89,43 @@ export class CompraEditComponent implements OnInit {
       sucursal: [null, Validators.compose([Validators.required])],
       guiaRemision: [null, Validators.compose([Validators.required])],
       proveedor: this.myControlProveedor,
+      detalleCompra: this.formBuilder.array([], Validators.compose([]))
     });
   }
 
-  agregarDetalle() {
+  addDetalleFormControl(): FormGroup {
+    const formGroup = this.formBuilder.group({
+      idDetalleCompra: [null, Validators.compose([Validators.required])],
+      precioItem: [0, Validators.compose([Validators.required])],
+      cantidaditem: [0, Validators.compose([Validators.required])],
+      importeTotalItem: [0, Validators.compose([Validators.required])],
+      producto: [null, Validators.compose([Validators.required])]
+    });
 
+    this.detalleCompra.push(formGroup);
+    return formGroup;
   }
 
-  filter(val: any) { 
+  get detalleCompra(): FormArray {
+    return this.form.get('detalleCompra') as FormArray;
+  }
+
+  filter(val: any) {
     if (val != null && val.idProveedor > 0) {
       return this.proveedores.filter(option =>
         option.nombreComercial.toLowerCase().includes(val.nombreComercial.toLowerCase()) || option.razonSocial.includes(val.razonSocial));
     } else {
       return this.proveedores.filter(option =>
-        option.nombreComercial.toLowerCase().includes(val.toLowerCase())  || option.razonSocial.includes(val));
+        option.nombreComercial.toLowerCase().includes(val.toLowerCase()) || option.razonSocial.includes(val));
     }
   }
-  
+
   listaProveedors() {
     this.dataService.proveedores().getAll().subscribe(data => {
       this.proveedores = data
     });
   }
-  
+
   displayFn(val: any) {
     return val ? `${val.nombreComercial}` : val;
   }
@@ -140,7 +158,6 @@ export class CompraEditComponent implements OnInit {
       data: producto
     });
   }
-
 
   save() {
     if (this.edicion) {

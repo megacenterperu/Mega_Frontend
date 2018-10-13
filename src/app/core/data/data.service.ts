@@ -36,11 +36,9 @@ export class DataService {
     private organizacion:OrganizacionService,
     private cliente:ClienteService,
     private sucursal:SucursalService,
-<<<<<<< HEAD
-    private tipocomprobante:TipoComprobanteService
-=======
+    private tipocomprobante:TipoComprobanteService,
     private proforma:ProformaService
->>>>>>> d69104550248c7bf8be1f802c1cd98cc1647630b
+
 
   ) { }
 

@@ -17,16 +17,26 @@
       <mat-header-cell *matHeaderCellDef mat-sort-header> marca </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.marcaProducto}} </mat-cell>
     </ng-container>
-
-    <ng-container matColumnDef="stock">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> stock </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.stock}} </mat-cell>
+       
+    <ng-container matColumnDef="cantidaditem">
+      <mat-header-cell *matHeaderCellDef> cantidaditem </mat-header-cell>
+      <mat-cell *matCellDef="let element" [satPopoverAnchorFor]="c" (click)="c.open()">
+        <ng-container *ngIf="element.cantidaditem">
+          {{element.cantidaditem}}
+        </ng-container>
+        <span class="add-cantidaditem" *ngIf="!element.cantidaditem">
+          Add a cantidad
+        </span>
+        <sat-popover #c
+            hasBackdrop
+            xAlign="start"
+            yAlign="start"
+            (closed)="updateCantidad(element, $event)">
+          <ms-inline-edit [value]="element.cantidaditem"></ms-inline-edit>
+        </sat-popover>
+      </mat-cell>
     </ng-container>
-
-    <!-- <ng-container matColumnDef="precioCompra">
-    <mat-header-cell *matHeaderCellDef mat-sort-header> precio compra </mat-header-cell>
-      <mat-cell  *matCellDef="let element"> {{element.precioCompra}} </mat-cell>      
-    </ng-container>    -->
+    
 
     <ng-container matColumnDef="precioCompra">
       <mat-header-cell *matHeaderCellDef> precioCompra </mat-header-cell>
@@ -37,18 +47,18 @@
         <span class="add-precioCompra" *ngIf="!element.precioCompra">
           Add a precioCompra
         </span>
-
         <sat-popover #p
             hasBackdrop
             xAlign="start"
             yAlign="start"
-            (closed)="update(element, $event)">
+            (closed)="updatePrecio(element, $event)">
           <ms-inline-edit [value]="element.precioCompra"></ms-inline-edit>
         </sat-popover>
       </mat-cell>
     </ng-container>
+    
 
-
+    
     <ng-container matColumnDef="acciones">
       <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
       <mat-cell *matCellDef="let row">
