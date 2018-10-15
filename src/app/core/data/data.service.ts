@@ -30,6 +30,7 @@ export class DataService {
     private provider: ProviderService,
     private categoria: CategoriaService,
     private unidadmedida: UnidadmedidaService,
+<<<<<<< HEAD
     private producto: ProductoService,
     private organizacion: OrganizacionService,
     private cliente: ClienteService,
@@ -38,6 +39,17 @@ export class DataService {
     private personal: PersonalService,
     private tipocomprobante: TipoComprobanteService
   ) {}
+=======
+    private producto:ProductoService,
+    private organizacion:OrganizacionService,
+    private cliente:ClienteService,
+    private sucursal:SucursalService,
+    private tipocomprobante:TipoComprobanteService,
+    private proforma:ProformaService
+
+
+  ) { }
+>>>>>>> d2b281ca4aa4df7ce0448c795cbea0a7f8dbf9f3
 
   providers(): ProviderService {
     return this.provider;

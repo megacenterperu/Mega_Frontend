@@ -9,9 +9,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 export class ProductoDialogoComponent implements OnInit {
   lista: any[] = [];
-  displayedColumns: string[] = ['codProducto', 'nombre', 'marcaProducto', 'stock', 'precioCompra', 'acciones'];
+  displayedColumns: string[] = ['codProducto', 'nombre', 'marcaProducto', 'cantidaditem', 'precioCompra', 'acciones'];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
+  cantidadItem: number;
+  precioItem: number;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   constructor(
@@ -23,20 +26,16 @@ export class ProductoDialogoComponent implements OnInit {
     this.dataService.productos().getAll().subscribe(data => this.setData(data));
   }
 
-  update(el: any, precioCompra: string) {
-    if (precioCompra == null) { return; }
-    console.log(precioCompra);
-    // copy and mutate
-    // const copy = this.dataSource.Data().slice()
-    //   el.precioCompra = precioCompra;
-    //  this.dataSource.update(copy);
+  updatePrecio(el: any, precio: number) {
+    if (precio == null) { return; }
+    this.precioItem = precio;
   }
 
-  updat(data) {
-    this.dataService.providers().dialogo.next(data);
+  updateCantidad(el: any, cantidad: number) {
+    if (cantidad == null) { return; }
+    this.cantidadItem = cantidad;
   }
 
-  
   setData(data) {
     if (data) {
       let r = data;
@@ -47,7 +46,13 @@ export class ProductoDialogoComponent implements OnInit {
   }
   agregar(id) {
     this.dataService.productos().findById(id).subscribe(data => {
-      this.dataService.providers().dialogo.next(data);
+      let detalle = {
+        precioItem: this.precioItem,
+        cantidaditem: this.cantidadItem,
+        importeTotalItem: this.precioItem * this.cantidadItem,
+        producto: data
+      }
+      this.dataService.providers().dialogo.next(detalle);
     });
   }
 
