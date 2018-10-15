@@ -13,9 +13,12 @@ import { NavigationService } from './shared/services/navigation.service';
 import { SharedModule } from './shared/shared.module';
 import { Configuration } from '../config/mega.config';
 
+
+
 @NgModule({
   declarations: [
     AppComponent
+    
   ],
   imports: [
     BrowserModule,
@@ -25,6 +28,7 @@ import { Configuration } from '../config/mega.config';
     BrowserAnimationsModule,
     SharedModule,
     MainModule
+    
   ],
   providers: [
     SplashScreenService,

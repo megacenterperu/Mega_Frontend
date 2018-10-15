@@ -7,5 +7,6 @@ import { Subject } from 'rxjs';
 export class ProviderService {
   cambio = new Subject<any[]>();  
   mensaje = new Subject<string>();
+  dialogo= new Subject<any>();
   constructor() { }
 }

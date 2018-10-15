@@ -1,4 +1,4 @@
-import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
+import { MatTableDataSource, MatPaginator, MatSort, MatSnackBar } from '@angular/material';
 import { DataService } from './../../../../core/data/data.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
@@ -9,23 +9,29 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 export class CompraListComponent implements OnInit {
   lista: any[] = [];
-  displayedColumns: string[] = ['idProveedor', 'nombreComercial', 'razonSocial', 'telefonoEmpresa', 'acciones'];
+  displayedColumns: string[] = ['proveedor.nombreComercial', 'sucursal.nombre', 'fecha', 'montoTotal', 'guiaRemision', 'acciones'];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
 
-
-    this.dataService.compras().getAll().subscribe(data => {
-      console.log(data);
-      let r = JSON.parse(JSON.stringify(data)).content;
-      this.cantidad = JSON.parse(JSON.stringify(data)).totalElements;
-      this.dataSource = new MatTableDataSource(r);
-      this.dataSource.sort = this.sort;
+    this.dataService.compras().getAll().subscribe(data => this.setData(data));
+    this.dataService.providers().cambio.subscribe(data => this.setData(data));
+    this.dataService.providers().mensaje.subscribe(data => {
+      this.snackBar.open(data, 'Aviso', { duration: 2000 });
     });
 
+  }
+
+  setData(data) {
+    if (data) {
+      let r = data;
+      this.cantidad = JSON.parse(JSON.stringify(data)).length;
+      this.dataSource = new MatTableDataSource(r);
+      this.dataSource.sort = this.sort;
+    }
   }
 }

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ProformaListComponent } from './proforma-list/proforma-list.component';
 import { ProformaEditComponent } from './proforma-edit/proforma-edit.component';
+import { ProductoDialogComponent } from './proforma-edit/producto-dialog/producto-dialog.component';
 
 const routes: Routes = [
   {
@@ -13,7 +14,9 @@ const routes: Routes = [
     component: ProformaEditComponent
 
 },
-{ path: 'nuevo', component: ProformaEditComponent }
+{ path: 'nuevo', component: ProformaEditComponent },
+
+{ path: 'NuevoPaciente', component: ProductoDialogComponent }
 ];
 
 @NgModule({

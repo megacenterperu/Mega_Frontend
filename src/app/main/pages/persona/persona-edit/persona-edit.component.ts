@@ -39,10 +39,10 @@ export class PersonaEditComponent implements OnInit {
       idPersona: [null],
       nombre: [null, Validators.compose([Validators.required, Validators.maxLength(50)])],
       numeroDocumento: [null, Validators.compose([Validators.required, Validators.minLength(8), Validators.maxLength(12)])],
-      telfMovil: [null, Validators.compose([Validators.maxLength(20)])],
+      telfMovil: [null, Validators.compose([Validators.required, Validators.maxLength(9)])],
       direccion: [null, Validators.compose([Validators.maxLength(20)])],
       email: [null, Validators.compose([Validators.maxLength(20)])],
-      tipoDocumeto: [null, Validators.compose([Validators.required])],
+      tipoDocumeto: [null, Validators.compose([Validators.required])]
     });
   }
 
@@ -60,6 +60,9 @@ export class PersonaEditComponent implements OnInit {
     });
   }
 
+  compareTipoDocumento(x: any, y: any): boolean {
+    return x && y ? x.idTipodocumento === y.idTipodocumento : x === y;
+  }
 
   cancel() {
     if (this.edicion) {

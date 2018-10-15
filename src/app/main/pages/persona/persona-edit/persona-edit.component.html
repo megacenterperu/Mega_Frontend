@@ -5,35 +5,57 @@
 
   <form class="container" [formGroup]="form" (ngSubmit)="save()" #f="ngForm">
 
-      <mat-form-field>
+    <mat-form-field>
       <input matInput placeholder="Nombre y Apellido" required formControlName="nombre" maxlength="50">
     </mat-form-field>
 
-    <mat-form-field>
-      <mat-select placeholder="Tipo Documento" formControlName="tipoDocumeto" >
-        <mat-option *ngFor="let Tipodocumento of tipodocumentos" [value]="Tipodocumento"  >
-          {{Tipodocumento.abreviatura}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>    
+    <table class="example-full-width" cellspacing="0">
+      <tr>
+        <td>
+          <mat-form-field class="example-full-width">
+            <mat-select placeholder="Tipo Documento" formControlName="tipoDocumeto" [compareWith]="compareTipoDocumento">
+              <mat-option *ngFor="let Tipodocumento of tipodocumentos" [value]="Tipodocumento">
+                {{Tipodocumento.abreviatura}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Numero Documento" required formControlName="numeroDocumento" minLength="8"
+              maxlength="20">
+          </mat-form-field>
+        </td>
 
-    <mat-form-field>
-      <input matInput placeholder="Numero Documento" required formControlName="numeroDocumento"  minLength="8" maxlength="20">
-    </mat-form-field>
-
-    <mat-form-field>
-      <input matInput placeholder="N° Celular" required formControlName="telfMovil" type="number" maxlength="20">
-    </mat-form-field>
-
-    <mat-form-field>
-      <input matInput placeholder="Direccion" required formControlName="direccion"  maxlength="20">
-    </mat-form-field>
-
-    <mat-form-field>
-      <input matInput placeholder="Correo Electronico" required formControlName="email" maxlength="20">
-    </mat-form-field>
+        <td>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="N° Celular" required formControlName="telfMovil" #telfMovil type="number"
+              maxlength="9">
+            <mat-hint align="end"> Maximum {{telfMovil.value.length||0}}/9
+            </mat-hint>
+          </mat-form-field>
+        </td>
+      </tr>
+    </table>
 
 
+    <table class="example-full-width" cellspacing="0">
+      <tr>
+        <td>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Direccion" required formControlName="direccion" maxlength="20">
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Correo Electronico" required formControlName="email" maxlength="20">
+          </mat-form-field>
+        </td>
+
+      </tr>
+    </table>
+    
+   
     <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
       <mat-icon>done</mat-icon>
       <span>Aceptar</span>
