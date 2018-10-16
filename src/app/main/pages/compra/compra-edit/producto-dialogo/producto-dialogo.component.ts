@@ -12,8 +12,6 @@ export class ProductoDialogoComponent implements OnInit {
   displayedColumns: string[] = ['codProducto', 'nombre', 'marcaProducto', 'cantidaditem', 'precioCompra', 'acciones'];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
-  cantidadItem: number;
-  precioItem: number;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -26,31 +24,23 @@ export class ProductoDialogoComponent implements OnInit {
     this.dataService.productos().getAll().subscribe(data => this.setData(data));
   }
 
-  updatePrecio(el: any, precio: number) {
-    if (precio == null) { return; }
-    this.precioItem = precio;
-  }
-
-  updateCantidad(el: any, cantidad: number) {
-    if (cantidad == null) { return; }
-    this.cantidadItem = cantidad;
-  }
-
   setData(data) {
     if (data) {
+      data.forEach(element => { element.cantidaditem = 1; });
       let r = data;
       this.cantidad = JSON.parse(JSON.stringify(data)).length;
       this.dataSource = new MatTableDataSource(r);
       this.dataSource.sort = this.sort;
     }
+
   }
-  agregar(id) {
-    this.dataService.productos().findById(id).subscribe(data => {
+  agregar(data) {
+    this.dataService.productos().findById(data.idProducto).subscribe(r => {
       let detalle = {
-        precioItem: this.precioItem,
-        cantidaditem: this.cantidadItem,
-        importeTotalItem: this.precioItem * this.cantidadItem,
-        producto: data
+        precioItem: data.precioCompra,
+        cantidaditem: data.cantidaditem,
+        importeTotalItem: data.precioCompra * data.cantidaditem,
+        producto: r
       }
       this.dataService.providers().dialogo.next(detalle);
     });
@@ -58,5 +48,11 @@ export class ProductoDialogoComponent implements OnInit {
 
   cerrar() {
     this.dialogRef.close();
+  }
+
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim();
+    filterValue = filterValue.toLowerCase();
+    this.dataSource.filter = filterValue;
   }
 }

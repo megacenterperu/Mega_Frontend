@@ -20,14 +20,13 @@ export class CompraEditComponent implements OnInit {
   id: number;
   form: FormGroup;
   edicion: boolean = false;
-  detalle: any[] = [];
   proveedores: any[] = [];
   tipocomprobantes: any[] = [];
   sucursales: any[] = [];
   filteredOptions: Observable<any[]>;
   myControlProveedor: FormControl = new FormControl();
 
-  displayedColumns: string[] = ['codProducto', 'nombre', 'marcaProducto', 'cantidaditem', 'precioItem', 'importeTotalItem', 'acciones'];
+  displayedColumns: string[] = ['producto.codProducto', 'producto.nombre', 'producto.marcaProducto', 'cantidaditem', 'precioItem', 'importeTotalItem', 'acciones'];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -53,8 +52,7 @@ export class CompraEditComponent implements OnInit {
         importeTotalItem: data.importeTotalItem,
         producto: data.producto
       });
-      this.detalle.push(data);
-      this.setData();
+      this.setData(this.detalleCompra.value);
     });
     this.filteredOptions = this.myControlProveedor.valueChanges
       .pipe(
@@ -63,11 +61,10 @@ export class CompraEditComponent implements OnInit {
       );
   }
 
-
-  setData() {
-    if (this.detalle) {
-      let r = this.detalle;
-      this.cantidad = JSON.parse(JSON.stringify(this.detalle)).length;
+  setData(data) {
+    if (data) {
+      let r = data;
+      this.cantidad = JSON.parse(JSON.stringify(data)).length;
       this.dataSource = new MatTableDataSource(r);
       this.dataSource.sort = this.sort;
     }
@@ -75,35 +72,60 @@ export class CompraEditComponent implements OnInit {
 
   eliminar(index) {
     this.detalleCompra.removeAt(index);
-    this.detalle.splice(index, 1);
-    this.setData();
+    this.setData(this.detalleCompra.value);
   }
 
   initFormBuilder() {
     this.form = this.formBuilder.group({
       idCompra: [null],
-      fecha: [null, Validators.compose([Validators.required, Validators.maxLength(50)])],
-      montoTotal: [null, Validators.compose([Validators.required])],
+      fecha: [null, Validators.compose([Validators.required])],
+      montoTotal: [0, Validators.compose([Validators.required])],
+      neto: [0, Validators.compose([Validators.required])],
+      igv: [0, Validators.compose([Validators.required])],
       numeroComprobante: [null, Validators.compose([Validators.maxLength(20)])],
-      tipoComprobante: [null, Validators.compose([Validators.required])],
+      tipocomprobante: [null, Validators.compose([Validators.required])],
       sucursal: [null, Validators.compose([Validators.required])],
       guiaRemision: [null, Validators.compose([Validators.required])],
       proveedor: this.myControlProveedor,
       detalleCompra: this.formBuilder.array([], Validators.compose([]))
     });
+
+    this.detalleCompra.valueChanges.subscribe(value => {
+      this.calcularTotales();
+    });
   }
 
   addDetalleFormControl(): FormGroup {
     const formGroup = this.formBuilder.group({
-      idDetalleCompra: [null, Validators.compose([Validators.required])],
+      idDetalleCompra: [null],
       precioItem: [0, Validators.compose([Validators.required])],
       cantidaditem: [0, Validators.compose([Validators.required])],
       importeTotalItem: [0, Validators.compose([Validators.required])],
       producto: [null, Validators.compose([Validators.required])]
     });
-
     this.detalleCompra.push(formGroup);
     return formGroup;
+  }
+
+  calcularTotales() {
+    let total = 0;
+    let igv = 0;
+    let neto = 0;
+    this.detalleCompra.controls.forEach(formControl => {
+      const precio = formControl.get("precioItem").value || 0;
+      const cantidad = formControl.get("cantidaditem").value || 0;
+      let subTotal = parseFloat(precio) * parseFloat(cantidad);
+      const igvItem = subTotal * 0.18;
+      const totalItem = subTotal + igv;
+      total += totalItem;
+      neto += subTotal;
+      igv += igvItem;
+    });
+    this.form.patchValue({
+      montoTotal: +total.toFixed(2),
+      neto: +neto.toFixed(2),
+      igv: +igv.toFixed(2)
+    });
   }
 
   get detalleCompra(): FormArray {
@@ -160,6 +182,7 @@ export class CompraEditComponent implements OnInit {
   }
 
   save() {
+    console.log(this.form.value);
     if (this.edicion) {
       //update
       this.dataService.compras().update(this.form.value).subscribe(data => {

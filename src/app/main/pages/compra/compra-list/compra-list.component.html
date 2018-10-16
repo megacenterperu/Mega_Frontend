@@ -12,6 +12,11 @@
         <mat-cell *matCellDef="let element"> {{element.proveedor.nombreComercial}} </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="producto.nombre">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> producto </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.producto.nombre}} </mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="sucursal.nombre">
         <mat-header-cell *matHeaderCellDef mat-sort-header> proveedor </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.sucursal.nombre}} </mat-cell>

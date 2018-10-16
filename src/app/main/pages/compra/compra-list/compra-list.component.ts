@@ -9,7 +9,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 export class CompraListComponent implements OnInit {
   lista: any[] = [];
-  displayedColumns: string[] = ['proveedor.nombreComercial', 'sucursal.nombre', 'fecha', 'montoTotal', 'guiaRemision', 'acciones'];
+  displayedColumns: string[] = ['proveedor.nombreComercial', 'sucursal.nombre', 'producto.nombre','fecha', 'montoTotal', 'guiaRemision', 'acciones'];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
   @ViewChild(MatPaginator) paginator: MatPaginator;
