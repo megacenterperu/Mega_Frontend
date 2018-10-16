@@ -32,14 +32,18 @@
       <ng-container matColumnDef="cantidad">
         <mat-header-cell *matHeaderCellDef mat-sort-header>CANTIDAD</mat-header-cell>
         <mat-cell *matCellDef="let element; let i = index">
-          <input matInput name="cantidad" [(ngModel)]="element.cantidad">          
+          <mat-form-field appearance="outline">
+            <input matInput name="cantidad" [(ngModel)]="element.cantidad">
+          </mat-form-field>
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="precioVenta">
         <mat-header-cell *matHeaderCellDef> PREC. VENTA </mat-header-cell>
-        <mat-cell *matCellDef="let element; let i = index" >
+        <mat-cell *matCellDef="let element; let i = index">
+          <mat-form-field appearance="outline">
             <input matInput name="precioVenta" [(ngModel)]="element.precioVenta">
+          </mat-form-field>
         </mat-cell>
       </ng-container>
 

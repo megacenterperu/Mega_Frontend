@@ -75,7 +75,7 @@ export class ProformaEditComponent implements OnInit {
       saldo: [null, Validators.compose([Validators.required])],
       total: [null, Validators.compose([Validators.required])],
       cliente: this.myControlCliente,
-      estadoProforma: [null, Validators.compose([Validators.required])],
+      estadoProforma: [null],
       detalleProforma:this.formBuilder.array([], Validators.compose([])),
     });
   }
@@ -134,7 +134,7 @@ export class ProformaEditComponent implements OnInit {
   }
 
   save(){
-    console.log(this.form.value);
+    //console.log(this.form.value);
     if (this.edicion) {
       //update
       this.dataService.proformas().update(this.form.value).subscribe(data => {
