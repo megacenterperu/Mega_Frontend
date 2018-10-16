@@ -17,8 +17,22 @@
       <mat-header-cell *matHeaderCellDef mat-sort-header> marca </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.marcaProducto}} </mat-cell>
     </ng-container>
-       
+
     <ng-container matColumnDef="cantidaditem">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>CANTIDAD</mat-header-cell>
+      <mat-cell *matCellDef="let element; let i = index">
+        <input matInput name="cantidaditem" [(ngModel)]="element.cantidaditem">          
+      </mat-cell>
+    </ng-container>   
+
+    <ng-container matColumnDef="precioCompra">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>precio compra</mat-header-cell>
+      <mat-cell *matCellDef="let element; let i = index">
+        <input matInput name="precioCompra" [(ngModel)]="element.precioCompra">          
+      </mat-cell>
+    </ng-container>   
+
+    <!-- <ng-container matColumnDef="cantidaditem">
       <mat-header-cell *matHeaderCellDef> cantidaditem </mat-header-cell>
       <mat-cell *matCellDef="let element" [satPopoverAnchorFor]="c" (click)="c.open()">
         <ng-container *ngIf="element.cantidaditem">
@@ -55,14 +69,14 @@
           <ms-inline-edit [value]="element.precioCompra"></ms-inline-edit>
         </sat-popover>
       </mat-cell>
-    </ng-container>
+    </ng-container> -->
     
 
     
     <ng-container matColumnDef="acciones">
       <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
       <mat-cell *matCellDef="let row">
-        <button mat-button color="primary" (click)="agregar(row.idProducto)">agregar</button>
+        <button mat-button color="primary" (click)="agregar(row)">agregar</button>
       </mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

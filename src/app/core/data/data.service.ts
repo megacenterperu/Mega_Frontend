@@ -38,7 +38,7 @@ export class DataService {
     private personal: PersonalService,
     private tipocomprobante: TipoComprobanteService
   ) {}
-
+  
   providers(): ProviderService {
     return this.provider;
   }

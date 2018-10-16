@@ -1,10 +1,7 @@
 <div class="page-layout blank p-24" fusePerfectScrollbar>
   <mat-toolbar>Registrar Compra</mat-toolbar>
-
   <br />
-
   <form class="container" [formGroup]="form" (ngSubmit)="save()" #f="ngForm">
-
     <mat-form-field>
       <input type="text" placeholder="proveedor" aria-label="nombreComercial" matInput [formControl]="myControlProveedor"
         formControlName="proveedor" [matAutocomplete]="autoProveedor">
@@ -14,8 +11,6 @@
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
-
-
     <table class="example-full-width" cellspacing="0">
       <tr>
         <td>
@@ -29,24 +24,22 @@
         </td>
         <td>
           <mat-form-field class="example-full-width">
-            <mat-select placeholder="Tipo comprobante " formControlName="tipoComprobante">
+            <mat-select placeholder="Tipo comprobante " formControlName="tipocomprobante">
               <mat-option *ngFor="let TipoCom of tipocomprobantes" [value]="TipoCom">
                 {{TipoCom.descripcion}}
               </mat-option>
             </mat-select>
           </mat-form-field>
         </td>
-
         <td>
           <mat-form-field class="example-full-width">
-            <input matInput [matDatepicker]="picker" placeholder="fecha de Compra ">
+            <input matInput [matDatepicker]="picker" placeholder="fecha de Compra " formControlName="fecha">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
         </td>
       </tr>
     </table>
-
 
     <table class="example-full-width" cellspacing="0">
       <tr>
@@ -68,10 +61,6 @@
         </td>
       </tr>
     </table>
-    <!-- <mat-form-field>
-      <input matInput placeholder="Monto Total" required formControlName="montoTotal" type="number" maxlength="20">
-    </mat-form-field> -->
-
 
     <!--formulario detalle-->
     <div>
@@ -81,19 +70,19 @@
     <div>
       <mat-table [dataSource]="dataSource" matSort>
 
-        <ng-container matColumnDef="codProducto">
+        <ng-container matColumnDef="producto.codProducto">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Codigo </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.codProducto}} </mat-cell>
+          <mat-cell *matCellDef="let element"> {{element.producto.codProducto}} </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="nombre">
+        <ng-container matColumnDef="producto.nombre">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Producto </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.nombre}} </mat-cell>
+          <mat-cell *matCellDef="let element"> {{element.producto.nombre}} </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="marcaProducto">
+        <ng-container matColumnDef="producto.marcaProducto">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Marca </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.marcaProducto}} </mat-cell>
+          <mat-cell *matCellDef="let element"> {{element.producto.marcaProducto}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="cantidaditem">
@@ -107,20 +96,10 @@
         </ng-container>
 
         <ng-container matColumnDef="importeTotalItem">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> Precio Total </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Sub Total </mat-header-cell>
           <mat-cell *matCellDef="let element"> {{element.importeTotalItem}} </mat-cell>
         </ng-container>
-
-        <!-- <ng-container matColumnDef="precioItem">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> precio unitario </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.detalleCompra.precioItem}} </mat-cell>
-        </ng-container>-->
-
-        <!-- <ng-container matColumnDef="cantidaditem">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> cantidad  item </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.detalleCompra.cantidaditem}} </mat-cell>
-        </ng-container>-->
-
+       
 
         <ng-container matColumnDef="acciones">
           <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
@@ -137,7 +116,7 @@
         <div fxFlex="80%;" fxFlex.xs="50%"></div>
         <div fxFlex="8%;" fxFlex.xs="50%"> NETO</div>
         <div fxFlex="4%;" fxFlex.xs="50%">:</div>
-        <div fxFlex="8%;" fxFlex.xs="50%">$&nbsp;1000.00</div>
+        <div fxFlex="8%;" fxFlex.xs="50%">$&nbsp;{{form.get('neto').value | number : '1.2-2'}}</div>
 
       </div>
       <div fxLayout="row" fxLayout.xs="column">
@@ -151,7 +130,7 @@
         <div fxFlex="80%;" fxFlex.xs="50%"></div>
         <div fxFlex="8%;" fxFlex.xs="50%">IGV</div>
         <div fxFlex="4%;" fxFlex.xs="50%">:</div>
-        <div fxFlex="8%;" fxFlex.xs="50%">$&nbsp;1000.00</div>
+        <div fxFlex="8%;" fxFlex.xs="50%">$&nbsp;{{form.get('igv').value | number : '1.2-2'}}</div>
       </div>
       <div fxLayout="row" fxLayout.xs="column">
         <div fxFlex="80%;" fxFlex.xs="50%"></div>
@@ -162,11 +141,9 @@
 
       <div fxLayout="row" fxLayout.xs="column">
         <div fxFlex="80%;" fxFlex.xs="50%"></div>
-        <div fxFlex="8%;" fxFlex.xs="50%">
-           Precio Total 
-        </div>
-        <div fxFlex="4%;" fxFlex.xs="50%">:</div>
-        <div fxFlex fxLayoutAlign="8%;" fxFlex.xs="50%">$&nbsp;1000.00</div>
+        <div fxFlex="8%;" fxFlex.xs="50%">TOTAL</div>
+        <div fxFlex="4%;" fxFlex.xs="50%">TOTAL:</div>
+        <div fxFlex="8%;" fxFlex.xs="50%">$&nbsp;{{form.get('montoTotal').value | number : '1.2-2'}}</div>
       </div>
 
 
