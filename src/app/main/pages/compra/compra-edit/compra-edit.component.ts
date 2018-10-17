@@ -1,3 +1,4 @@
+import { Params } from '@angular/router';
 import { startWith, map } from 'rxjs/operators';
 import { MatSort } from '@angular/material';
 import { Router } from '@angular/router';
@@ -54,12 +55,19 @@ export class CompraEditComponent implements OnInit {
       });
       this.setData(this.detalleCompra.value);
     });
+
+    this.route.params.subscribe((params: Params) => {
+      this.id = params['id'];
+      this.edicion = params['id'] != null;
+      this.loadDataFrom();
+    });
     this.filteredOptions = this.myControlProveedor.valueChanges
       .pipe(
         startWith(''),
         map(val => this.filter(val))
       );
   }
+
 
   setData(data) {
     if (data) {
@@ -142,6 +150,13 @@ export class CompraEditComponent implements OnInit {
     }
   }
 
+  private loadDataFrom() {
+    if (this.edicion) {
+      this.dataService.compras().findById(this.id).subscribe(data => {
+        this.form.patchValue(data);
+      });
+    }
+  }
   listaProveedors() {
     this.dataService.proveedores().getAll().subscribe(data => {
       this.proveedores = data
@@ -182,7 +197,7 @@ export class CompraEditComponent implements OnInit {
   }
 
   save() {
-    console.log(this.form.value);
+    if (!this.detalleCompra.valid) return;
     if (this.edicion) {
       //update
       this.dataService.compras().update(this.form.value).subscribe(data => {

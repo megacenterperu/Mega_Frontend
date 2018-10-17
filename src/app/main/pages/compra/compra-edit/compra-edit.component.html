@@ -2,63 +2,68 @@
   <mat-toolbar>Registrar Compra</mat-toolbar>
   <br />
   <form class="container" [formGroup]="form" (ngSubmit)="save()" #f="ngForm">
-    <mat-form-field>
-      <input type="text" placeholder="proveedor" aria-label="nombreComercial" matInput [formControl]="myControlProveedor"
-        formControlName="proveedor" [matAutocomplete]="autoProveedor">
-      <mat-autocomplete #autoProveedor="matAutocomplete" [displayWith]="displayFn">
-        <mat-option *ngFor="let pro of filteredOptions | async" [value]="pro">
-          {{pro.nombreComercial}} {{pro.razonSocial}}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-    <table class="example-full-width" cellspacing="0">
+
+    <table class="example-full-field" cellspacing="0">
       <tr>
         <td>
-          <mat-form-field class="example-full-width">
-            <mat-select placeholder="Sucursal" formControlName="sucursal">
+          <mat-form-field>
+            <input type="text" placeholder="Proveedor- Compra" aria-label="nombreComercial" matInput [formControl]="myControlProveedor"
+              required formControlName="proveedor" [matAutocomplete]="autoProveedor">
+            <mat-autocomplete #autoProveedor="matAutocomplete" [displayWith]="displayFn">
+              <mat-option *ngFor="let pro of filteredOptions | async" [value]="pro">
+                {{pro.nombreComercial}} {{pro.razonSocial}}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-icon matSuffix>perm_identityt</mat-icon>
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field class="example-full-field">
+            <mat-select placeholder="Sucursal" required formControlName="sucursal">
               <mat-option *ngFor="let sucursal of sucursales" [value]="sucursal">
                 {{sucursal.nombre}}
               </mat-option>
             </mat-select>
+            <mat-icon matSuffix>store</mat-icon>
           </mat-form-field>
         </td>
         <td>
-          <mat-form-field class="example-full-width">
-            <mat-select placeholder="Tipo comprobante " formControlName="tipocomprobante">
+          <mat-form-field class="example-full-field">
+            <mat-select placeholder="Tipo comprobante " required formControlName="tipocomprobante">
               <mat-option *ngFor="let TipoCom of tipocomprobantes" [value]="TipoCom">
                 {{TipoCom.descripcion}}
               </mat-option>
             </mat-select>
+            <mat-icon matSuffix>arrow_downward</mat-icon>
           </mat-form-field>
         </td>
+
+      </tr>
+    </table>
+
+    <table class="example-full-field" cellspacing="0">
+      <tr>
         <td>
-          <mat-form-field class="example-full-width">
-            <input matInput [matDatepicker]="picker" placeholder="fecha de Compra " formControlName="fecha">
+          <mat-form-field class="example-full-field">
+            <input matInput [matDatepicker]="picker" placeholder="Fecha de Compra " required formControlName="fecha">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
         </td>
-      </tr>
-    </table>
+        <td>
+          <mat-form-field class="example-full-field">
+            <input matInput placeholder="Guia de Remision" required formControlName="guiaRemision" maxlength="20">
+            <mat-icon matSuffix>list_alt</mat-icon>
+          </mat-form-field>
 
-    <table class="example-full-width" cellspacing="0">
-      <tr>
-        <td>
-          <mat-form-field class="example-full-width">
-            <input matInput placeholder="guiaRemision" formControlName="guiaRemision" maxlength="20">
-          </mat-form-field>
         </td>
         <td>
-          <mat-form-field class="example-full-width">
+          <mat-form-field class="example-full-field">
             <input matInput placeholder="Numero Comprobante" required formControlName="numeroComprobante" maxlength="20">
+            <mat-icon matSuffix>create</mat-icon>
           </mat-form-field>
         </td>
-        <td>
-          <mat-form-field class="example-full-width">
-            <input matInput #postalCode maxlength="5" placeholder="Postal Code" value="94043">
-            <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
-          </mat-form-field>
-        </td>
+
       </tr>
     </table>
 
@@ -99,12 +104,14 @@
           <mat-header-cell *matHeaderCellDef mat-sort-header> Sub Total </mat-header-cell>
           <mat-cell *matCellDef="let element"> {{element.importeTotalItem}} </mat-cell>
         </ng-container>
-       
+
 
         <ng-container matColumnDef="acciones">
           <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
           <mat-cell *matCellDef="let row; let i = index;">
-            <button mat-button color="primary" (click)="eliminar(i)">eliminar</button>
+            <button mat-button color="primary" (click)="eliminar(i)">
+                <mat-icon >delete_sweep</mat-icon>
+            </button>
           </mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -142,7 +149,7 @@
       <div fxLayout="row" fxLayout.xs="column">
         <div fxFlex="80%;" fxFlex.xs="50%"></div>
         <div fxFlex="8%;" fxFlex.xs="50%">TOTAL</div>
-        <div fxFlex="4%;" fxFlex.xs="50%">TOTAL:</div>
+        <div fxFlex="4%;" fxFlex.xs="50%">:</div>
         <div fxFlex="8%;" fxFlex.xs="50%">$&nbsp;{{form.get('montoTotal').value | number : '1.2-2'}}</div>
       </div>
 

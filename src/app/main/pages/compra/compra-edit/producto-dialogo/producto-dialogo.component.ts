@@ -30,6 +30,7 @@ export class ProductoDialogoComponent implements OnInit {
       let r = data;
       this.cantidad = JSON.parse(JSON.stringify(data)).length;
       this.dataSource = new MatTableDataSource(r);
+      this.dataSource.paginator=this.paginator;
       this.dataSource.sort = this.sort;
     }
 

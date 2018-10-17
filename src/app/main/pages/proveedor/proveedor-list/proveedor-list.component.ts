@@ -29,8 +29,10 @@ export class ProveedorListComponent implements OnInit {
     let r = data;
     this.cantidad = JSON.parse(JSON.stringify(data)).length;
     this.dataSource = new MatTableDataSource(r);
+    this.dataSource.paginator=this.paginator;
     this.dataSource.sort = this.sort;
   }
+
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim();
     filterValue = filterValue.toLowerCase();
@@ -38,7 +40,7 @@ export class ProveedorListComponent implements OnInit {
   }
 
   eliminar(id) {
-    if(confirm('¿Seguro que quieres Eliminar?')){
+    if (confirm('¿Seguro que quieres Eliminar?')) {
       this.dataService.proveedores().delete(id).subscribe(r => {
         this.snackBar.open("Proveedor Eliminado", 'Aviso', { duration: 2000 });
         this.dataService.proveedores().getAll().subscribe(data => this.setData(data));
