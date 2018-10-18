@@ -41,6 +41,7 @@ export class ProformaEditComponent implements OnInit {
   ngOnInit() {
     this.initFormBuilder();
     this.listaClientes();
+    this.calcularSaldo();
     this.dataService.providers().dialogo.subscribe(data => {
       const formGroup = this.addDetalleFormControl();
       formGroup.patchValue({
@@ -51,6 +52,7 @@ export class ProformaEditComponent implements OnInit {
       }); 
       this.setData(this.detalleProforma.value);
     });
+
     this.filteredOptions = this.myControlCliente.valueChanges.pipe(
       startWith(''),       
       map(val => this.filter(val))
@@ -66,17 +68,25 @@ export class ProformaEditComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
+  eliminar(index) {
+    this.detalleProforma.removeAt(index);
+    this.setData(this.detalleProforma.value);
+  }
+
   initFormBuilder() {
     this.form = this.formBuilder.group({
       idProforma: [null],
       fecha: [new Date(), Validators.compose([Validators.required])],
       numeroProforma: [null, Validators.compose([Validators.required])],
-      acuenta: [null, Validators.compose([Validators.required])],
-      saldo: [null, Validators.compose([Validators.required])],
-      total: [null, Validators.compose([Validators.required])],
+      acuenta: [0, Validators.compose([Validators.required])],
+      saldo: [0, Validators.compose([Validators.required])],
+      total: [0, Validators.compose([Validators.required])],
       cliente: this.myControlCliente,
       estadoProforma: [null],
       detalleProforma:this.formBuilder.array([], Validators.compose([])),
+    });
+    this.detalleProforma.valueChanges.subscribe(value => {
+      this.calcularTotales();
     });
   }
 
@@ -91,6 +101,33 @@ export class ProformaEditComponent implements OnInit {
     this.detalleProforma.push(formGroup);
     return formGroup;
   }
+
+  calcularTotales() {
+    let total = 0;
+    this.detalleProforma.controls.forEach(formControl => {
+      const precio = formControl.get("precioitem").value || 0;
+      const cantidad = formControl.get("cantidaditem").value || 0;
+      let ImporteTotal = parseFloat(precio) * parseFloat(cantidad);
+
+      total += ImporteTotal;
+      
+    });
+    this.form.patchValue({
+      total: +total.toFixed(2)
+    });
+  }
+
+  calcularSaldo(){
+    let saldo=0;
+    const ImporteTotal=this.form.get('total').value ||0;
+    const Acuenta=this.form.get('acuenta').value || 0;
+    let SaldoTotal=parseFloat(ImporteTotal)-parseFloat(Acuenta);
+    saldo=SaldoTotal;
+    this.form.patchValue({
+      saldo:saldo.toFixed(2)
+    });
+  }
+  
 
   get detalleProforma(): FormArray {
     return this.form.get('detalleProforma') as FormArray;

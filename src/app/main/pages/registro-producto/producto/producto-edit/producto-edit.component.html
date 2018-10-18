@@ -30,7 +30,7 @@
     </mat-form-field>
 
     <mat-form-field>
-      <mat-select placeholder="Unidad Medida" formControlName="unidadMedida" >
+      <mat-select placeholder="Unidad Medida" formControlName="unidadMedida" [compareWith]="compareUnidadMedida">
         <mat-option *ngFor="let Unidadmedida of lstunidadmedidas" [value]="Unidadmedida"  >
           {{Unidadmedida.descripcion}}
         </mat-option>
@@ -38,7 +38,7 @@
     </mat-form-field>  
 
     <mat-form-field>
-      <mat-select placeholder="Categoria" formControlName="categoria" >
+      <mat-select placeholder="Categoria" formControlName="categoria" [compareWith]="compareCategoria">
         <mat-option *ngFor="let Categoria of lstcategorias" [value]="Categoria"  >
           {{Categoria.descripcion}}
         </mat-option>
@@ -46,7 +46,7 @@
     </mat-form-field>
 
     <mat-form-field>
-      <mat-select placeholder="Tipo Producto" formControlName="tipoProducto" >
+      <mat-select placeholder="Tipo Producto" formControlName="tipoProducto" [compareWith]="compareTipoProducto">
         <mat-option *ngFor="let Tipoproducto of lsttipoProductos" [value]="Tipoproducto"  >
           {{Tipoproducto.descripcion}}
         </mat-option>
@@ -54,7 +54,7 @@
     </mat-form-field>    
 
     <mat-form-field>
-      <mat-select placeholder="Organizacion" formControlName="organizacion" >
+      <mat-select placeholder="Organizacion" formControlName="organizacion" [compareWith]="compareOrganizacion">
         <mat-option *ngFor="let Organizacion of lstorganizacions" [value]="Organizacion"  >
           {{Organizacion.nombreComercial}}
         </mat-option>

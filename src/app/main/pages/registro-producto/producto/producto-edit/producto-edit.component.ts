@@ -69,10 +69,18 @@ export class ProductoEditComponent implements OnInit {
     });
   }
 
+  compareUnidadMedida(x: any, y: any): boolean {
+    return x && y ? x.idUnidadmedida === y.idUnidadmedida : x === y;
+  }
+
   listarCategoria() {
     this.dataService.categorias().getAll().subscribe(data => {
       this.lstcategorias = data;
     });
+  }
+
+  compareCategoria(x: any, y: any): boolean {
+    return x && y ? x.idCategoria === y.idCategoria : x === y;
   }
 
   listarTipoProducto() {
@@ -81,10 +89,18 @@ export class ProductoEditComponent implements OnInit {
     });
   }
 
+  compareTipoProducto(x: any, y: any): boolean {
+    return x && y ? x.idTipoproducto === y.idTipoproducto : x === y;
+  }
+
   listarOrganizacion() {
     this.dataService.organizaciones().getAll().subscribe(data => {
       this.lstorganizacions = data;
     });
+  }
+
+  compareOrganizacion(x: any, y: any): boolean {
+    return x && y ? x.idOrganizacion === y.idOrganizacion : x === y;
   }
 
   cancel(){
