@@ -1,4 +1,4 @@
-import { DetalleCompra } from './detalleCompra';
+
 import { Susursal } from './sucursal.model';
 import { Proveedor } from './proveedor.model';
 
@@ -11,7 +11,7 @@ export class Compra{
     public guiaRemision:number;    
     public proveedor:Proveedor;
     public susursal: Susursal;
-    public detalleCompra:DetalleCompra;
+   
 
 
 }

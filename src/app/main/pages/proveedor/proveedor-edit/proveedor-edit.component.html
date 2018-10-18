@@ -1,16 +1,17 @@
 <div class="page-layout blank p-24" fusePerfectScrollbar>
-  <mat-toolbar>Ingrese los datos del proveedor</mat-toolbar>
+
+  <mat-toolbar >Ingrese los datos del proveedor</mat-toolbar>
 
   <br />
 
   <form class="container" [formGroup]="form" (ngSubmit)="save()" #f="ngForm">
 
     <mat-form-field>
-      <input type="text" placeholder="nombre del representante" aria-label="nombre" matInput [formControl]="myControlPersona" formControlName="persona"
-        [matAutocomplete]="autoPersona">
+      <input type="text" placeholder="nombre del representante" aria-label="nombre" matInput [formControl]="myControlPersona"
+        formControlName="persona" [matAutocomplete]="autoPersona">
       <mat-autocomplete #autoPersona="matAutocomplete" [displayWith]="displayFn">
         <mat-option *ngFor="let pe of filteredOptions | async" [value]="pe">
-            {{pe.numeroDocumento}} {{pe.nombre}}
+          {{pe.numeroDocumento}} {{pe.nombre}}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
@@ -26,6 +27,7 @@
 
     <mat-form-field>
       <input matInput placeholder="telf Empresa" required formControlName="telfEmpresa" type="number" maxlength="20">
+      <mat-icon matPrefix>call</mat-icon>
     </mat-form-field>
 
 

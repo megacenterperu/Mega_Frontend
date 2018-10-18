@@ -30,9 +30,14 @@ export class PersonaListComponent implements OnInit {
     let r = data;
     this.cantidad = JSON.parse(JSON.stringify(data)).length;
     this.dataSource = new MatTableDataSource(r);
+    this.dataSource.paginator=this.paginator;
     this.dataSource.sort = this.sort;
   }
-
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim();
+    filterValue = filterValue.toLowerCase();
+    this.dataSource.filter = filterValue;
+  }
   eliminar(id) {
     this.dataService.personas().delete(id).subscribe(r => {
       this.snackBar.open("Proveedor Eliminado", 'Aviso', { duration: 2000 });

@@ -1,20 +1,26 @@
 <div class="container">
-  <mat-toolbar>Lista De productos</mat-toolbar>
+  <mat-toolbar>Lista De productos</mat-toolbar>  
+  <div>
+      <mat-form-field>
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar Producto">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+  </div>
 
   <mat-table [dataSource]="dataSource" matSort>
 
     <ng-container matColumnDef="codProducto">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> codigo </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> CODIGO </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.codProducto}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="nombre">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Producto </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> PRODUCTO </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.nombre}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="marcaProducto">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> marca </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> MARCA </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.marcaProducto}} </mat-cell>
     </ng-container>
 
@@ -26,57 +32,19 @@
     </ng-container>   
 
     <ng-container matColumnDef="precioCompra">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>precio compra</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>PRECIO DE COMPRA </mat-header-cell>
       <mat-cell *matCellDef="let element; let i = index">
         <input matInput name="precioCompra" [(ngModel)]="element.precioCompra">          
       </mat-cell>
     </ng-container>   
 
-    <!-- <ng-container matColumnDef="cantidaditem">
-      <mat-header-cell *matHeaderCellDef> cantidaditem </mat-header-cell>
-      <mat-cell *matCellDef="let element" [satPopoverAnchorFor]="c" (click)="c.open()">
-        <ng-container *ngIf="element.cantidaditem">
-          {{element.cantidaditem}}
-        </ng-container>
-        <span class="add-cantidaditem" *ngIf="!element.cantidaditem">
-          Add a cantidad
-        </span>
-        <sat-popover #c
-            hasBackdrop
-            xAlign="start"
-            yAlign="start"
-            (closed)="updateCantidad(element, $event)">
-          <ms-inline-edit [value]="element.cantidaditem"></ms-inline-edit>
-        </sat-popover>
-      </mat-cell>
-    </ng-container>
-    
-
-    <ng-container matColumnDef="precioCompra">
-      <mat-header-cell *matHeaderCellDef> precioCompra </mat-header-cell>
-      <mat-cell *matCellDef="let element" [satPopoverAnchorFor]="p" (click)="p.open()">
-        <ng-container *ngIf="element.precioCompra">
-          {{element.precioCompra}}
-        </ng-container>
-        <span class="add-precioCompra" *ngIf="!element.precioCompra">
-          Add a precioCompra
-        </span>
-        <sat-popover #p
-            hasBackdrop
-            xAlign="start"
-            yAlign="start"
-            (closed)="updatePrecio(element, $event)">
-          <ms-inline-edit [value]="element.precioCompra"></ms-inline-edit>
-        </sat-popover>
-      </mat-cell>
-    </ng-container> -->
-    
-
-    
+         
     <ng-container matColumnDef="acciones">
       <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
       <mat-cell *matCellDef="let row">
-        <button mat-button color="primary" (click)="agregar(row)">agregar</button>
+        <button mat-button color="primary" (click)="agregar(row)">
+            <mat-icon >add_shopping_cart</mat-icon>
+          </button>
       </mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

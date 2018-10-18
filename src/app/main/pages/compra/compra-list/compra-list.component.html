@@ -1,60 +1,67 @@
 <div class="page-layout blank p-24" fusePerfectScrollbar>
-  <mat-toolbar>Lista De Compras</mat-toolbar>
-  <div>
-      <mat-form-field>
-          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar proveedor">
-      </mat-form-field>
-  </div>
-  <mat-table [dataSource]="dataSource" matSort>
-      
-      <ng-container matColumnDef="proveedor.nombreComercial">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> proveedor </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.proveedor.nombreComercial}} </mat-cell>
-    </ng-container>
+    <mat-toolbar>Lista De Compras</mat-toolbar>
+    <div>
+        <mat-form-field>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar proveedor">
+            <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+    </div>
+    <mat-table [dataSource]="dataSource" matSort>
 
-    <ng-container matColumnDef="producto.nombre">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> producto </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.producto.nombre}} </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="proveedor.nombreComercial">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> PROVEEDOR </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.proveedor.nombreComercial}} </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="sucursal.nombre">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> proveedor </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.sucursal.nombre}} </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="sucursal.nombre">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> SUCURSAL </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.sucursal.nombre}} </mat-cell>
+        </ng-container>
 
-      <!-- Name Column -->
-      <ng-container matColumnDef="fecha">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> fecha compra </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.fecha}} </mat-cell>
-      </ng-container>
+       
 
-      
-      <!-- Weight Column -->
-      <ng-container matColumnDef="montoTotal">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> Monto total </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.montoTotal}} </mat-cell>
-      </ng-container>
+        <!-- <ng-container matColumnDef="producto.nombre">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> producto </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.producto.nombre}} </mat-cell>
+        </ng-container> -->
 
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="guiaRemision">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> N° guia Remision </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.guiaRemision}} </mat-cell>
-      </ng-container>
+        <!-- Name Column -->
+        <ng-container matColumnDef="fecha">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> FECHA DE COMPRA </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.fecha}} </mat-cell>
+        </ng-container>
 
-      
-      <ng-container matColumnDef="acciones">
-          <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
-          <mat-cell *matCellDef="let row">
-              <button mat-button color="primary" [routerLink]="['./edicion', row.idCompra]">Actualizar</button>
-              <button mat-button color="accent" (click)="eliminar(row.idCompra)">Eliminar</button>
-          </mat-cell>
-      </ng-container>
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
-  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
 
-  <button mat-fab color="accent" style="float:right" routerLink='./nuevo'>
-      <mat-icon>create</mat-icon>
-  </button>
+        <!-- Weight Column -->
+        <ng-container matColumnDef="montoTotal">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> MONTO TOTAL </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.montoTotal}} </mat-cell>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="guiaRemision">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> N° GUIA REMISION </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.guiaRemision}} </mat-cell>
+        </ng-container>
+
+
+        <ng-container matColumnDef="acciones">
+            <mat-header-cell *matHeaderCellDef>ACCIONES</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <button mat-button color="primary" [routerLink]="['./edicion', row.idCompra]">
+                Actualizar
+                </button>
+                <button mat-button color="accent"  style="float:right" (click)="eliminar(row.idCompra)">
+                    eliminar
+                </button>
+            </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+
+    <button mat-fab color="accent" style="float:right" routerLink='./nuevo'>
+        <mat-icon>create</mat-icon>
+    </button>
 </div>
