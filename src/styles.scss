@@ -10,3 +10,13 @@
   .container > * {
     width: 100%;
   }
+
+  .field-container {
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+  }
+
+  .mat-table-toolbar{
+    height: 40px !important;
+  }

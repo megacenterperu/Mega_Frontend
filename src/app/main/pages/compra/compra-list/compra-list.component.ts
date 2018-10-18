@@ -49,9 +49,9 @@ export class CompraListComponent implements OnInit {
   }
  
   eliminar(id) {
-    this.dataService.personas().delete(id).subscribe(r => {
+    this.dataService.compras().delete(id).subscribe(r => {
       this.snackBar.open("Proveedor Eliminado", 'Aviso', { duration: 2000 });
-      this.dataService.personas().getAll().subscribe(data => this.setData(data));
+      this.dataService.compras().getAll().subscribe(data => this.setData(data));
     });
   }
 }

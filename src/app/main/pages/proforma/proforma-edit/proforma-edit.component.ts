@@ -23,8 +23,8 @@ export class ProformaEditComponent implements OnInit {
   filteredOptions: Observable<any[]>;
   myControlCliente: FormControl = new FormControl();
 
-  lista:any[]=[];
-  displayedColumns: string[] = ["producto.codProducto","producto.nombre","producto.marcaProducto","cantidaditem","precioitem",'importetotalitem', "acciones"];
+  lista: any[] = [];
+  displayedColumns: string[] = ["producto.codProducto", "producto.nombre", "producto.marcaProducto", "cantidaditem", "precioitem", 'importetotalitem', "acciones"];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -41,20 +41,19 @@ export class ProformaEditComponent implements OnInit {
   ngOnInit() {
     this.initFormBuilder();
     this.listaClientes();
-    this.calcularSaldo();
     this.dataService.providers().dialogo.subscribe(data => {
       const formGroup = this.addDetalleFormControl();
       formGroup.patchValue({
-        cantidaditem:data.cantidaditem,
-        precioitem:data.precioitem,
-        producto:data.producto,
-        importetotalitem:+parseFloat(data.cantidaditem)*parseFloat(data.precioitem)
-      }); 
+        cantidaditem: data.cantidaditem,
+        precioitem: data.precioitem,
+        producto: data.producto,
+        importetotalitem: +parseFloat(data.cantidaditem) * parseFloat(data.precioitem)
+      });
       this.setData(this.detalleProforma.value);
     });
 
     this.filteredOptions = this.myControlCliente.valueChanges.pipe(
-      startWith(''),       
+      startWith(''),
       map(val => this.filter(val))
     );
   }
@@ -64,7 +63,7 @@ export class ProformaEditComponent implements OnInit {
     let r = data;
     this.cantidad = JSON.parse(JSON.stringify(data)).length;
     this.dataSource = new MatTableDataSource(r);
-    this.dataSource.paginator=this.paginator;
+    this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
@@ -83,10 +82,18 @@ export class ProformaEditComponent implements OnInit {
       total: [0, Validators.compose([Validators.required])],
       cliente: this.myControlCliente,
       estadoProforma: [null],
-      detalleProforma:this.formBuilder.array([], Validators.compose([])),
+      detalleProforma: this.formBuilder.array([], Validators.compose([])),
     });
     this.detalleProforma.valueChanges.subscribe(value => {
       this.calcularTotales();
+    });
+    
+    this.form.get("acuenta").valueChanges.subscribe(value => {
+      const ImporteTotal = this.form.get('total').value || 0;
+      const SaldoTotal = parseFloat(ImporteTotal) - parseFloat(value);
+      this.form.patchValue({
+        saldo: +SaldoTotal.toFixed(2)
+      });
     });
   }
 
@@ -96,7 +103,7 @@ export class ProformaEditComponent implements OnInit {
       cantidaditem: [null, Validators.compose([Validators.required])],
       precioitem: [null, Validators.compose([Validators.required])],
       importetotalitem: [null, Validators.compose([Validators.required])],
-      producto: [null, Validators.compose([Validators.required])]     
+      producto: [null, Validators.compose([Validators.required])]
     });
     this.detalleProforma.push(formGroup);
     return formGroup;
@@ -110,36 +117,27 @@ export class ProformaEditComponent implements OnInit {
       let ImporteTotal = parseFloat(precio) * parseFloat(cantidad);
 
       total += ImporteTotal;
-      
+
     });
     this.form.patchValue({
       total: +total.toFixed(2)
     });
   }
 
-  calcularSaldo(){
-    let saldo=0;
-    const ImporteTotal=this.form.get('total').value ||0;
-    const Acuenta=this.form.get('acuenta').value || 0;
-    let SaldoTotal=parseFloat(ImporteTotal)-parseFloat(Acuenta);
-    saldo=SaldoTotal;
-    this.form.patchValue({
-      saldo:saldo.toFixed(2)
-    });
-  }
-  
+
+
 
   get detalleProforma(): FormArray {
     return this.form.get('detalleProforma') as FormArray;
   }
 
-  filter(val: any) { 
+  filter(val: any) {
     if (val != null && val.idCliente > 0) {
       return this.clientes.filter(option =>
         option.persona.nombre.toLowerCase().includes(val.persona.nombre.toLowerCase()) || option.persona.numeroDocumento.includes(val.persona.numeroDocumento));
     } else {
       return this.clientes.filter(option =>
-        option.persona.nombre.toLowerCase().includes(val.toLowerCase())  || option.persona.numeroDocumento.includes(val));
+        option.persona.nombre.toLowerCase().includes(val.toLowerCase()) || option.persona.numeroDocumento.includes(val));
     }
   }
 
@@ -170,7 +168,7 @@ export class ProformaEditComponent implements OnInit {
     });
   }
 
-  save(){
+  save() {
     //console.log(this.form.value);
     if (this.edicion) {
       //update

@@ -29,6 +29,13 @@ export class NavigationModel {
                         'url': '/mega/ventas/cliente',
                     },
                     {
+                        'id': 'venta',
+                        'title': 'VENTA',
+                        'type': 'item',
+                        'icon': 'add_shopping_cart',
+                        'url': '/mega/ventas/venta'
+                    },
+                    {
                         'id': 'proforma',
                         'title': 'PROFORMA',
                         'type': 'item',

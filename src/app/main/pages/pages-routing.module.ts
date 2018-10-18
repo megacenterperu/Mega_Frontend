@@ -11,7 +11,8 @@ const routes: Routes = [
     { path: 'cliente', loadChildren: '../../main/pages/cliente/cliente.module#ClienteModule' },
     { path: 'organizacion', loadChildren: '../../main/pages/organizacion/organizacion.module#OrganizacionModule' },    
     { path: 'proforma', loadChildren: '../../main/pages/proforma/proforma.module#ProformaModule' },
-    { path: 'personal', loadChildren: '../../main/pages/personal/personal.module#PersonalModule' }
+    { path: 'personal', loadChildren: '../../main/pages/personal/personal.module#PersonalModule' },
+    { path: 'venta', loadChildren: '../../main/pages/venta/venta.module#VentaModule' }
     
 ];
 
