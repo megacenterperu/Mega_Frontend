@@ -33,5 +33,8 @@ export class ProductoService {
   delete(id: number): Observable<any> {
     return this.generic.all(basePath).one("eliminar", id).delete();
   }
-  
+  findProductoByCodProducto(data:any): Observable<any>{
+    return this.generic.all(basePath).all("buscar").all(data).get();
+
+  }
 }

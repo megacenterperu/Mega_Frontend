@@ -71,12 +71,15 @@ export class CompraEditComponent implements OnInit {
 
   setData(data) {
     if (data) {
+      data.forEach(element => { element.cantidaditem = 1; });
       let r = data;
       this.cantidad = JSON.parse(JSON.stringify(data)).length;
       this.dataSource = new MatTableDataSource(r);
       this.dataSource.sort = this.sort;
     }
   }
+
+
 
   eliminar(index) {
     this.detalleCompra.removeAt(index);
@@ -111,8 +114,28 @@ export class CompraEditComponent implements OnInit {
       importeTotalItem: [0, Validators.compose([Validators.required])],
       producto: [null, Validators.compose([Validators.required])]
     });
+    this.detalleChange(formGroup);
     this.detalleCompra.push(formGroup);
     return formGroup;
+  }
+
+  detalleChange(formGroup: FormGroup) {
+    formGroup.get("precioItem").valueChanges.subscribe(value => {
+      const cantidad = formGroup.get("cantidaditem").value || 0;
+      let subTotal = parseFloat(value) * parseFloat(cantidad);
+      formGroup.patchValue({
+        importeTotalItem: subTotal
+      });
+      this.setData(this.detalleCompra.value);
+    });
+    formGroup.get("cantidaditem").valueChanges.subscribe(value => {
+      const precio = formGroup.get("precioItem").value || 0;
+      let subTotal = parseFloat(precio) * parseFloat(value);
+      formGroup.patchValue({
+        importeTotalItem: subTotal
+      });
+      this.setData(this.detalleCompra.value);
+    });
   }
 
   calcularTotales() {
@@ -124,10 +147,11 @@ export class CompraEditComponent implements OnInit {
       const cantidad = formControl.get("cantidaditem").value || 0;
       let subTotal = parseFloat(precio) * parseFloat(cantidad);
       const igvItem = subTotal * 0.18;
-      const totalItem = subTotal + igv;
-      total += totalItem;
       neto += subTotal;
       igv += igvItem;
+      const totalItem = subTotal + igv;
+      total += totalItem;
+
     });
     this.form.patchValue({
       montoTotal: +total.toFixed(2),
@@ -217,4 +241,25 @@ export class CompraEditComponent implements OnInit {
     }
     this.cancel();
   }
+
+  buscarProducto($event) {
+    if ($event.key === "Enter") {
+      this.dataService.productos().findProductoByCodProducto($event.target.value)
+        .subscribe(data => {
+          let detalle = {
+            precioItem: data.precioCompra,
+            cantidaditem: 1,
+            importeTotalItem: data.precioCompra,
+            producto: data
+          }
+          this.dataService.providers().dialogo.next(detalle);
+        },
+          error => {
+            this.dataService.providers().mensaje.next('Producto no encontrado')
+          });
+    }
+  }
+
+
+
 }

@@ -32,4 +32,5 @@ export class CompraService {
   delete(id: number): Observable<any> {
     return this.generic.all(basePath).one("eliminar", id).delete();
   }
+  
 }

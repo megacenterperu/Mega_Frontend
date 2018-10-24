@@ -38,11 +38,13 @@
         </mat-form-field>
       </div>
       <div fxFlex="30%;" fxFlex.xs="50%">
-        <mat-form-field class="field-container">
-          <input matInput [matDatepicker]="picker" placeholder="Fecha de Compra " required formControlName="fecha">
+        <mat-form-field class="of-full-width i-space">
+          <input matInput formControlName="fecha" [matDatepicker]="picker" [max]="maxDate" placeholder="Fecha Compra"
+            required>
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
+          <mat-datepicker touchUi="true" #picker></mat-datepicker>
         </mat-form-field>
+
       </div>
       <div fxFlex="20%;" fxFlex.xs="50%">
         <mat-form-field class="field-container">
@@ -57,16 +59,50 @@
         </mat-form-field>
       </div>
     </div>
+    <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="50%;" fxFlex.xs="50%">
+        <mat-form-field>
+          <input type="text" matInput (keyup)="buscarProducto($event)" placeholder="Buscar Producto por Codigo">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- </form> -->
     <!--formulario detalle-->
     <br>
+    <!-- otra forma de hacer -->
+    <!-- <div>
+      <mat-card formArrayName="detalleCompra">
+        <mat-card-title>Detalle</mat-card-title>
+        <mat-divider></mat-divider>
+        <div *ngFor="let detalle of form.controls.detalleCompra.controls; let i=index">
+          <mat-divider *ngIf="form.controls.detalleCompra.controls.length>1 && i>0"></mat-divider><br>
+          <div [formGroupName]="i">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3.5%" fxLayoutAlign="center">
+              <mat-form-field fxFlex="30%">
+                {{i}}
+              </mat-form-field>
+              <mat-form-field fxFlex="10%" fxFlex.xs="20">
+                <input type="number" placeholder="cantidad" matInput name="cantidaditem" formControlName="cantidaditem">
+              </mat-form-field>
+            </div>
+          </div>
+
+        </div>
+
+       
+      </mat-card>
+    </div> -->
+
     <div>
       <mat-toolbar class="mat-table-toolbar">
-        <button  matPrefix mat-raised-button color="warn" type="button" (click)="AgregarProducto()">          
+        <button matPrefix mat-raised-button color="warn" type="button" (click)="AgregarProducto()">
           <mat-icon>add</mat-icon>
           Agregar Producto
         </button>
       </mat-toolbar>
-      <mat-table [dataSource]="dataSource" matSort>
+      <!-- <mat-table [dataSource]="dataSource" matSort formArrayName="detalleCompra">
 
         <ng-container matColumnDef="producto.codProducto">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Codigo </mat-header-cell>
@@ -84,13 +120,17 @@
         </ng-container>
 
         <ng-container matColumnDef="cantidaditem">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.cantidaditem}} </mat-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header>CANTIDAD</mat-header-cell>
+          <mat-cell *matCellDef="let element; let i = index;" [formGroupName]="i">
+            <input type="number" matInput name="cantidaditem" formControlName="cantidaditem">
+          </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="precioItem">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> Precio unitario </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.precioItem}} </mat-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header>PRECIO DE COMPRA </mat-header-cell>
+          <mat-cell *matCellDef="let element; let i = index;" [formGroupName]="i">
+            <input type="number" matInput name="precioItem" formControlName="precioItem">
+          </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="importeTotalItem">
@@ -101,8 +141,8 @@
 
         <ng-container matColumnDef="acciones">
           <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
-          <mat-cell *matCellDef="let row; let i = index;">
-            <button mat-button color="primary" (click)="eliminar(i)">
+          <mat-cell *matCellDef="let row; let i = index;" [formGroupName]="i">
+            <button type="button" mat-mini-fab color="warn" (click)="eliminar(i)">
               <mat-icon>delete_sweep</mat-icon>
             </button>
           </mat-cell>
@@ -110,7 +150,7 @@
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 
-      </mat-table>
+      </mat-table> -->
 
       <div fxLayout="row" fxLayout.xs="column">
         <div fxFlex="80%;" fxFlex.xs="50%"></div>
@@ -147,13 +187,13 @@
       </div>
 
 
-      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+      <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator> -->
     </div>
 
     <div fxLayout="row" fxLayout.xs="column">
       <div fxFlex="79%;" fxFlex.xs="50%"></div>
       <div fxFlex="10%;" fxFlex.xs="50%" class="field-container">
-        <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
           <mat-icon>done</mat-icon>
           <span>Aceptar</span>
         </button>
