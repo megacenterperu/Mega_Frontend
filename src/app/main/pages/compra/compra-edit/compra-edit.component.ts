@@ -1,12 +1,11 @@
 import { Params } from '@angular/router';
 import { startWith, map } from 'rxjs/operators';
-import { MatSort } from '@angular/material';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from './../../../../core/data/data.service';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProductoDialogoComponent } from './producto-dialogo/producto-dialogo.component';
 import { Producto } from '../../../../core/model/producto.model';
 import { MatDialog, MatTableDataSource, MatPaginator } from '@angular/material';
@@ -26,12 +25,8 @@ export class CompraEditComponent implements OnInit {
   sucursales: any[] = [];
   filteredOptions: Observable<any[]>;
   myControlProveedor: FormControl = new FormControl();
+  displayedColumns: string[] = ['codProducto', 'nombre', 'marcaProducto', 'cantidaditem', 'precioItem', 'importeTotalItem', 'acciones'];
 
-  displayedColumns: string[] = ['producto.codProducto', 'producto.nombre', 'producto.marcaProducto', 'cantidaditem', 'precioItem', 'importeTotalItem', 'acciones'];
-  dataSource: MatTableDataSource<any>;
-  cantidad: number;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
   constructor(
     private dataService: DataService,
     private route: ActivatedRoute,
@@ -41,6 +36,7 @@ export class CompraEditComponent implements OnInit {
 
 
   ngOnInit() {
+
     this.initFormBuilder();
     this.listaProveedors();
     this.listaSucrusal();
@@ -48,12 +44,12 @@ export class CompraEditComponent implements OnInit {
     this.dataService.providers().dialogo.subscribe(data => {
       const formGroup = this.addDetalleFormControl();
       formGroup.patchValue({
-        precioItem: data.precioItem,
+        precioItem: +data.precioItem.toFixed(2),
         cantidaditem: data.cantidaditem,
-        importeTotalItem: data.importeTotalItem,
-        producto: data.producto
+        importeTotalItem: +data.importeTotalItem.toFixed(2),
+        producto: data.producto,
+        productoT: data.producto
       });
-      this.setData(this.detalleCompra.value);
     });
 
     this.route.params.subscribe((params: Params) => {
@@ -68,28 +64,14 @@ export class CompraEditComponent implements OnInit {
       );
   }
 
-
-  setData(data) {
-    if (data) {
-      data.forEach(element => { element.cantidaditem = 1; });
-      let r = data;
-      this.cantidad = JSON.parse(JSON.stringify(data)).length;
-      this.dataSource = new MatTableDataSource(r);
-      this.dataSource.sort = this.sort;
-    }
-  }
-
-
-
   eliminar(index) {
     this.detalleCompra.removeAt(index);
-    this.setData(this.detalleCompra.value);
   }
 
   initFormBuilder() {
     this.form = this.formBuilder.group({
       idCompra: [null],
-      fecha: [null, Validators.compose([Validators.required])],
+      fecha: [new Date(), Validators.compose([Validators.required])],
       montoTotal: [0, Validators.compose([Validators.required])],
       neto: [0, Validators.compose([Validators.required])],
       igv: [0, Validators.compose([Validators.required])],
@@ -111,7 +93,13 @@ export class CompraEditComponent implements OnInit {
       idDetalleCompra: [null],
       precioItem: [0, Validators.compose([Validators.required])],
       cantidaditem: [0, Validators.compose([Validators.required])],
-      importeTotalItem: [0, Validators.compose([Validators.required])],
+      importeTotal: [{ value: '', disabled: true }, Validators.compose([Validators.required])],
+      importeTotalItem: [null, Validators.compose([Validators.required])],
+      productoT: this.formBuilder.group({
+        codProducto: [{ value: '', disabled: true }],
+        nombre: [{ value: '', disabled: true }],
+        marcaProducto: [{ value: '', disabled: true }]
+      }),
       producto: [null, Validators.compose([Validators.required])]
     });
     this.detalleChange(formGroup);
@@ -121,20 +109,22 @@ export class CompraEditComponent implements OnInit {
 
   detalleChange(formGroup: FormGroup) {
     formGroup.get("precioItem").valueChanges.subscribe(value => {
+      const precio = value || 0;
       const cantidad = formGroup.get("cantidaditem").value || 0;
-      let subTotal = parseFloat(value) * parseFloat(cantidad);
+      let subTotal = parseFloat(precio) * parseFloat(cantidad);
       formGroup.patchValue({
-        importeTotalItem: subTotal
+        importeTotalItem: +subTotal.toFixed(2),
+        importeTotal: +subTotal.toFixed(2)
       });
-      this.setData(this.detalleCompra.value);
     });
     formGroup.get("cantidaditem").valueChanges.subscribe(value => {
       const precio = formGroup.get("precioItem").value || 0;
-      let subTotal = parseFloat(precio) * parseFloat(value);
+      const cantidad = value || 0;
+      let subTotal = parseFloat(precio) * parseFloat(cantidad);
       formGroup.patchValue({
-        importeTotalItem: subTotal
+        importeTotalItem: +subTotal.toFixed(2),
+        importeTotal: +subTotal.toFixed(2)
       });
-      this.setData(this.detalleCompra.value);
     });
   }
 
@@ -223,7 +213,6 @@ export class CompraEditComponent implements OnInit {
   save() {
     if (!this.detalleCompra.valid) return;
     if (this.edicion) {
-      //update
       this.dataService.compras().update(this.form.value).subscribe(data => {
         this.dataService.compras().getAll().subscribe(p => {
           this.dataService.providers().cambio.next(p);
@@ -231,7 +220,6 @@ export class CompraEditComponent implements OnInit {
         });
       });
     } else {
-      //insert
       this.dataService.compras().create(this.form.value).subscribe(data => {
         this.dataService.compras().getAll().subscribe(p => {
           this.dataService.providers().cambio.next(p);
@@ -247,10 +235,12 @@ export class CompraEditComponent implements OnInit {
       this.dataService.productos().findProductoByCodProducto($event.target.value)
         .subscribe(data => {
           let detalle = {
-            precioItem: data.precioCompra,
+            precioItem: +data.precioCompra.toFixed(2),
             cantidaditem: 1,
-            importeTotalItem: data.precioCompra,
-            producto: data
+            importeTotalItem: +data.precioCompra.toFixed(2),
+            importeTotal: +data.precioCompra.toFixed(2),
+            producto: data,
+            productoT: data
           }
           this.dataService.providers().dialogo.next(detalle);
         },
@@ -259,7 +249,4 @@ export class CompraEditComponent implements OnInit {
           });
     }
   }
-
-
-
 }

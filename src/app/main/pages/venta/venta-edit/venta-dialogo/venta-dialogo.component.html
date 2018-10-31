@@ -1,0 +1,57 @@
+<div class="container">
+  <mat-toolbar>Lista De productos</mat-toolbar>
+  <div>
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar Producto">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <mat-table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="codProducto">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> CODIGO </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.codProducto}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="unidadMedida.codUnidadmedida">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> UNIDAD MEDIDA </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.unidadMedida.codUnidadmedida}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="nombre">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> PRODUCTO </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.nombre}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="cantidad">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>CANTIDAD</mat-header-cell>
+      <mat-cell *matCellDef="let element; let i = index">
+        <mat-form-field>
+          <input matInput name="cantidad" [(ngModel)]="element.cantidad">
+        </mat-form-field>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="precioVenta">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>PRECIO DE VENTA</mat-header-cell>
+      <mat-cell *matCellDef="let element; let i = index">
+        <input matInput name="precioVenta" [(ngModel)]="element.precioVenta">
+      </mat-cell>
+    </ng-container>
+
+
+    <ng-container matColumnDef="acciones">
+      <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <button mat-button color="primary" (click)="agregar(row)">
+          <mat-icon>add_shopping_cart</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  <button mat-raised-button color="accent" (click)="cerrar()" type="button">Cerrar</button>
+</div>
