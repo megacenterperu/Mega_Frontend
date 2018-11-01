@@ -29,12 +29,12 @@
 
       <ng-container matColumnDef="precioCompra">
         <mat-header-cell *matHeaderCellDef mat-sort-header> PREC. COMPRA </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.precioCompra}} </mat-cell>
+        <mat-cell *matCellDef="let element"> {{element.precioCompra | number : '1.2-2'}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="precioVenta">
         <mat-header-cell *matHeaderCellDef mat-sort-header> PREC. VENTA </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.precioVenta}} </mat-cell>
+        <mat-cell *matCellDef="let element"> {{element.precioVenta | number : '1.2-2'}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="unidadMedida.codUnidadmedida">
