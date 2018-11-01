@@ -16,6 +16,7 @@ import { OrganizacionService } from "./organizacion.service";
 import { ClienteService } from "./cliente.service";
 import { SucursalService } from "./sucursal.service";
 import { ProformaService } from "./proforma.service";
+import { VentaService } from "./venta.service";
 
 @Injectable({
   providedIn: "root"
@@ -36,8 +37,10 @@ export class DataService {
     private sucursal: SucursalService,
     private proforma: ProformaService,
     private personal: PersonalService,
-    private tipocomprobante: TipoComprobanteService
-  ) {}
+    private tipocomprobante: TipoComprobanteService,
+    private venta: VentaService 
+      
+      ) {}
   
   providers(): ProviderService {
     return this.provider;
@@ -96,5 +99,9 @@ export class DataService {
 
   personales(): PersonalService {
     return this.personal;
+  }
+  
+  ventas(): VentaService {
+    return this.venta;
   }
 }

@@ -20,3 +20,16 @@
   .mat-table-toolbar{
     height: 40px !important;
   }
+  
+.right {
+  text-align: right !important;
+}
+
+input.right::-webkit-outer-spin-button,
+input.right::-webkit-inner-spin-button {
+  display: none;
+}
+
+input.right {
+  -moz-appearance: textfield;
+}

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InlineEditComponent } from './inline-edit.component';
+import { VentaDialogoComponent } from './venta-dialogo.component';
 
-describe('InlineEditComponent', () => {
-  let component: InlineEditComponent;
-  let fixture: ComponentFixture<InlineEditComponent>;
+describe('VentaDialogoComponent', () => {
+  let component: VentaDialogoComponent;
+  let fixture: ComponentFixture<VentaDialogoComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InlineEditComponent ]
+      declarations: [ VentaDialogoComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InlineEditComponent);
+    fixture = TestBed.createComponent(VentaDialogoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

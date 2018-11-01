@@ -1,7 +1,7 @@
-<div class="page-layout blank p-24" fusePerfectScrollbar>
+<div class="page-layout blank p-24" megaPerfectScrollbar>
   <mat-toolbar>Registrar Compra</mat-toolbar>
   <br />
-  <form class="container" [formGroup]="form" (ngSubmit)="save()" #f="ngForm">
+  <form class="container" [formGroup]="form" #f="ngForm">
     <div fxLayout="row" fxLayout.xs="column">
       <div fxFlex="60%;" fxFlex.xs="50%">
         <mat-form-field class="field-container">
@@ -17,7 +17,7 @@
       </div>
       <div fxFlex="40%;" fxFlex.xs="50%">
         <mat-form-field class="field-container">
-          <mat-select placeholder="Sucursal" required formControlName="sucursal">
+          <mat-select placeholder="Sucursal" required formControlName="sucursal" >
             <mat-option *ngFor="let sucursal of sucursales" [value]="sucursal">
               {{sucursal.nombre}}
             </mat-option>
@@ -48,9 +48,10 @@
       </div>
       <div fxFlex="20%;" fxFlex.xs="50%">
         <mat-form-field class="field-container">
-          <input matInput placeholder="Guia de Remision" required formControlName="guiaRemision" maxlength="20">
+          <input matInput placeholder="Guia de Remision" required formControlName="guiaRemision" maxlength="20"  >
+         
           <mat-icon matSuffix>list_alt</mat-icon>
-        </mat-form-field>
+        </mat-form-field> 
       </div>
       <div fxFlex="20%;" fxFlex.xs="50%">
         <mat-form-field class="field-container">
@@ -59,41 +60,29 @@
         </mat-form-field>
       </div>
     </div>
-    <div fxLayout="row" fxLayout.xs="column">
-      <div fxFlex="50%;" fxFlex.xs="50%">
-        <mat-form-field>
-          <input type="text" matInput (keyup)="buscarProducto($event)" placeholder="Buscar Producto por Codigo">
-          <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
-      </div>
-    </div>
-
-    <!-- </form> -->
-    <!--formulario detalle-->
+    
     <br>
-    <!-- otra forma de hacer -->
-    <!-- <div>
-      <mat-card formArrayName="detalleCompra">
-        <mat-card-title>Detalle</mat-card-title>
-        <mat-divider></mat-divider>
-        <div *ngFor="let detalle of form.controls.detalleCompra.controls; let i=index">
-          <mat-divider *ngIf="form.controls.detalleCompra.controls.length>1 && i>0"></mat-divider><br>
-          <div [formGroupName]="i">
-            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="3.5%" fxLayoutAlign="center">
-              <mat-form-field fxFlex="30%">
-                {{i}}
-              </mat-form-field>
-              <mat-form-field fxFlex="10%" fxFlex.xs="20">
-                <input type="number" placeholder="cantidad" matInput name="cantidaditem" formControlName="cantidaditem">
-              </mat-form-field>
-            </div>
-          </div>
-
+    <mat-card formArrayName="detalleCompra">
+      <div fxLayout="row" fxLayout.xs="column">
+        <div fxFlex="50%;" fxFlex.xs="50%">
+          <mat-form-field>
+            <input type="text" matInput (keyup)="buscarProducto($event)" placeholder="Buscar Producto por Codigo" >
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
         </div>
+        <div fxFlex="50%" fxFlex.xs="grow" fxLayoutAlign="end">
+          <mat-card-actions>
+            <button matPrefix mat-raised-button color="warn" type="button" (click)="AgregarProducto()">
+              <mat-icon>add</mat-icon>
+              Agregar Producto
+            </button>
+          </mat-card-actions>
+        </div>
+      </div>
 
        
       </mat-card>
-    </div> -->
+    </div>
 
     <div>
       <mat-toolbar class="mat-table-toolbar">
@@ -108,44 +97,23 @@
           <mat-header-cell *matHeaderCellDef mat-sort-header> Codigo </mat-header-cell>
           <mat-cell *matCellDef="let element"> {{element.producto.codProducto}} </mat-cell>
         </ng-container>
-
-        <ng-container matColumnDef="producto.nombre">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> Producto </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.producto.nombre}} </mat-cell>
+        <ng-container matColumnDef="nombre">
+          <mat-header-cell *matHeaderCellDef fxFlex="30%"> PRODUCTO / SERVICIO </mat-header-cell>
         </ng-container>
-
-        <ng-container matColumnDef="producto.marcaProducto">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> Marca </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.producto.marcaProducto}} </mat-cell>
+        <ng-container matColumnDef="marcaProducto">
+          <mat-header-cell *matHeaderCellDef fxFlex="20%"> MARCA </mat-header-cell>
         </ng-container>
-
         <ng-container matColumnDef="cantidaditem">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>CANTIDAD</mat-header-cell>
-          <mat-cell *matCellDef="let element; let i = index;" [formGroupName]="i">
-            <input type="number" matInput name="cantidaditem" formControlName="cantidaditem">
-          </mat-cell>
+          <mat-header-cell *matHeaderCellDef fxFlex="10%">CANTIDAD</mat-header-cell>
         </ng-container>
-
         <ng-container matColumnDef="precioItem">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>PRECIO DE COMPRA </mat-header-cell>
-          <mat-cell *matCellDef="let element; let i = index;" [formGroupName]="i">
-            <input type="number" matInput name="precioItem" formControlName="precioItem">
-          </mat-cell>
+          <mat-header-cell *matHeaderCellDef fxFlex="13%">PRECIO DE COMPRA </mat-header-cell>
         </ng-container>
-
         <ng-container matColumnDef="importeTotalItem">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> Sub Total </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.importeTotalItem}} </mat-cell>
+          <mat-header-cell *matHeaderCellDef fxFlex="9%"> SUB TOTAL </mat-header-cell>
         </ng-container>
-
-
         <ng-container matColumnDef="acciones">
-          <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
-          <mat-cell *matCellDef="let row; let i = index;" [formGroupName]="i">
-            <button type="button" mat-mini-fab color="warn" (click)="eliminar(i)">
-              <mat-icon>delete_sweep</mat-icon>
-            </button>
-          </mat-cell>
+          <mat-header-cell *matHeaderCellDef fxFlex="6%">ACCION</mat-header-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
@@ -165,47 +133,32 @@
           <mat-divider></mat-divider>
         </div>
       </div>
-
-      <div fxLayout="row" fxLayout.xs="column">
-        <div fxFlex="80%;" fxFlex.xs="50%"></div>
-        <div fxFlex="8%;" fxFlex.xs="50%">IGV</div>
-        <div fxFlex="4%;" fxFlex.xs="50%">:</div>
-        <div fxFlex="8%;" fxFlex.xs="50%">$&nbsp;{{form.get('igv').value | number : '1.2-2'}}</div>
+      <mat-divider></mat-divider>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="end">
+        <div fxFlex="0.5%" fxFlex.xs="grow" fxLayoutAlign="end">NETO:</div>
+        <div fxFlex="5%" fxFlex.xs="grow" fxLayoutAlign="end">{{form.get('neto').value | number : '1.2-2'}}</div>
       </div>
-      <div fxLayout="row" fxLayout.xs="column">
-        <div fxFlex="80%;" fxFlex.xs="50%"></div>
-        <div fxFlex="20%;" fxFlex.xs="50%">
-          <mat-divider></mat-divider>
-        </div>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="end">
+        <div fxFlex="0.5%" fxFlex.xs="grow" fxLayoutAlign="end">IGV:</div>
+        <div fxFlex="5%" fxFlex.xs="grow" fxLayoutAlign="end">{{form.get('igv').value | number : '1.2-2'}}</div>
       </div>
-
-      <div fxLayout="row" fxLayout.xs="column">
-        <div fxFlex="80%;" fxFlex.xs="50%"></div>
-        <div fxFlex="8%;" fxFlex.xs="50%">TOTAL</div>
-        <div fxFlex="4%;" fxFlex.xs="50%">:</div>
-        <div fxFlex="8%;" fxFlex.xs="50%">$&nbsp;{{form.get('montoTotal').value | number : '1.2-2'}}</div>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="end">
+        <div fxFlex="0.5%" fxFlex.xs="grow" fxLayoutAlign="end">TOTAL:</div>
+        <div fxFlex="5%" fxFlex.xs="grow" fxLayoutAlign="end">{{form.get('montoTotal').value | number : '1.2-2'}}</div>
       </div>
-
-
-      <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator> -->
-    </div>
-
-    <div fxLayout="row" fxLayout.xs="column">
-      <div fxFlex="79%;" fxFlex.xs="50%"></div>
-      <div fxFlex="10%;" fxFlex.xs="50%" class="field-container">
-        <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
+      <mat-divider></mat-divider>
+      <!-- <mat-card-actions fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutAlign="end"> -->
+      <mat-card-actions>
+        <button mat-raised-button color="primary" type="button" (click)="save()" [disabled]="!form.valid">
           <mat-icon>done</mat-icon>
           <span>Aceptar</span>
         </button>
-      </div>
-      <div fxFlex="1%;" fxFlex.xs="5%"></div>
-      <div fxFlex="10%;" fxFlex.xs="50%">
         <button mat-raised-button color="accent" (click)="cancel()" type="button">
           <mat-icon>close</mat-icon>
           <span>Cancelar</span>
         </button>
-      </div>
-    </div>
+      </mat-card-actions>
+    </mat-card>
   </form>
   <br />
 </div>
