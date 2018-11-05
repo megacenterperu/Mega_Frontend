@@ -80,22 +80,9 @@
         </div>
       </div>
 
-       
-      </mat-card>
-    </div>
-
-    <div>
-      <mat-toolbar class="mat-table-toolbar">
-        <button matPrefix mat-raised-button color="warn" type="button" (click)="AgregarProducto()">
-          <mat-icon>add</mat-icon>
-          Agregar Producto
-        </button>
-      </mat-toolbar>
-      <mat-table [dataSource]="dataSource" matSort formArrayName="detalleCompra">
-
-        <ng-container matColumnDef="producto.codProducto">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> Codigo </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.producto.codProducto}} </mat-cell>
+      <mat-table>
+        <ng-container matColumnDef="codProducto">
+          <mat-header-cell *matHeaderCellDef fxFlex="12%"> CODIGO </mat-header-cell>
         </ng-container>
         <ng-container matColumnDef="nombre">
           <mat-header-cell *matHeaderCellDef fxFlex="30%"> PRODUCTO / SERVICIO </mat-header-cell>
@@ -117,20 +104,37 @@
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-
       </mat-table>
-
-      <div fxLayout="row" fxLayout.xs="column">
-        <div fxFlex="80%;" fxFlex.xs="50%"></div>
-        <div fxFlex="8%;" fxFlex.xs="50%"> NETO</div>
-        <div fxFlex="4%;" fxFlex.xs="50%">:</div>
-        <div fxFlex="8%;" fxFlex.xs="50%">$&nbsp;{{form.get('neto').value | number : '1.2-2'}}</div>
-
-      </div>
-      <div fxLayout="row" fxLayout.xs="column">
-        <div fxFlex="80%;" fxFlex.xs="50%"></div>
-        <div fxFlex="20%;" fxFlex.xs="50%">
-          <mat-divider></mat-divider>
+      
+      <mat-divider></mat-divider>
+      <div *ngFor="let unit of detalleCompra.controls; let i=index">
+        <div [formGroupName]="i">
+          <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="2%" fxLayoutAlign="start stretch">
+            <div formGroupName="productoT" fxFlex="70%">
+              <mat-form-field fxFlex="20%">
+                <input matInput formControlName="codProducto">
+              </mat-form-field>
+              <mat-form-field fxFlex="50%">
+                <input matInput formControlName="nombre">
+              </mat-form-field>
+              <mat-form-field fxFlex="30%" >
+                <input matInput formControlName="marcaProducto">
+              </mat-form-field>
+            </div>
+            <mat-form-field fxFlex="10%" fxFlex.xs="grow">
+              <input matInput type="number" formControlName="cantidaditem" required>
+            </mat-form-field>
+            <mat-form-field fxFlex="10%" fxFlex.xs="grow">
+              <input matInput class="right" type="number" formControlName="precioItem" required>
+            </mat-form-field>
+            <mat-form-field fxFlex="10%" fxFlex.xs="grow">
+              <input matInput class="right" formControlName="importeTotal">
+              <span matPrefix>s/.&nbsp;</span>
+            </mat-form-field>
+            <button type="button" mat-mini-fab color="warn" (click)="eliminar(i)">
+              <mat-icon>delete_sweep</mat-icon>
+            </button>
+          </div>
         </div>
       </div>
       <mat-divider></mat-divider>
