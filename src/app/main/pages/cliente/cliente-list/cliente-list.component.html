@@ -1,9 +1,13 @@
 <div class="page-layout blank p-24" megaPerfectScrollbar>
   <mat-toolbar>LISTA DE CLIENTES</mat-toolbar>
-  <div>
-    <mat-form-field>
-      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar Cliente">
-    </mat-form-field>
+  <div fxLayout="row" fxLayout.xs="column">
+    <div fxFlex="50%;" fxFlex.xs="50%">
+      <mat-form-field class="field-container" appearance="outline">
+        <mat-label>Buscar Cliente</mat-label>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar Cliente">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
   </div>
   <div class="mat-elevation-z8">
     <mat-table [dataSource]="dataSource" matSort>

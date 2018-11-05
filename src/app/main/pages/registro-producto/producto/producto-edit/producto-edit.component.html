@@ -1,77 +1,95 @@
 <div class="page-layout blank p-24" megaPerfectScrollbar>
   <mat-toolbar>Ingrese los datos del Producto</mat-toolbar>
-  
-  <br />
 
-  <form class="container" [formGroup]="form" (ngSubmit)="operar()" #f="ngForm">
+  <form class="example-form" [formGroup]="form" (ngSubmit)="operar()" #f="ngForm">
+    <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="25%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container">
+          <input matInput placeholder="Cod Producto" required formControlName="codProducto">
+        </mat-form-field>
+      </div>
+      <div fxFlex="50%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container">
+          <input matInput placeholder="Nombre Producto" required formControlName="nombre">
+        </mat-form-field>
+      </div>
+      <div fxFlex="25%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container">
+          <input matInput placeholder="Marca Producto" required formControlName="marcaProducto">
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="25%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container">
+          <input matInput placeholder="Stock" required formControlName="stock">
+        </mat-form-field>
+      </div>
+      <div fxFlex="25%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container">
+          <input matInput placeholder="Precio Compra" required formControlName="precioCompra">
+        </mat-form-field>
+      </div>
+      <div fxFlex="25%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container">
+          <input matInput placeholder="Precio Venta" required formControlName="precioVenta">
+        </mat-form-field>
+      </div>
+      <div fxFlex="25%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container">
+          <mat-select placeholder="Unidad Medida" formControlName="unidadMedida" [compareWith]="compareUnidadMedida">
+            <mat-option *ngFor="let Unidadmedida of lstunidadmedidas" [value]="Unidadmedida">
+              {{Unidadmedida.descripcion}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
 
-    <mat-form-field>
-      <input matInput placeholder="Cod Producto" required formControlName="codProducto">
-    </mat-form-field>
+    <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="25%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container">
+          <mat-select placeholder="Categoria" formControlName="categoria" [compareWith]="compareCategoria">
+            <mat-option *ngFor="let Categoria of lstcategorias" [value]="Categoria">
+              {{Categoria.descripcion}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div fxFlex="25%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container">
+          <mat-select placeholder="Tipo Producto" formControlName="tipoProducto" [compareWith]="compareTipoProducto">
+            <mat-option *ngFor="let Tipoproducto of lsttipoProductos" [value]="Tipoproducto">
+              {{Tipoproducto.descripcion}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div fxFlex="25%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container">
+          <mat-select placeholder="Organizacion" formControlName="organizacion" [compareWith]="compareOrganizacion">
+            <mat-option *ngFor="let Organizacion of lstorganizacions" [value]="Organizacion">
+              {{Organizacion.nombreComercial}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
 
-    <mat-form-field>
-      <input matInput placeholder="Nombre Producto" required formControlName="nombre">
-    </mat-form-field>
-
-    <mat-form-field>
-      <input matInput placeholder="Marca Producto" required formControlName="marcaProducto">
-    </mat-form-field>
-
-    <mat-form-field>
-      <input matInput placeholder="Stock" required formControlName="stock">
-    </mat-form-field>
-
-    <mat-form-field>
-      <input matInput placeholder="Precio Compra" required formControlName="precioCompra">
-    </mat-form-field>
-
-    <mat-form-field>
-      <input matInput placeholder="Precio Venta" required formControlName="precioVenta">
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-select placeholder="Unidad Medida" formControlName="unidadMedida" [compareWith]="compareUnidadMedida">
-        <mat-option *ngFor="let Unidadmedida of lstunidadmedidas" [value]="Unidadmedida"  >
-          {{Unidadmedida.descripcion}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>  
-
-    <mat-form-field>
-      <mat-select placeholder="Categoria" formControlName="categoria" [compareWith]="compareCategoria">
-        <mat-option *ngFor="let Categoria of lstcategorias" [value]="Categoria"  >
-          {{Categoria.descripcion}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-select placeholder="Tipo Producto" formControlName="tipoProducto" [compareWith]="compareTipoProducto">
-        <mat-option *ngFor="let Tipoproducto of lsttipoProductos" [value]="Tipoproducto"  >
-          {{Tipoproducto.descripcion}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>    
-
-    <mat-form-field>
-      <mat-select placeholder="Organizacion" formControlName="organizacion" [compareWith]="compareOrganizacion">
-        <mat-option *ngFor="let Organizacion of lstorganizacions" [value]="Organizacion"  >
-          {{Organizacion.nombreComercial}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>  
-
-    <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
-      <mat-icon>done</mat-icon>
-      <span>Aceptar</span>
-    </button>
-
-    <button mat-raised-button color="accent" (click)="cancel()" type="button">
-      <mat-icon>close</mat-icon>
-      <span>Cancelar</span>
-    </button>
+    <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="20%;" fxFlex.xs="50%" class="field-container">
+        <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
+          <mat-icon>done</mat-icon>
+          <span>Aceptar</span>
+        </button>
+      </div>
+      <div fxFlex="1%;" fxFlex.xs="5%"></div>
+      <div fxFlex="20%;" fxFlex.xs="50%" class="field-container">
+        <button mat-raised-button color="accent" (click)="cancel()" type="button">
+          <mat-icon>close</mat-icon>
+          <span>Cancelar</span>
+        </button>
+      </div>
+    </div>
   </form>
-
-  <br />
-
 </div>

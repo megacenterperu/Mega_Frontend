@@ -1,3 +1,4 @@
+import { ClienteDialogComponent } from './proforma-edit/cliente-dialog/cliente-dialog.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ProformaListComponent } from './proforma-list/proforma-list.component';
@@ -16,7 +17,9 @@ const routes: Routes = [
 },
 { path: 'nuevo', component: ProformaEditComponent },
 
-{ path: 'NuevoPaciente', component: ProductoDialogComponent }
+{ path: 'NuevoPaciente', component: ProductoDialogComponent },
+
+{ path: 'NuevoCliente', component: ClienteDialogComponent }
 ];
 
 @NgModule({

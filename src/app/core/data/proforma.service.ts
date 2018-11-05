@@ -13,6 +13,10 @@ export class ProformaService {
   getAll(): Observable<any> {
     return this.generic.all(basePath).get();
   }
+  
+  getNumero(): Observable<any> {
+    return this.generic.all(basePath).all("numero-proforma").get();
+  }
 
   getAllPageable(p: number, s: number): Observable<any> {
     return this.generic.all(basePath).all(`pageable?page=${p}&size=${s}`).get();

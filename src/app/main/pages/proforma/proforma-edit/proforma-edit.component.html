@@ -1,64 +1,65 @@
 <div class="page-layout blank p-24" megaPerfectScrollbar>
   <mat-toolbar>Generar Proforma</mat-toolbar>
-
   <br />
-
-  <form class="container" [formGroup]="form" (ngSubmit)="save()" #f="ngForm">
-    <table class="example-full-width" cellspacing="0">
-      <tr>
-        <td>
-          <mat-form-field appearance="outline">
-            <mat-label>Nombre Cliente</mat-label>
-            <input type="text" placeholder="Nombre Cliente" required aria-label="persona.nombre" matInput [formControl]="myControlCliente"
-              formControlName="cliente" [matAutocomplete]="autoCliente">
-            <mat-icon matSuffix>search</mat-icon>
-            <mat-autocomplete #autoCliente="matAutocomplete" [displayWith]="displayFn">
-              <mat-option *ngFor="let pro of filteredOptions | async" [value]="pro">
-                {{pro.persona.nombre}} {{pro.persona.numeroDocumento}}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-        </td>
-
-        <td>
-          <mat-form-field class="of-full-width i-space" appearance="outline">
-            <mat-label>Fecha Proforma</mat-label>
-            <input matInput formControlName="fecha" [matDatepicker]="picker" [max]="maxDate" placeholder="Fecha Proforma"
-              required>
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker touchUi="true" #picker></mat-datepicker>
-          </mat-form-field>
-        </td>
-        <!-- <td>
-          <mat-form-field>
-            <input matInput [matDatepicker]="dp" placeholder="Moment.js datepicker" [formControl]="fecha">
-            <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-            <mat-datepicker #dp></mat-datepicker>
-          </mat-form-field>
-        </td> -->
-
-
-        <td>
-          <mat-form-field appearance="outline" hintLabel="Max 13 caracteres">
-            <mat-label>Numero Proforma</mat-label>
-            <input matInput #numeroProforma maxlength="13" placeholder="Numero Proforma" required formControlName="numeroProforma">
-            <mat-hint align="end">{{numeroProforma.value?.length || 0}}/13</mat-hint>
-          </mat-form-field>
-        </td>
-        <td>
-          <!--formulario detalle-->
-          <div>
-            <button matSuffix mat-raised-button color="warn" type="button" (click)="AgregarProducto()">
-              <mat-icon>search</mat-icon> Buscar Producto
-            </button>
-          </div>
-        </td>
-      </tr>
-    </table>
+  <form class="example-form" [formGroup]="form" #f="ngForm">
+    <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="30%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Nombre Cliente</mat-label>
+          <input type="text" placeholder="Nombre Cliente" required aria-label="persona.nombre" matInput [formControl]="myControlCliente"
+            formControlName="cliente" [matAutocomplete]="autoCliente">
+          <mat-icon matSuffix>search</mat-icon>
+          <mat-autocomplete #autoCliente="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngFor="let pro of filteredOptions | async" [value]="pro">
+              {{pro.persona.nombre}} {{pro.persona.numeroDocumento}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div fxFlex="10%;" fxFlex.xs="50%">
+        <button mat-mini-fab color="accent" type="button" (click)="openDialog(cli)">
+          <mat-icon>person_add</mat-icon>
+        </button>
+      </div>
+      <div fxFlex="21%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Fecha Proforma</mat-label>
+          <input matInput formControlName="fechaProforma" [matDatepicker]="picker" [max]="maxDate" placeholder="Fecha Proforma"
+            required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker touchUi="true" #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div fxFlex="21%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Numero Proforma</mat-label>
+          <input matInput maxlength="13" placeholder="Numero Proforma" formControlName="numero">
+        </mat-form-field>
+      </div>
+      <!--button de mostrar lista de productos-->
+      <div fxFlex="18%;" fxFlex.xs="50%">
+        <div class="field-container">
+          <mat-label>Agregar Productos</mat-label>
+          <button matSuffix mat-raised-button color="accent" type="button" (click)="AgregarProducto()">
+            <mat-icon>search</mat-icon> Buscar Producto
+          </button>
+        </div>
+      </div>
+    </div>
+    <!--buscar producto-->
+    <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="30%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Buscar Producto</mat-label>
+          <input matInput (keyup)="buscarProducto($event)" placeholder="Cod Producto" required>
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+    </div>
 
     <!--Detalle de Proforma-->
     <div class="mat-elevation-z8">
-      <mat-table [dataSource]="dataSource" matSort>
+      <mat-table [dataSource]="dataSource" matSort formArrayName="detalleProforma">
         <ng-container matColumnDef="producto.codProducto">
           <mat-header-cell *matHeaderCellDef mat-sort-header> CODIGO </mat-header-cell>
           <mat-cell *matCellDef="let element"> {{element.producto.codProducto}} </mat-cell>
@@ -75,13 +76,21 @@
         </ng-container>
 
         <ng-container matColumnDef="cantidaditem">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> CANT </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.cantidaditem}} </mat-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header>CANT</mat-header-cell>
+          <mat-cell *matCellDef="let element; let i = index;" [formGroupName]="i">
+            <mat-form-field class="field-container">
+              <input matInput type="number" name="cantidaditem" formControlName="cantidaditem">
+            </mat-form-field>
+          </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="precioitem">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> PRECIO UNITARIO </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.precioitem}} </mat-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header>PRECIO UNITARIO </mat-header-cell>
+          <mat-cell *matCellDef="let element; let i = index;" [formGroupName]="i">
+            <mat-form-field class="field-container">
+              <input matInput type="number" name="precioitem" formControlName="precioitem">
+            </mat-form-field>
+          </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="importetotalitem">
@@ -92,85 +101,54 @@
         <ng-container matColumnDef="acciones">
           <mat-header-cell *matHeaderCellDef>ACCION</mat-header-cell>
           <mat-cell *matCellDef="let row; let i = index;">
-            <button mat-button color="primary" (click)="eliminar(i)">eliminar</button>
+            <button mat-button color="primary" type="button" (click)="eliminar(i)">eliminar</button>
           </mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
       </mat-table>
 
+      <!--Montos de Acuenta, Saldo y Total de Proforma-->
       <div fxLayout="row" fxLayout.xs="column">
-        <div fxFlex="58%;" fxFlex.xs="50%"></div>
-        <div fxFlex="8%;" fxFlex.xs="50%">NETO</div>
-        <div fxFlex="4%;" fxFlex.xs="50%">:</div>
-        <div fxFlex="30%;" fxFlex.xs="50%">$&nbsp;0.00</div>
-      </div>
-
-      <div fxLayout="row" fxLayout.xs="column">
-        <div fxFlex="58%;" fxFlex.xs="50%"></div>
-        <div fxFlex="42%;" fxFlex.xs="50%">
-          <mat-divider></mat-divider>
+        <div fxFlex="15%;" fxFlex.xs="50%"></div>
+        <div fxFlex="25%;" fxFlex.xs="50%">
+          <mat-form-field class="field-container">
+            <mat-label>A CUENTA</mat-label>
+            <input matInput type="number" placeholder="A Cuenta" formControlName="acuenta" required>
+          </mat-form-field>
         </div>
-      </div>
-
-      <div fxLayout="row" fxLayout.xs="column">
-        <div fxFlex="58%;" fxFlex.xs="50%"></div>
-        <div fxFlex="8%;" fxFlex.xs="50%">IGV(18%)</div>
-        <div fxFlex="4%;" fxFlex.xs="50%">:</div>
-        <div fxFlex="30%;" fxFlex.xs="50%">$&nbsp;0.00</div>
-      </div>
-
-      <div fxLayout="row" fxLayout.xs="column">
-        <div fxFlex="58%;" fxFlex.xs="50%"></div>
-        <div fxFlex="42%;" fxFlex.xs="50%">
-          <mat-divider></mat-divider>
+        <div fxFlex="25%;" fxFlex.xs="50%">
+          <mat-form-field class="field-container">
+            <mat-label>SALDO</mat-label>
+            <input matInput type="number" placeholder="Saldo" formControlName="saldoProforma" required>
+          </mat-form-field>
         </div>
+        <div fxFlex="25%;" fxFlex.xs="50%">
+          <div class="field-container">
+            <mat-label>IMP. TOTAL</mat-label>
+            <div>$&nbsp;{{form.get('total').value | number : '1.2-2'}}</div>
+          </div>
+        </div>
+        <div fxFlex="10%;" fxFlex.xs="50%"></div>
       </div>
-
-      <div fxLayout="row" fxLayout.xs="column">
-        <div fxFlex="58%;" fxFlex.xs="50%"></div>
-        <div fxFlex="8%;" fxFlex.xs="50%">IMP. TOTAL</div>
-        <div fxFlex="4%;" fxFlex.xs="50%">:</div>
-        <div fxFlex="30%;" fxFlex.xs="50%">$&nbsp;{{form.get('total').value | number : '1.2-2'}}</div>
-      </div>
-
       <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
     </div>
     <br>
-    <!--Montos de Acuenta, Saldo y Total de Proforma-->
-    <table class="example-full-width" cellspacing="0">
-      <tr>
-        <td>
-          <mat-form-field appearance="outline">
-            <mat-label>A Cuenta</mat-label>
-            <input matInput #acuenta maxlength="13" placeholder="A Cuenta" required formControlName="acuenta">
-          </mat-form-field>
-        </td>
-        <td>
-          <mat-form-field appearance="outline">
-            <mat-label>Saldo</mat-label>
-            <input matInput #saldo maxlength="13" placeholder="Saldo" required formControlName="saldo">
-          </mat-form-field>
-        </td>
-        <td>
-          <mat-form-field appearance="outline">
-            <mat-label>Monto Total</mat-label>
-            <input matInput #total maxlength="13" placeholder="Monto Total" required formControlName="total">
-            <!--<span matPrefix>$&nbsp;{{form.get('total').value | number : '1.2-2'}}</span>-->
-          </mat-form-field>
-        </td>
-      </tr>
-    </table>
-
-    <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
-      <mat-icon>done</mat-icon>
-      <span>Aceptar</span>
-    </button>
-
-    <button mat-raised-button color="accent" (click)="cancel()" type="button">
-      <mat-icon>close</mat-icon>
-      <span>Cancelar</span>
-    </button>
+    <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="79%;" fxFlex.xs="50%"></div>
+      <div fxFlex="10%;" fxFlex.xs="50%" class="field-container">
+        <button mat-raised-button color="primary" type="button" (click)="save()" [disabled]="f.invalid">
+          <mat-icon>done</mat-icon>
+          <span>Aceptar</span>
+        </button>
+      </div>
+      <div fxFlex="1%;" fxFlex.xs="5%"></div>
+      <div fxFlex="10%;" fxFlex.xs="50%">
+        <button mat-raised-button color="warn" (click)="cancel()" type="button">
+          <mat-icon>close</mat-icon>
+          <span>Cancelar</span>
+        </button>
+      </div>
+    </div>
   </form>
-  <br />
 </div>
