@@ -33,4 +33,7 @@ export class VentaService {
     return this.generic.all(basePath).one("eliminar", id).delete();
   }
   
+  getNumero(): Observable<any> {
+    return this.generic.all(basePath).all("numero-Comprobante").get();
+  }
 }

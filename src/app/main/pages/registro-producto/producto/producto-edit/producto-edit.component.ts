@@ -19,6 +19,8 @@ export class ProductoEditComponent implements OnInit {
   lstorganizacions: any[]=[];
   filteredOptions: Observable<any[]>;
 
+  listestados: string[] = ['NUEVO', 'SEGUNDA', 'SERVICIO'];
+
   constructor(
     private dataService: DataService,
     private route: ActivatedRoute,
@@ -117,7 +119,7 @@ export class ProductoEditComponent implements OnInit {
         console.log(data);
         this.dataService.productos().getAll().subscribe(cat =>{
           this.dataService.providers().cambio.next(cat);
-          this.dataService.providers().mensaje.next("se Actualizo con éxito!");
+          this.dataService.providers().mensaje.next("Se Actualizo con éxito!");
         });
       });
     }else{

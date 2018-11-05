@@ -3,7 +3,7 @@
   <br />
   <form class="container" [formGroup]="form" (ngSubmit)="save()" #f="ngForm">
     <div fxLayout="row" fxLayout.xs="column">
-      <div fxFlex="45%;" fxFlex.xs="50%">
+      <div fxFlex="35%;" fxFlex.xs="50%">
         <mat-form-field class="field-container">
           <input type="text" placeholder="Cliente- Venta" aria-label="nombre" matInput [formControl]="myControlCliente"
             required formControlName="cliente" [matAutocomplete]="autoCliente">
@@ -15,9 +15,14 @@
           <mat-icon matSuffix>perm_identityt</mat-icon>
         </mat-form-field>
       </div>
+      <div fxFlex="10%;" fxFlex.xs="50%">
+        <button mat-mini-fab color="accent" type="button" (click)="openDialog(cli)">
+          <mat-icon>person_add</mat-icon>
+        </button>
+      </div>
+
       <div fxFlex="15%;" fxFlex.xs="50%">
         <mat-form-field class="field-container">
-        
           <input matInput formControlName="fecha" [matDatepicker]="picker" [max]="maxDate" placeholder="Fecha Venta"
             required>
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -48,16 +53,24 @@
     </div>
     <div fxLayout="row" fxLayout.xs="column">
       <div fxFlex="20%;" fxFlex.xs="50%">
+        <!-- <mat-form-field class="field-container">
+          <input matInput placeholder="Numero comprobante"  formControlName="numeroComprobante" maxlength="20">
 
+          <mat-icon matSuffix>list_alt</mat-icon> -->
+
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Numero Comprobante</mat-label>
+          <input matInput maxlength="13" placeholder="Numero Comprobante" formControlName="numeroComprobante">
+        </mat-form-field> 
       </div>
 
     </div>
     <br>
-    <mat-card formArrayName="detalleVenta">
+    <mat-card>
       <div fxLayout="row" fxLayout.xs="column">
         <div fxFlex="50%;" fxFlex.xs="50%">
           <mat-form-field>
-            <input type="text" matInput (keyup)="buscarProducto($event)" placeholder="Buscar Producto por Codigo">
+            <input formControlName="search" type="text" matInput (keyup)="buscarProducto($event)" placeholder="Buscar Producto por Codigo">
             <mat-icon matSuffix>search</mat-icon>
           </mat-form-field>
         </div>
@@ -95,37 +108,41 @@
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
       </mat-table>
-      <div *ngFor="let unit of detalleVenta.controls; let i=index">
-        <div [formGroupName]="i">
-          <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="2%" fxLayoutAlign="start stretch">
-            <div formGroupName="productoT" fxFlex="70%">
-              <mat-form-field fxFlex="20%">
-                <input matInput formControlName="codProducto">
+
+      <mat-divider></mat-divider>
+      <div formArrayName="detalleVenta">
+        <div *ngFor="let unit of detalleVenta.controls; let i=index">
+          <div [formGroupName]="i">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="2%" fxLayoutAlign="start stretch">
+              <div formGroupName="productoT" fxFlex="70%">
+                <mat-form-field fxFlex="20%">
+                  <input matInput formControlName="codProducto">
+                </mat-form-field>
+                <mat-form-field fxFlex="30%">
+                  <input matInput formControlName="unidadMedida.codUnidadmedida">
+                </mat-form-field>
+                <mat-form-field fxFlex="50%">
+                  <input matInput formControlName="nombre">
+                </mat-form-field>
+              </div>
+              <mat-form-field fxFlex="10%" fxFlex.xs="grow">
+                <input matInput type="number" formControlName="cantidad" required>
               </mat-form-field>
-              <mat-form-field fxFlex="30%">
-                <input matInput formControlName="unidadMedida.codUnidadmedida">
+              <mat-form-field fxFlex="10%" fxFlex.xs="grow">
+                <input matInput class="right" type="number" formControlName="precio" required>
               </mat-form-field>
-              <mat-form-field fxFlex="50%">
-                <input matInput formControlName="nombre">
-              </mat-form-field>              
+              <mat-form-field fxFlex="10%" fxFlex.xs="grow">
+                <input matInput class="right" formControlName="importeTotal">
+                <span matPrefix>s/.&nbsp;</span>
+              </mat-form-field>
+              <button type="button" mat-mini-fab color="warn" (click)="eliminar(i)">
+                <mat-icon>delete_sweep</mat-icon>
+              </button>
             </div>
-            <mat-form-field fxFlex="10%" fxFlex.xs="grow">
-              <input matInput type="number" formControlName="cantidad" required>
-            </mat-form-field>
-            <mat-form-field fxFlex="10%" fxFlex.xs="grow">
-              <input matInput class="right" type="number" formControlName="precio" required>
-            </mat-form-field>
-            <mat-form-field fxFlex="10%" fxFlex.xs="grow">
-              <input matInput class="right" formControlName="importeTotal">
-              <span matPrefix>s/.&nbsp;</span>
-            </mat-form-field>
-            <button type="button" mat-mini-fab color="warn" (click)="eliminar(i)">
-              <mat-icon>delete_sweep</mat-icon>
-            </button>
           </div>
         </div>
       </div>
-      <!-- <mat-divider></mat-divider> -->
+      <mat-divider></mat-divider>
 
       <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="end">
         <div fxFlex="0.5%" fxFlex.xs="grow" fxLayoutAlign="end">NETO:</div>

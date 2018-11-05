@@ -2,7 +2,7 @@ import { startWith, map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild} from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { MatTableDataSource, MatPaginator, MatSort, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { DataService } from 'src/app/core/data/data.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Producto } from 'src/app/core/model/producto.model';
@@ -17,6 +17,7 @@ import { Cliente } from 'src/app/core/model/cliente.model';
 })
 
 export class ProformaEditComponent implements OnInit {
+
   id: number;
   form: FormGroup;
   edicion: boolean = false;
@@ -25,11 +26,7 @@ export class ProformaEditComponent implements OnInit {
   filteredOptions: Observable<any[]>;
   myControlCliente: FormControl = new FormControl();
   lista: any[] = [];
-  displayedColumns: string[] = ["producto.codProducto", "producto.nombre", "producto.marcaProducto", "cantidaditem", "precioitem", 'importetotalitem', "acciones"];
-  dataSource: MatTableDataSource<any>;
-  cantidad: number;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  displayedColumns: string[] = ["codProducto", "nombre", "marcaProducto", "cantidaditem", "precioitem", 'importetotalitem', "acciones"];
 
   constructor(
     private dataService: DataService,
@@ -47,11 +44,13 @@ export class ProformaEditComponent implements OnInit {
       const formGroup = this.addDetalleFormControl();
       formGroup.patchValue({
         cantidaditem: data.cantidaditem,
-        precioitem: data.precioitem,
+        precioitem: +data.precioitem.toFixed(2),
+        importetotalitem: +data.importetotalitem.toFixed(2),
         producto: data.producto,
+        productoT: data.producto
         //importetotalitem: +parseFloat(data.cantidaditem) * parseFloat(data.precioitem)
       });
-      this.setData(this.detalleProforma.value);
+      //this.setData(this.detalleProforma.value);
     });
 
     this.route.params.subscribe((params: Params) => {
@@ -64,22 +63,10 @@ export class ProformaEditComponent implements OnInit {
       startWith(''),
       map(val => this.filter(val))
     );
-
-
-  }
-
-  setData(data) {
-    console.log(data);
-    let r = data;
-    this.cantidad = JSON.parse(JSON.stringify(data)).length;
-    this.dataSource = new MatTableDataSource(r);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   eliminar(index) {
     this.detalleProforma.removeAt(index);
-    this.setData(this.detalleProforma.value);
   }
 
   initFormBuilder() {
@@ -117,7 +104,13 @@ export class ProformaEditComponent implements OnInit {
       idDetalle: [null],
       cantidaditem: [0, Validators.compose([Validators.required])],
       precioitem: [0, Validators.compose([Validators.required])],
+      importeTotal: [{ value: '', disabled: true }, Validators.compose([Validators.required])],
       importetotalitem: [0, Validators.compose([Validators.required])],
+      productoT: this.formBuilder.group({
+        codProducto: [{ value: '', disabled: true }],
+        nombre: [{ value: '', disabled: true }],
+        marcaProducto: [{ value: '', disabled: true }]
+      }),
       producto: [null, Validators.compose([Validators.required])]
     });
     this.detalleChange(formGroup);
@@ -130,17 +123,19 @@ export class ProformaEditComponent implements OnInit {
       const cantidad = formGroup.get("cantidaditem").value || 0;
       let Total = parseFloat(value) * parseFloat(cantidad);
       formGroup.patchValue({
-        importetotalitem: Total.toFixed(2)
+        importetotalitem: +Total.toFixed(2),
+        importeTotal: +Total.toFixed(2)
       });
-      this.setData(this.detalleProforma.value);
+      //this.setData(this.detalleProforma.value);
     });
     formGroup.get("cantidaditem").valueChanges.subscribe(value => {
       const precio = formGroup.get("precioitem").value || 0;
       let Total = parseFloat(precio) * parseFloat(value);
       formGroup.patchValue({
-        importetotalitem: Total.toFixed(2)
+        importetotalitem: +Total.toFixed(2),
+        importeTotal: +Total.toFixed(2)
       });
-      this.setData(this.detalleProforma.value);
+      //this.setData(this.detalleProforma.value);
     });
   }
 
@@ -157,9 +152,9 @@ export class ProformaEditComponent implements OnInit {
     this.detalleProforma.controls.forEach(formControl => {
       const precio = formControl.get("precioitem").value || 0;
       const cantidad = formControl.get("cantidaditem").value || 0;
-      let ImporteTotal = parseFloat(precio) * parseFloat(cantidad);
+      let ImporteTotalNeto = parseFloat(precio) * parseFloat(cantidad);
 
-      MontoTotal += ImporteTotal;
+      MontoTotal += ImporteTotalNeto;
 
     });
     this.form.patchValue({
@@ -174,9 +169,11 @@ export class ProformaEditComponent implements OnInit {
 
   filter(val: any) {
     if (val != null && val.idCliente > 0) {
+      this.listaClientes();
       return this.clientes.filter(option =>
         option.persona.nombre.toLowerCase().includes(val.persona.nombre.toLowerCase()) || option.persona.numeroDocumento.includes(val.persona.numeroDocumento));
     } else {
+      this.listaClientes();
       return this.clientes.filter(option =>
         option.persona.nombre.toLowerCase().includes(val.toLowerCase()) || option.persona.numeroDocumento.includes(val));
     }
@@ -240,9 +237,10 @@ export class ProformaEditComponent implements OnInit {
       this.dataService.productos().findProductoByCodProducto($event.target.value)
         .subscribe(data => {
           let detalle = {
-            precioitem: data.precioVenta,
+            precioitem: +data.precioVenta.toFixed(2),
             cantidaditem: 1,
-            importetotalitem: data.precioVenta,
+            importetotalitem: +data.precioVenta.toFixed(2),
+            importeTotal: +data.precioVenta.toFixed(2),
             producto: data
           }
           this.dataService.providers().dialogo.next(detalle);
@@ -260,7 +258,7 @@ export class ProformaEditComponent implements OnInit {
       this.dataService.proformas().update(this.form.value).subscribe(data => {
         this.dataService.proformas().getAll().subscribe(p => {
           this.dataService.providers().cambio.next(p);
-          this.dataService.providers().mensaje.next('se modifico')
+          this.dataService.providers().mensaje.next('Se modifico')
         });
       });
     } else {
@@ -274,6 +272,8 @@ export class ProformaEditComponent implements OnInit {
     }
     this.cancel();
   }
+
+
 }
 
 
