@@ -1,0 +1,55 @@
+<h3 mat-dialog-title>Registro de Cliente</h3>
+<mat-dialog-content>
+  <form class="example-form" [formGroup]="form" #f="ngForm">
+    <div formGroupName="cliente">
+
+    </div>
+    <div formGroupName="persona">
+      <div mat-dialog-content>
+        <mat-form-field>
+          <mat-label>Nombre y Apellidos</mat-label>
+          <input matInput placeholder="Nombre y Apellido" required formControlName="nombre" maxlength="50">
+        </mat-form-field>
+      </div>
+      <div mat-dialog-content>
+        <mat-form-field>
+          <mat-label>Tipo Documento</mat-label>
+          <mat-select placeholder="Tipo Documento" formControlName="tipoDocumeto">
+            <mat-option *ngFor="let tipoDocumeto of tipodocumentos" [value]="tipoDocumeto">
+              {{tipoDocumeto.abreviatura}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div mat-dialog-content>
+        <mat-form-field>
+          <mat-label>Numero Documento</mat-label>
+          <input matInput placeholder="Numero Documento" required formControlName="numeroDocumento" type="number"
+            minLength="8" maxlength="20">
+        </mat-form-field>
+      </div>
+      <div mat-dialog-content>
+        <mat-form-field>
+          <mat-label>N° Celular</mat-label>
+          <input matInput placeholder="N° Celular" required formControlName="telfMovil" type="number" maxlength="20">
+        </mat-form-field>
+      </div>
+      <div mat-dialog-content>
+        <mat-form-field>
+          <mat-label>Direccion</mat-label>
+          <input matInput placeholder="Direccion" required formControlName="direccion" maxlength="20">
+        </mat-form-field>
+      </div>
+      <div mat-dialog-content>
+        <mat-form-field>
+          <mat-label>Correo Electronico</mat-label>
+          <input matInput placeholder="Correo Electronico" required formControlName="email" maxlength="20">
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<div mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="f.invalid">Aceptar</button>
+  <button mat-raised-button color="warn" (click)="cancelar()">Cancelar</button>
+</div>

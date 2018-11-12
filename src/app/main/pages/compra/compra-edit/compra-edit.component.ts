@@ -26,7 +26,6 @@ export class CompraEditComponent implements OnInit {
   filteredOptions: Observable<any[]>;
   myControlProveedor: FormControl = new FormControl();
   displayedColumns: string[] = ['codProducto', 'nombre', 'marcaProducto', 'cantidaditem', 'precioItem', 'importeTotalItem', 'acciones'];
-
   constructor(
     private dataService: DataService,
     private route: ActivatedRoute,
@@ -80,6 +79,7 @@ export class CompraEditComponent implements OnInit {
       sucursal: [null, Validators.compose([Validators.required])],
       guiaRemision: [null, Validators.compose([Validators.required])],
       proveedor: this.myControlProveedor,
+      search: [null],//temporal
       detalleCompra: this.formBuilder.array([], Validators.compose([]))
     });
 
@@ -243,6 +243,7 @@ export class CompraEditComponent implements OnInit {
             productoT: data
           }
           this.dataService.providers().dialogo.next(detalle);
+          this.form.patchValue({ search: "" });
         },
           error => {
             this.dataService.providers().mensaje.next('Producto no encontrado')
@@ -250,3 +251,4 @@ export class CompraEditComponent implements OnInit {
     }
   }
 }
+
