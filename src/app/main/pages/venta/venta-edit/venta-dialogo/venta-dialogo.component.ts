@@ -27,7 +27,7 @@ export class VentaDialogoComponent implements OnInit {
   }
   setData(data) {
     if (data) {
-      data.forEach(element => { element.cantidaditem = 1; });
+      data.forEach(element => { element.cantidad = 1; });
       let r = data;
       this.cantidad = JSON.parse(JSON.stringify(data)).length;
       this.dataSource = new MatTableDataSource(r);
