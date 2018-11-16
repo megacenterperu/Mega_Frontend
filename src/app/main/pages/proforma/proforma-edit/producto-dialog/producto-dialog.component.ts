@@ -38,9 +38,10 @@ export class ProductoDialogComponent implements OnInit {
   agregar(data) {
     this.dataService.productos().findById(data.idProducto).subscribe(r => {
     let detalle={
-      producto:r,
       cantidaditem:data.cantidad,
-      precioitem:data.precioVenta      
+      precioitem:data.precioVenta,
+      importetotalitem: data.precioVenta * data.cantidad,
+      producto:r      
     }      
       this.dataService.providers().dialogo.next(detalle);
     });

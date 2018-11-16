@@ -1,0 +1,8 @@
+<div class="page-layout blank p-24" megaPerfectScrollbar>
+    <mat-toolbar>Reporte</mat-toolbar>
+    <button mat-button color="primary" (click)="generarReporte()" >Mostrar PDF</button>
+    <button mat-button color="primary" (click)="descargarReporte()">Descargar PDF</button>
+    <button mat-button color="primary" (click)="Print()">Imprimir</button>
+    <pdf-viewer [src]="pdfSrc" [render-text]="true" style="display: block;"></pdf-viewer>
+</div>
+

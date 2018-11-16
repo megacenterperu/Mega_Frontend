@@ -47,7 +47,7 @@ export class NavigationModel {
             {
                 'id': 'persona',//el nombre del grupo o menu donde van estar
                 'title': 'COMPRAS',
-                'type': 'group',
+                'type': 'collapse',
                 'children': [
                     {
                         'id': 'proveedor',
@@ -149,6 +149,20 @@ export class NavigationModel {
                         'type': 'item',
                         'icon': 'person_add',
                         'url': '/mega/ventas/personal',
+                    }
+                ]
+            },
+            {
+                'id': 'reportes',//el nombre del grupo o menu donde van estar
+                'title': 'REPORTES',
+                'type': 'collapse',
+                'children': [
+                    {
+                        'id': 'reporteproforma',
+                        'title': 'REPORTE PROFORMA',
+                        'type': 'item',
+                        'icon': 'people',
+                        'url': '/mega/ventas/reportes'
                     }
                 ]
             }

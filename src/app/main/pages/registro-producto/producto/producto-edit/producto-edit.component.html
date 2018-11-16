@@ -74,6 +74,15 @@
           </mat-select>
         </mat-form-field>
       </div>
+      <div fxFlex="25%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container">
+          <mat-select placeholder="Estado Producto">
+            <mat-option>NINGUNO</mat-option>
+            <!--cntrol+k+c -->
+            <mat-option *ngFor="let estadoprod of listestados" [value]="estadoprod">{{estadoprod}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
     </div>
 
     <div fxLayout="row" fxLayout.xs="column">
