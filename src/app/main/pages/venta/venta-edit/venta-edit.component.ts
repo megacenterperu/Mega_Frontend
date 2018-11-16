@@ -1,3 +1,4 @@
+import { Cliente } from 'src/app/core/model/cliente.model';
 import { startWith, map } from 'rxjs/operators';
 import { Params } from '@angular/router';
 
@@ -10,6 +11,7 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Producto } from 'src/app/core/model/producto.model';
 import { VentaDialogoComponent } from './venta-dialogo/venta-dialogo.component';
+import { ClienteventaDialoComponent } from './clienteventa-dialo/clienteventa-dialo.component';
 
 
 @Component({
@@ -72,8 +74,12 @@ export class VentaEditComponent implements OnInit {
       igv: [0, Validators.compose([Validators.required])],
       tipocomprobante: [null, Validators.compose([Validators.required])],
       tipopago: [null, Validators.compose([Validators.required])],
+      numeroComprobante: [null, Validators.compose([Validators.required])],
+      numero: [{ value: '', disabled: true }, Validators.compose([Validators.required])],
       cliente: this.myControlCliente,
+      search: [null],//temporal
       detalleVenta:this.formBuilder.array([],Validators.compose([]))
+
     });
     this.detalleVenta.valueChanges.subscribe(value => {
       this.calcularVentaTotales();
@@ -178,6 +184,14 @@ formGroup.get("cantidad").valueChanges.subscribe(value =>{
     });
   }
 
+  generateNumberComp(){
+    this.dataService.ventas().getNumero().subscribe(data=>{
+    this.form.patchValue({numeroComprobante:data.numeroComprobante,numero:data.numeroComprobante});
+    },error=>{     
+    console.error(error);
+    });
+  }
+
   AgregarProducto() {
    let producto = new Producto();
     let dialogRef = this.dialog.open(VentaDialogoComponent, {
@@ -194,6 +208,33 @@ formGroup.get("cantidad").valueChanges.subscribe(value =>{
       this.router.navigate(['../'], { relativeTo: this.route })
     }
   }
+  openDialog(cliente: Cliente): void {
+    let cli = cliente != null ? cliente : new Cliente();
+    let dialogRef = this.dialog.open(ClienteventaDialoComponent, {
+      width: '250px',   
+      disableClose: true,   
+      data: cli      
+    });
+  }
+  save() {
+    if (!this.detalleVenta.valid) return;
+    if (this.edicion) {
+      this.dataService.ventas().update(this.form.value).subscribe(data => {
+        this.dataService.ventas().getAll().subscribe(p => {
+          this.dataService.providers().cambio.next(p);
+          this.dataService.providers().mensaje.next('se modifico')
+        });
+      });
+    } else {
+      this.dataService.ventas().create(this.form.value).subscribe(data => {
+        this.dataService.ventas().getAll().subscribe(p => {
+          this.dataService.providers().cambio.next(p);
+          this.dataService.providers().mensaje.next('se registro');
+        });
+      });
+    }
+    this.cancel();
+  }
 
   buscarProducto($event) {
     if ($event.key === "Enter") {
@@ -208,6 +249,7 @@ formGroup.get("cantidad").valueChanges.subscribe(value =>{
             productoT: data
           }
           this.dataService.providers().dialogo.next(detalle);
+          this.form.patchValue({ search: "" });
         },
           error => {
             this.dataService.providers().mensaje.next('Producto no encontrado')

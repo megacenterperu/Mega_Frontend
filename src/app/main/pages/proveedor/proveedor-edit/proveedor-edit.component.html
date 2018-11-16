@@ -1,44 +1,62 @@
 <div class="page-layout blank p-24" megaPerfectScrollbar>
 
-  <mat-toolbar >Ingrese los datos del proveedor</mat-toolbar>
+  <mat-toolbar>Registro de Proveedor</mat-toolbar>
 
   <br />
 
   <form class="container" [formGroup]="form" (ngSubmit)="save()" #f="ngForm">
+    <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="30%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container">
+          <input type="text" placeholder="Nombre del representante" aria-label="nombre" matInput [formControl]="myControlPersona"
+            formControlName="persona" [matAutocomplete]="autoPersona">
+          <mat-autocomplete #autoPersona="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngFor="let pe of filteredOptions | async" [value]="pe">
+              {{pe.numeroDocumento}} {{pe.nombre}}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-icon matSuffix>perm_identityt</mat-icon>
+        </mat-form-field>
+      </div>
+      <div fxFlex="30%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container">
+          <input matInput placeholder="Nombre Comercial" required formControlName="nombreComercial" maxlength="20">
+          <mat-icon matSuffix>store</mat-icon>
+        </mat-form-field>
+      </div>
+      <div fxFlex="40%;" fxFlex.xs="50%">
+      </div>
+    </div>
 
-    <mat-form-field>
-      <input type="text" placeholder="nombre del representante" aria-label="nombre" matInput [formControl]="myControlPersona"
-        formControlName="persona" [matAutocomplete]="autoPersona">
-      <mat-autocomplete #autoPersona="matAutocomplete" [displayWith]="displayFn">
-        <mat-option *ngFor="let pe of filteredOptions | async" [value]="pe">
-          {{pe.numeroDocumento}} {{pe.nombre}}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
+    <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="30%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container">
+          <input matInput placeholder="Razon Social" required formControlName="razonSocial" maxlength="20">
+          <mat-icon matSuffix>store</mat-icon>
+        </mat-form-field>
+      </div>
+      <div fxFlex="30%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container">
+          <input matInput placeholder="Telf Empresa" required formControlName="telfEmpresa" #telfEmpresa maxlength="9">
+          <mat-icon matSuffix>call</mat-icon>
+          <mat-hint align="end"> Maximum {{telfEmpresa.value.length||0}}/9
+            </mat-hint>
+        </mat-form-field>
+      </div>
+      <div fxFlex="40%;" fxFlex.xs="50%">
+      </div>
+    </div>
 
-    <mat-form-field>
-      <input matInput placeholder="nombre Comercial" required formControlName="nombreComercial" maxlength="20">
-    </mat-form-field>
-
-
-    <mat-form-field>
-      <input matInput placeholder="razon Social" required formControlName="razonSocial" maxlength="20">
-    </mat-form-field>
-
-    <mat-form-field>
-      <input matInput placeholder="telf Empresa" required formControlName="telfEmpresa" type="number" maxlength="20">
-      <mat-icon matPrefix>call</mat-icon>
-    </mat-form-field>
-
-
-    <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
-      <mat-icon>done</mat-icon>
-      <span>Aceptar</span>
-    </button>
-    <button mat-raised-button color="accent" (click)="cancel()" type="button">
-      <mat-icon>close</mat-icon>
-      <span>Cancelar</span>
-    </button>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
+          <mat-icon>done</mat-icon>
+          <span>Aceptar</span>
+        </button>
+        <button mat-raised-button color="accent" (click)="cancel()" type="button">
+          <mat-icon>close</mat-icon>
+          <span>Cancelar</span>
+        </button>
+      </mat-card-actions>
   </form>
 
   <br />

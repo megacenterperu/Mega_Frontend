@@ -5,6 +5,7 @@ import { VentaEditComponent } from './venta-edit/venta-edit.component';
 import { VentaRoutingModule } from './venta-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { VentaDialogoComponent } from './venta-edit/venta-dialogo/venta-dialogo.component';
+import { ClienteventaDialoComponent } from './venta-edit/clienteventa-dialo/clienteventa-dialo.component';
 
 @NgModule({
   imports: [
@@ -12,6 +13,6 @@ import { VentaDialogoComponent } from './venta-edit/venta-dialogo/venta-dialogo.
     SharedModule,
     VentaRoutingModule
   ],
-  declarations: [VentaListComponent, VentaEditComponent, VentaDialogoComponent]
+  declarations: [VentaListComponent, VentaEditComponent, VentaDialogoComponent, ClienteventaDialoComponent]
 })
 export class VentaModule { }

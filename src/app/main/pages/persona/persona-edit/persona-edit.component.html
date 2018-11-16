@@ -1,69 +1,76 @@
 <div class="page-layout blank p-24" megaPerfectScrollbar>
-  <mat-toolbar>Ingrese los datos del persona</mat-toolbar>
+  <mat-toolbar>REGISTRAR PERSONA</mat-toolbar>
 
   <br />
 
   <form class="container" [formGroup]="form" (ngSubmit)="save()" #f="ngForm">
+    <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="25%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container">
+          <input matInput placeholder="Nombre y Apellido" required formControlName="nombre" maxlength="50">
+        </mat-form-field>
+      </div>
 
-    <mat-form-field>
-      <input matInput placeholder="Nombre y Apellido" required formControlName="nombre" maxlength="50">
-    </mat-form-field>
+      <div fxFlex="25%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container">
+          <mat-select placeholder="Tipo Documento" formControlName="tipoDocumeto" [compareWith]="compareTipoDocumento">
+            <mat-option *ngFor="let Tipodocumento of tipodocumentos" [value]="Tipodocumento">
+              {{Tipodocumento.abreviatura}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-    <table class="example-full-width" cellspacing="0">
-      <tr>
-        <td>
-          <mat-form-field class="example-full-width">
-            <mat-select placeholder="Tipo Documento" formControlName="tipoDocumeto" [compareWith]="compareTipoDocumento">
-              <mat-option *ngFor="let Tipodocumento of tipodocumentos" [value]="Tipodocumento">
-                {{Tipodocumento.abreviatura}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </td>
-        <td>
-          <mat-form-field class="example-full-width">
-            <input matInput placeholder="Numero Documento" required formControlName="numeroDocumento" minLength="8"
-              maxlength="20">
-          </mat-form-field>
-        </td>
+      <div fxFlex="50%;" fxFlex.xs="50%">
+      </div>
+    </div>
 
-        <td>
-          <mat-form-field class="example-full-width">
-            <input matInput placeholder="N° Celular" required formControlName="telfMovil" #telfMovil type="number"
-              maxlength="9">
-            <mat-hint align="end"> Maximum {{telfMovil.value.length||0}}/9
-            </mat-hint>
-          </mat-form-field>
-        </td>
-      </tr>
-    </table>
+    <div fxLayout="row" fxLayout.xs="column">
 
+      <div fxFlex="25%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container">
+          <input matInput placeholder="N° Celular" required formControlName="telfMovil" #telfMovil maxlength="9">
+          <mat-hint align="end"> Maximum {{telfMovil.value.length||0}}/9
+          </mat-hint>
+        </mat-form-field>
+      </div>
+      <div fxFlex="25%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container">
+          <input matInput placeholder="Numero Documento" required formControlName="numeroDocumento" #numeroDocumento
+            maxlength="8">
+          <mat-hint align="end"> Maximum {{numeroDocumento.value.length||0}}/8
+          </mat-hint>
+        </mat-form-field>
+      </div>
 
-    <table class="example-full-width" cellspacing="0">
-      <tr>
-        <td>
-          <mat-form-field class="example-full-width">
-            <input matInput placeholder="Direccion" required formControlName="direccion" maxlength="20">
-          </mat-form-field>
-        </td>
-        <td>
-          <mat-form-field class="example-full-width">
-            <input matInput placeholder="Correo Electronico" required formControlName="email" maxlength="20">
-          </mat-form-field>
-        </td>
+      <div fxFlex="50%;" fxFlex.xs="50%">
+      </div>
+    </div>
 
-      </tr>
-    </table>
-    
-   
-    <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
-      <mat-icon>done</mat-icon>
-      <span>Aceptar</span>
-    </button>
-    <button mat-raised-button color="accent" (click)="cancel()" type="button">
-      <mat-icon>close</mat-icon>
-      <span>Cancelar</span>
-    </button>
+    <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="25%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container">
+          <input matInput placeholder="Direccion" required formControlName="direccion" maxlength="20">
+        </mat-form-field>
+      </div>
+      <div fxFlex="25%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container">
+          <input matInput placeholder="Correo Electronico" required formControlName="email" maxlength="20">
+        </mat-form-field>
+      </div>
+      <div fxFlex="50%;" fxFlex.xs="50%">
+      </div>
+    </div>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
+        <mat-icon>done</mat-icon>
+        <span>Aceptar</span>
+      </button>
+      <button mat-raised-button color="accent" (click)="cancel()" type="button">
+        <mat-icon>close</mat-icon>
+        <span>Cancelar</span>
+      </button>
+    </mat-card-actions>
   </form>
 
   <br />
