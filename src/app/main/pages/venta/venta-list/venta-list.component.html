@@ -3,7 +3,7 @@
   <mat-toolbar>Lista De Ventas</mat-toolbar>
   <div>
       <mat-form-field>
-          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar proveedor">
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar Ventas">
           <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
       <button mat-fab color="warn" style="float:right" routerLink='./nuevo'>
@@ -25,7 +25,12 @@
       <ng-container matColumnDef="montoTotal">
           <mat-header-cell *matHeaderCellDef mat-sort-header> MONTO TOTAL </mat-header-cell>
           <mat-cell *matCellDef="let element"> {{element.montoTotal}} </mat-cell>
-      </ng-container>       
+      </ng-container>  
+
+      <ng-container matColumnDef="numeroComprobante">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> NUMERO COMPROBANTE </mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.serieComprobante}}-{{element.numeroComprobante}} </mat-cell>
+    </ng-container>       
 
       <ng-container matColumnDef="acciones">
           <mat-header-cell *matHeaderCellDef>ACCIONES</mat-header-cell>

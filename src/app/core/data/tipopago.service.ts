@@ -1,20 +1,17 @@
+import { Observable } from 'rxjs';
 import { GenericService } from './generic.service';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-const basePath = "compras";
+const basePath = "tipopagos";
 @Injectable({
   providedIn: 'root'
 })
-export class CompraService {
+export class TipopagoService {
 
-  constructor(private generic: GenericService) { }
+   
+  constructor(private generic:GenericService) { }
 
   getAll(): Observable<any> {
     return this.generic.all(basePath).get();
-  }
-  
-  getAllDetalle(id: number): Observable<any> {
-    return this.generic.all(basePath).one("compra-detalle", id).get();
   }
 
   getAllPageable(p: number, s: number): Observable<any> {
@@ -28,13 +25,5 @@ export class CompraService {
   create(data: any): Observable<any> {
     return this.generic.all(basePath).all("registrar").post(data);
   }
-
-  update(data: any): Observable<any> {
-    return this.generic.all(basePath).all("actualizar").put(data);
-  }
-
-  delete(id: number): Observable<any> {
-    return this.generic.all(basePath).one("eliminar", id).delete();
-  }
-
+ 
 }

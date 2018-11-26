@@ -37,7 +37,6 @@
         <input matInput name="precioCompra" [(ngModel)]="element.precioCompra">          
       </mat-cell>
     </ng-container>   
-
          
     <ng-container matColumnDef="acciones">
       <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
@@ -51,5 +50,7 @@
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
   <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-  <button mat-raised-button color="Warn" (click)="cerrar()" type="button">Cerrar</button>
+  
+  <button mat-raised-button color="accent" (click)="cerrar()" type="button">Cerrar</button>
+
 </div>

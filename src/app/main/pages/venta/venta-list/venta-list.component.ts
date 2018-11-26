@@ -10,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VentaListComponent implements OnInit {
   lista: any[] = [];
-  displayedColumns: string[] = ['cliente.nombre', 'fecha', 'montoTotal', 'acciones'];
+  displayedColumns: string[] = ['cliente.nombre', 'fecha', 'montoTotal','numeroComprobante','acciones'];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
   @ViewChild(MatPaginator) paginator: MatPaginator;
