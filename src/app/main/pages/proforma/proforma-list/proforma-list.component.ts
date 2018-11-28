@@ -40,4 +40,16 @@ export class ProformaListComponent implements OnInit {
     this.dataSource.filter = filterValue;
   }
 
+  PrintDetalle(){
+    this.dataService.proformas().generarReporteImprimir().subscribe((response) => {
+      var blob = new Blob([response], {type: 'application/pdf'});
+      const blobUrl = URL.createObjectURL(blob);
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = blobUrl;
+        document.body.appendChild(iframe);
+        iframe.contentWindow.print();
+    });
+  }
+
 }

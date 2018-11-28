@@ -48,6 +48,14 @@ export class ProformaService {
     });
   }
 
+  generarReporteImprimir(){
+    const proforma = this.generic.all(basePath).all("generarReporteImprimir");
+    return proforma.http.get(proforma.path,{
+      responseType: 'blob',
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    });
+  }
+
   descargarReporte() {
     const cliente = this.generic.all(basePath).all("generarReporte");
     cliente.http.get(cliente.path, { headers: new HttpHeaders(), responseType: "blob" })

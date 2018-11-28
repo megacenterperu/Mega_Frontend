@@ -8,6 +8,9 @@
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
     </div>
+    <div fxFlex="20%;" fxFlex.xs="50%">
+      <button mat-button color="primary" (click)="PrintDetalle()">Imprimir</button>
+    </div>
   </div>
   <div class="mat-elevation-z8">
     <mat-table [dataSource]="dataSource" matSort>
