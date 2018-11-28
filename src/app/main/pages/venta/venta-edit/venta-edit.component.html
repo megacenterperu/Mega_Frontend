@@ -42,29 +42,16 @@
       </div>
       <div fxFlex="20%;" fxFlex.xs="50%">
         <mat-form-field class="field-container">
-          <mat-select placeholder="Tipo pago " required formControlName="tipocomprobante">
-            <mat-option *ngFor="let TipoCom of tipocomprobantes" [value]="TipoCom">
-              {{TipoCom.descripcion}}
+          <mat-select placeholder="Tipo pago " required formControlName="tipopago">
+            <mat-option *ngFor="let TipoP of tipopagos" [value]="TipoP">
+              {{TipoP.nombre}}
             </mat-option>
           </mat-select>
           <mat-icon matSuffix>arrow_downward</mat-icon>
         </mat-form-field>
       </div>
     </div>
-    <div fxLayout="row" fxLayout.xs="column">
-      <div fxFlex="20%;" fxFlex.xs="50%">
-        <!-- <mat-form-field class="field-container">
-          <input matInput placeholder="Numero comprobante"  formControlName="numeroComprobante" maxlength="20">
 
-          <mat-icon matSuffix>list_alt</mat-icon> -->
-
-        <mat-form-field class="field-container" appearance="outline">
-          <mat-label>Numero Comprobante</mat-label>
-          <input matInput maxlength="13" placeholder="Numero Comprobante" formControlName="numeroComprobante">
-        </mat-form-field> 
-      </div>
-
-    </div>
     <br>
     <mat-card>
       <div fxLayout="row" fxLayout.xs="column">
@@ -85,13 +72,13 @@
       </div>
       <mat-table>
         <ng-container matColumnDef="codProducto">
-          <mat-header-cell *matHeaderCellDef fxFlex="12%"> CODIGO </mat-header-cell>
-        </ng-container>
-        <ng-container matColumnDef="unidadMedida.codUnidadmedida">
-          <mat-header-cell *matHeaderCellDef fxFlex="20%"> UNIDAD MEDIDA </mat-header-cell>
-        </ng-container>
+          <mat-header-cell *matHeaderCellDef fxFlex="10%"> CODIGO </mat-header-cell>
+        </ng-container>       
         <ng-container matColumnDef="nombre">
-          <mat-header-cell *matHeaderCellDef fxFlex="30%"> PRODUCTO / SERVICIO </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef fxFlex="38%"> PRODUCTO / SERVICIO </mat-header-cell>
+        </ng-container>
+         <ng-container matColumnDef="unidadMedida">
+          <mat-header-cell *matHeaderCellDef fxFlex="14%"> UNIDAD MEDIDA </mat-header-cell>
         </ng-container>
         <ng-container matColumnDef="cantidad">
           <mat-header-cell *matHeaderCellDef fxFlex="10%">CANTIDAD</mat-header-cell>
@@ -114,17 +101,17 @@
         <div *ngFor="let unit of detalleVenta.controls; let i=index">
           <div [formGroupName]="i">
             <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="2%" fxLayoutAlign="start stretch">
-              <div formGroupName="productoT" fxFlex="70%">
-                <mat-form-field fxFlex="20%">
+              <div formGroupName="productoT" fxFlex="60%">
+                <mat-form-field fxFlex="30%">
                   <input matInput formControlName="codProducto">
                 </mat-form-field>
-                <mat-form-field fxFlex="30%">
-                  <input matInput formControlName="unidadMedida.codUnidadmedida">
-                </mat-form-field>
-                <mat-form-field fxFlex="50%">
+                <mat-form-field fxFlex="70%">
                   <input matInput formControlName="nombre">
                 </mat-form-field>
               </div>
+              <mat-form-field fxFlex="10%">
+                <input matInput formControlName="unidadMedida">
+              </mat-form-field>
               <mat-form-field fxFlex="10%" fxFlex.xs="grow">
                 <input matInput type="number" formControlName="cantidad" required>
               </mat-form-field>

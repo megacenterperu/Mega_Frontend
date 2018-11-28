@@ -11,22 +11,22 @@
     </div>
     <div class="mat-elevation-z8">
         <mat-table [dataSource]="dataSource" matSort>
-           
+
             <ng-container matColumnDef="persona.nombre">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> REPRESENTANTE LEGAL </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element.persona.nombre}} </mat-cell>
             </ng-container>
-            
+
             <ng-container matColumnDef="nombreComercial">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> NOMBRE COMERCIAL </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element.nombreComercial}} </mat-cell>
             </ng-container>
-            
+
             <ng-container matColumnDef="razonSocial">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>RAZON SOCIAL </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element.razonSocial}} </mat-cell>
             </ng-container>
-            
+
             <ng-container matColumnDef="telfEmpresa">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> TELEFONO </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element.telfEmpresa}} </mat-cell>
@@ -35,10 +35,10 @@
             <ng-container matColumnDef="acciones">
                 <mat-header-cell *matHeaderCellDef>ACCIONES</mat-header-cell>
                 <mat-cell *matCellDef="let row">
-                    <button mat-button color="primary" [routerLink]="['./edicion', row.idProveedor]">
-                    <mat-icon>edit</mat-icon>
+                    <button type="button" mat-mini-fab color="accent" [routerLink]="['./edicion', row.idProveedor]">
+                        <mat-icon>edit</mat-icon>
                     </button>
-                    <button mat-button color="accent" (click)="eliminar(row.idProveedor)">
+                    <button type="button" mat-mini-fab color="accent" (click)="eliminar(row.idProveedor)">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </mat-cell>
@@ -49,5 +49,5 @@
         <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
     </div>
 
-    
+
 </div>

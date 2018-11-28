@@ -28,7 +28,7 @@ export class VentaEditComponent implements OnInit {
   tipopagos: any[] = [];
   filteredOptions: Observable<any[]>;
   myControlCliente: FormControl = new FormControl();
-  displayedColumns: string[] = ['codProducto','unidadMedida.codUnidadmedida', 'nombre' , 'cantidad', 'precio', 'importeTotalItem', 'acciones'];
+  displayedColumns: string[] = ['codProducto', 'nombre', 'unidadMedida', 'cantidad', 'precio', 'importeTotalItem', 'acciones'];
 
   constructor(private dataService: DataService,
     private route: ActivatedRoute,
@@ -39,16 +39,18 @@ export class VentaEditComponent implements OnInit {
   ngOnInit() {
     this.initFormBuilder();
     this.listaClientes();
-    this.listaTipoComprobante()
+    this.listaTipoComprobante();
+    this.listaTipoPago();
     this.dataService.providers().dialogo.subscribe(data => {
       const formGroup = this.addDetalleFormControl();
-    formGroup.patchValue({
-      precio: +data.precio.toFixed(2),
-      cantidad: data.cantidad,
-      importeTotalItem: +data.importeTotalItem.toFixed(2),
-      producto: data.producto,
-      productoT: data.producto
-       });
+      formGroup.patchValue({
+        precio: +data.precio.toFixed(2),
+        cantidad: data.cantidad,
+        importeTotalItem: +data.importeTotalItem.toFixed(2),
+        producto: data.producto,
+        productoT: data.producto,
+        unidadMedida: data.producto.unidadMedida.descripcion
+      });
     });
     this.route.params.subscribe((params: Params) => {
       this.id = params['id'];
@@ -67,18 +69,19 @@ export class VentaEditComponent implements OnInit {
   }
   initFormBuilder() {
     this.form = this.formBuilder.group({
-      idVenta: [null],     
+      idVenta: [null],
       fecha: [new Date(), Validators.compose([Validators.required])],
       montoTotal: [0, Validators.compose([Validators.required])],
       subTotal: [0, Validators.compose([Validators.required])],
       igv: [0, Validators.compose([Validators.required])],
       tipocomprobante: [null, Validators.compose([Validators.required])],
       tipopago: [null, Validators.compose([Validators.required])],
-      numeroComprobante: [null, Validators.compose([Validators.required])],
-      numero: [{ value: '', disabled: true }, Validators.compose([Validators.required])],
+      numeroComprobante: [null],
+      serieComprobante: [null],
+      estadoVenta:[0],
       cliente: this.myControlCliente,
       search: [null],//temporal
-      detalleVenta:this.formBuilder.array([],Validators.compose([]))
+      detalleVenta: this.formBuilder.array([], Validators.compose([]))
 
     });
     this.detalleVenta.valueChanges.subscribe(value => {
@@ -86,68 +89,68 @@ export class VentaEditComponent implements OnInit {
     });
   }
 
-  addDetalleFormControl() : FormGroup{
-  const formGroup=this.formBuilder.group({
-    idDetalleVenta:[null],
-    cantidad:[0, Validators.compose([Validators.required])],
-    precio:[0, Validators.compose([Validators.required])],
-    importeTotal:[{ value: '', disabled: true }, Validators.compose([Validators.required])],
-    importeTotalItem: [null, Validators.compose([Validators.required])],
-    productoT: this.formBuilder.group({
-      codProducto: [{ value: '', disabled: true }],
-      nombre: [{ value: '', disabled: true }],
-      unidadMedida: [{ value: '', disabled: true }]
-    }),
-    producto: [null, Validators.compose([Validators.required])]    
-  });
-  this.detalleChange(formGroup);
-  this.detalleVenta.push(formGroup);
-  return formGroup;
+  addDetalleFormControl(): FormGroup {
+    const formGroup = this.formBuilder.group({
+      idDetalleVenta: [null],
+      cantidad: [0, Validators.compose([Validators.required])],
+      precio: [0, Validators.compose([Validators.required])],
+      importeTotal: [{ value: '', disabled: true }, Validators.compose([Validators.required])],
+      importeTotalItem: [null, Validators.compose([Validators.required])],
+      productoT: this.formBuilder.group({
+        codProducto: [{ value: '', disabled: true }],
+        nombre: [{ value: '', disabled: true }]
+      }),
+      unidadMedida: [{ value: '', disabled: true }],
+      producto: [null, Validators.compose([Validators.required])]
+    });
+    this.detalleChange(formGroup);
+    this.detalleVenta.push(formGroup);
+    return formGroup;
   }
 
-  detalleChange(formGroup:FormGroup){
-formGroup.get("precio").valueChanges.subscribe(value =>{
-  const precio=value||0;
-  const cantidad=formGroup.get("cantidad").value||0;
-  let subTotalv=parseFloat(precio)*parseFloat(cantidad);
-  formGroup.patchValue({
-    importeTotalItem:+subTotalv.toFixed(2),
-    importeTotal:+subTotalv.toFixed(2)
-  });
-});
-formGroup.get("cantidad").valueChanges.subscribe(value =>{
-  const precio=formGroup.get("precio").value||0;
-  const cantidad=value||0;
-  let subTotalv=parseFloat(precio)*parseFloat(cantidad);
-  formGroup.patchValue({
-    importeTotalItem:+subTotalv.toFixed(2),
-    importeTotal:+subTotalv.toFixed(2)
-});
-});
+  detalleChange(formGroup: FormGroup) {
+    formGroup.get("precio").valueChanges.subscribe(value => {
+      const precio = value || 0;
+      const cantidad = formGroup.get("cantidad").value || 0;
+      let subTotalv = parseFloat(precio) * parseFloat(cantidad);
+      formGroup.patchValue({
+        importeTotalItem: +subTotalv.toFixed(2),
+        importeTotal: +subTotalv.toFixed(2)
+      });
+    });
+    formGroup.get("cantidad").valueChanges.subscribe(value => {
+      const precio = formGroup.get("precio").value || 0;
+      const cantidad = value || 0;
+      let subTotalv = parseFloat(precio) * parseFloat(cantidad);
+      formGroup.patchValue({
+        importeTotalItem: +subTotalv.toFixed(2),
+        importeTotal: +subTotalv.toFixed(2)
+      });
+    });
   }
 
   get detalleVenta(): FormArray {
     return this.form.get('detalleVenta') as FormArray;
   }
 
-  calcularVentaTotales(){
-    let total=0;
-    let igv=0;
-    let neto =0;
-    this.detalleVenta.controls.forEach(fromControl =>{
-      const precio=fromControl.get("precio").value ||0;
-      const cantidad=fromControl.get("cantidad").value ||0;
-      let subTotal=parseFloat(precio)*parseFloat(cantidad);
-      const igvItem= subTotal*0.18;
-      neto+=subTotal;
-      igv +=igvItem;
-      const totalItem=subTotal + igv;
+  calcularVentaTotales() {
+    let total = 0;
+    let igv = 0;
+    let neto = 0;
+    this.detalleVenta.controls.forEach(fromControl => {
+      const precio = fromControl.get("precio").value || 0;
+      const cantidad = fromControl.get("cantidad").value || 0;
+      let subTotal = parseFloat(precio) * parseFloat(cantidad);
+      const igvItem = subTotal * 0.18;
+      neto += subTotal;
+      igv += igvItem;
+      const totalItem = subTotal + igv;
       total += totalItem;
     });
     this.form.patchValue({
-      montoTotal:+total.toFixed(2),
+      montoTotal: +total.toFixed(2),
       subTotal: +neto.toFixed(2),
-      igv:+igv.toFixed(2)
+      igv: +igv.toFixed(2)
     });
   }
 
@@ -161,7 +164,7 @@ formGroup.get("cantidad").valueChanges.subscribe(value =>{
 
   listaClientes() {
     this.dataService.clientes().getAll().subscribe(data => {
-      this.clientes=data;
+      this.clientes = data;
     });
   }
   filter(val: any) {
@@ -184,23 +187,21 @@ formGroup.get("cantidad").valueChanges.subscribe(value =>{
     });
   }
 
-  generateNumberComp(){
-    this.dataService.ventas().getNumero().subscribe(data=>{
-    this.form.patchValue({numeroComprobante:data.numeroComprobante,numero:data.numeroComprobante});
-    },error=>{     
-    console.error(error);
+  listaTipoPago() {
+    this.dataService.tipopagos().getAll().subscribe(data => {
+      this.tipopagos = data;
     });
   }
 
   AgregarProducto() {
-   let producto = new Producto();
+    let producto = new Producto();
     let dialogRef = this.dialog.open(VentaDialogoComponent, {
-   width: '900px',
-   disableClose: true,
-   data: producto
-   });
-   }
-   
+      width: '900px',
+      disableClose: true,
+      data: producto
+    });
+  }
+
   cancel() {
     if (this.edicion) {
       this.router.navigate(['../../'], { relativeTo: this.route });
@@ -211,11 +212,12 @@ formGroup.get("cantidad").valueChanges.subscribe(value =>{
   openDialog(cliente: Cliente): void {
     let cli = cliente != null ? cliente : new Cliente();
     let dialogRef = this.dialog.open(ClienteventaDialoComponent, {
-      width: '250px',   
-      disableClose: true,   
-      data: cli      
+      width: '250px',
+      disableClose: true,
+      data: cli
     });
   }
+
   save() {
     if (!this.detalleVenta.valid) return;
     if (this.edicion) {
@@ -231,10 +233,13 @@ formGroup.get("cantidad").valueChanges.subscribe(value =>{
           this.dataService.providers().cambio.next(p);
           this.dataService.providers().mensaje.next('se registro');
         });
+        console.log(data);
       });
     }
+   
     this.cancel();
   }
+
 
   buscarProducto($event) {
     if ($event.key === "Enter") {
@@ -246,7 +251,8 @@ formGroup.get("cantidad").valueChanges.subscribe(value =>{
             importeTotalItem: +data.precioVenta.toFixed(2),
             importeTotal: +data.precioVenta.toFixed(2),
             producto: data,
-            productoT: data
+            productoT: data,
+            unidadMedida: data.unidadMedida.descripcion
           }
           this.dataService.providers().dialogo.next(detalle);
           this.form.patchValue({ search: "" });

@@ -3,6 +3,7 @@ import { CompraEditComponent } from './compra-edit/compra-edit.component';
 import { CompraListComponent } from './compra-list/compra-list.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { DetalleDialogoCompraComponent } from './compra-list/detalle-dialogo-compra/detalle-dialogo-compra.component';
 
 
 const routes: Routes = [
@@ -17,7 +18,9 @@ const routes: Routes = [
     },
     { path: 'nuevo', component: CompraEditComponent },
 
-    { path: 'NuevoPaciente', component: ProductoDialogoComponent }
+    { path: 'NuevoPaciente', component: ProductoDialogoComponent },
+
+    { path: 'VerdetalleCompra', component: DetalleDialogoCompraComponent }
 ];
 
 @NgModule({

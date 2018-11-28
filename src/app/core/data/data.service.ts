@@ -1,3 +1,4 @@
+import { TipopagoService } from './tipopago.service';
 import { PersonalService } from "./personal.service";
 import { TipoComprobanteService } from "./tipocomprobante.service";
 
@@ -38,7 +39,9 @@ export class DataService {
     private proforma: ProformaService,
     private personal: PersonalService,
     private tipocomprobante: TipoComprobanteService,
-    private venta: VentaService 
+    private venta: VentaService,
+    private tipopago: TipopagoService
+
       
       ) {}
   
@@ -91,6 +94,9 @@ export class DataService {
   }
   tipocomprobantes(): TipoComprobanteService {
     return this.tipocomprobante;
+  }
+  tipopagos():TipopagoService{
+    return this.tipopago;
   }
 
   proformas(): ProformaService {
