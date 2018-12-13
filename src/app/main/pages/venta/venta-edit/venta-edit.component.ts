@@ -78,7 +78,7 @@ export class VentaEditComponent implements OnInit {
       tipopago: [null, Validators.compose([Validators.required])],
       numeroComprobante: [null],
       serieComprobante: [null],
-      estadoVenta:[0],
+      estadoVenta: [0],
       cliente: this.myControlCliente,
       search: [null],//temporal
       detalleVenta: this.formBuilder.array([], Validators.compose([]))
@@ -94,8 +94,8 @@ export class VentaEditComponent implements OnInit {
       idDetalleVenta: [null],
       cantidad: [0, Validators.compose([Validators.required])],
       precio: [0, Validators.compose([Validators.required])],
-      importeTotal: [{ value: '', disabled: true }, Validators.compose([Validators.required])],
-      importeTotalItem: [null, Validators.compose([Validators.required])],
+      importeTotalItem: [{ value: '', disabled: true }, Validators.compose([Validators.required])],
+      importeTotal: [null, Validators.compose([Validators.required])],
       productoT: this.formBuilder.group({
         codProducto: [{ value: '', disabled: true }],
         nombre: [{ value: '', disabled: true }]
@@ -135,18 +135,13 @@ export class VentaEditComponent implements OnInit {
 
   calcularVentaTotales() {
     let total = 0;
-    let igv = 0;
-    let neto = 0;
     this.detalleVenta.controls.forEach(fromControl => {
       const precio = fromControl.get("precio").value || 0;
       const cantidad = fromControl.get("cantidad").value || 0;
-      let subTotal = parseFloat(precio) * parseFloat(cantidad);
-      const igvItem = subTotal * 0.18;
-      neto += subTotal;
-      igv += igvItem;
-      const totalItem = subTotal + igv;
-      total += totalItem;
+      total = total + parseFloat(precio) * parseFloat(cantidad);
     });
+    const igv = total * 0.18;
+    const neto = total - igv;
     this.form.patchValue({
       montoTotal: +total.toFixed(2),
       subTotal: +neto.toFixed(2),
@@ -229,6 +224,9 @@ export class VentaEditComponent implements OnInit {
       });
     } else {
       this.dataService.ventas().create(this.form.value).subscribe(data => {
+        if (data.idVenta) {
+          this.print(data.idVenta);
+        }
         this.dataService.ventas().getAll().subscribe(p => {
           this.dataService.providers().cambio.next(p);
           this.dataService.providers().mensaje.next('se registro');
@@ -236,10 +234,21 @@ export class VentaEditComponent implements OnInit {
         console.log(data);
       });
     }
-   
+
     this.cancel();
   }
 
+  print(id) {
+    this.dataService.ventas().pdf(id).subscribe((response) => {
+      var blob = new Blob([response], { type: 'application/pdf' });
+      const blobUrl = URL.createObjectURL(blob);
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = blobUrl;
+      document.body.appendChild(iframe);
+      iframe.contentWindow.print();
+    });
+  }
 
   buscarProducto($event) {
     if ($event.key === "Enter") {

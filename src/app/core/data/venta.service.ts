@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
 import { GenericService } from './generic.service';
 import { Injectable } from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
 const basePath = "ventas";
 @Injectable({
   providedIn: 'root'
@@ -32,8 +33,16 @@ export class VentaService {
   delete(id: number): Observable<any> {
     return this.generic.all(basePath).one("eliminar", id).delete();
   }
-  
+
   getNumero(): Observable<any> {
     return this.generic.all(basePath).all("numero-Comprobante").get();
+  }
+
+  pdf(id) {
+    const proforma = this.generic.all(basePath).one("reporte-venta", id);
+    return proforma.http.get(proforma.path, {
+      responseType: 'blob',
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    });
   }
 }

@@ -10,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VentaListComponent implements OnInit {
   lista: any[] = [];
-  displayedColumns: string[] = ['cliente.nombre', 'fecha', 'montoTotal','numeroComprobante','acciones'];
+  displayedColumns: string[] = ['cliente.nombre', 'fecha', 'montoTotal', 'numeroComprobante', 'acciones'];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -18,13 +18,14 @@ export class VentaListComponent implements OnInit {
   constructor(private dataService: DataService, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
+    this.dataService.ventas().getAll().subscribe(data => this.setData(data));
   }
 
   setData(data) {
     let r = data;
     this.cantidad = JSON.parse(JSON.stringify(data)).length;
     this.dataSource = new MatTableDataSource(r);
-    this.dataSource.paginator=this.paginator;
+    this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
   applyFilter(filterValue: string) {
@@ -32,11 +33,23 @@ export class VentaListComponent implements OnInit {
     filterValue = filterValue.toLowerCase();
     this.dataSource.filter = filterValue;
   }
- 
+
   eliminar(id) {
-    this.dataService.compras().delete(id).subscribe(r => {
+    this.dataService.ventas().delete(id).subscribe(r => {
       this.snackBar.open("Proveedor Eliminado", 'Aviso', { duration: 2000 });
       this.dataService.compras().getAll().subscribe(data => this.setData(data));
+    });
+  }
+
+  print(id) {
+    this.dataService.ventas().pdf(id).subscribe((response) => {
+      var blob = new Blob([response], {type: 'application/pdf'});
+      const blobUrl = URL.createObjectURL(blob);
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = blobUrl;
+        document.body.appendChild(iframe);
+        iframe.contentWindow.print();
     });
   }
 }

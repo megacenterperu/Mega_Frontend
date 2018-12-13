@@ -14,7 +14,7 @@
 
       <ng-container matColumnDef="cliente.nombre">
           <mat-header-cell *matHeaderCellDef mat-sort-header> CLIENTE  </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.cliente.nombre}} </mat-cell>
+          <mat-cell *matCellDef="let element"> {{element.cliente.persona.nombre}} </mat-cell>
       </ng-container>
            
       <ng-container matColumnDef="fecha">
@@ -29,18 +29,21 @@
 
       <ng-container matColumnDef="numeroComprobante">
         <mat-header-cell *matHeaderCellDef mat-sort-header> NUMERO COMPROBANTE </mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.serieComprobante}}-{{element.numeroComprobante}} </mat-cell>
+        <mat-cell *matCellDef="let element">{{element.tipocomprobante.codTipocomprobante}}{{element.serieComprobante}}-{{element.numeroComprobante}} </mat-cell>
     </ng-container>       
 
       <ng-container matColumnDef="acciones">
           <mat-header-cell *matHeaderCellDef>ACCIONES</mat-header-cell>
           <mat-cell *matCellDef="let row">
-              <button mat-button color="primary" [routerLink]="['./edicion', row.idCompra]">
+              <button mat-button color="primary" [routerLink]="['./edicion', row.idVenta]">
               Actualizar
               </button>
-              <button mat-button color="accent"  style="float:right" (click)="eliminar(row.idCompra)">
+              <button mat-button color="accent"  style="float:right" (click)="eliminar(row.idVenta)">
                   eliminar
               </button>
+              <button mat-button color="accent"  style="float:right" (click)="print(row.idVenta)">
+                PDF
+            </button>
           </mat-cell>
       </ng-container>
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
