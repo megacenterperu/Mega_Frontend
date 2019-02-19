@@ -1,3 +1,4 @@
+import { TOKEN_NAME } from './../../../config/auth.config';
 import { Observable } from 'rxjs';
 import { GenericService } from './generic.service';
 import { Injectable } from '@angular/core';
@@ -39,10 +40,16 @@ export class VentaService {
   }
 
   pdf(id) {
+    let access_token = JSON.parse(sessionStorage.getItem(TOKEN_NAME)).access_token;
     const proforma = this.generic.all(basePath).one("reporte-venta", id);
     return proforma.http.get(proforma.path, {
       responseType: 'blob',
-      headers: new HttpHeaders().set('Content-Type', 'application/json')
+      headers: new HttpHeaders().set('Authorization', `bearer ${access_token}`).set('Content-Type', 'application/json')
     });
+  }
+
+  buscarVentaFecha(data:any): Observable<any>{
+    return this.generic.all(basePath).all("buscar-venta-fecha").post(data);
+
   }
 }

@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>Detalle de Proforma</h2>
+<mat-dialog-content class="mat-typography">
+        <mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="cantidaditem">
+                <mat-header-cell *matHeaderCellDef fxFlex="10%"> CANT. </mat-header-cell>
+                <mat-cell fxFlex="10%" *matCellDef="let element"> {{element.cantidaditem}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="producto.codProducto">
+                <mat-header-cell *matHeaderCellDef fxFlex="15%"> CODIGO </mat-header-cell>
+                <mat-cell fxFlex="15%" *matCellDef="let element"> {{element.producto.codProducto}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="producto.unidadMedida.codUnidadmedida">
+                <mat-header-cell *matHeaderCellDef fxFlex="10%"> UNID. </mat-header-cell>
+                <mat-cell fxFlex="10%" *matCellDef="let element"> {{element.producto.unidadMedida.codUnidadmedida}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="producto.nombre">
+                <mat-header-cell *matHeaderCellDef fxFlex="30%"> PRODUCTO / SERVICIO </mat-header-cell>
+                <mat-cell fxFlex="30%" *matCellDef="let element"> {{element.producto.nombre}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="producto.marcaProducto">
+                <mat-header-cell *matHeaderCellDef fxFlex="15%"> MARCA </mat-header-cell>
+                <mat-cell fxFlex="15%" *matCellDef="let element"> {{element.producto.marcaProducto}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="precioitem">
+                <mat-header-cell *matHeaderCellDef fxFlex="10%">PREC. UNIT.</mat-header-cell>
+                <mat-cell fxFlex="10%" *matCellDef="let element"> {{element.precioitem | number : '1.2-2'}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="importetotalitem">
+                <mat-header-cell *matHeaderCellDef fxFlex="10%">IMPORTE </mat-header-cell>
+                <mat-cell fxFlex="10%" *matCellDef="let element"> {{element.importetotalitem | number : '1.2-2'}} </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

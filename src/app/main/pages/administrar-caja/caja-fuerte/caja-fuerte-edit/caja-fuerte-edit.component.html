@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>Cierre de Caja Fuerte</h2>
+<mat-dialog-content class="mat-typography">
+  <form class="container" [formGroup]="form" #f="ngForm">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Monto Total del Dia</mat-label>
+          <input matInput placeholder="montoTotalDia" required formControlName="montoTotalDia">
+        </mat-form-field>
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Monto Inicio de Turno</mat-label>
+          <input matInput placeholder="montoInicioTurno" required formControlName="montoInicioTurno">
+        </mat-form-field>
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Monto Total Caja</mat-label>
+          <input matInput placeholder="montoTotalCaja" required formControlName="montoTotalCaja">
+        </mat-form-field>
+
+        <mat-form-field class="field-container" appearance="outline">
+            <mat-label>Fecha Inicio de Turno</mat-label>
+            <input matInput formControlName="fechaInicioTurno" [matDatepicker]="picker" placeholder="fechaInicioTurno">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="primary"  type="button" (click)="operar()" [disabled]="f.invalid">Aceptar</button>
+  <button mat-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>
+

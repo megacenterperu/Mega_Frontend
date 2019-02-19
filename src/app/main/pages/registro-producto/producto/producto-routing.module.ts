@@ -13,6 +13,7 @@ const routes: Routes = [
     component: ProductoEditComponent
   },
   { path: "nuevo", component: ProductoEditComponent }
+
 ];
 
 @NgModule({

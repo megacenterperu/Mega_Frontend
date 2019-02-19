@@ -1,3 +1,5 @@
+import { UsuarioService } from './usuario.service';
+import { CajaService } from './caja.service';
 import { TipopagoService } from './tipopago.service';
 import { PersonalService } from "./personal.service";
 import { TipoComprobanteService } from "./tipocomprobante.service";
@@ -18,6 +20,12 @@ import { ClienteService } from "./cliente.service";
 import { SucursalService } from "./sucursal.service";
 import { ProformaService } from "./proforma.service";
 import { VentaService } from "./venta.service";
+import { EgresoService } from './egreso.service';
+import { CajafuerteService } from './cajafuerte.service';
+import { RolService } from './rol.service';
+import { LoginService } from './login.service';
+import { PerfilService } from './perfil.service';
+import { UsuarioRolService } from './usuario-rol.service';
 
 @Injectable({
   providedIn: "root"
@@ -40,7 +48,15 @@ export class DataService {
     private personal: PersonalService,
     private tipocomprobante: TipoComprobanteService,
     private venta: VentaService,
-    private tipopago: TipopagoService
+    private tipopago: TipopagoService,
+    private egreso:EgresoService,
+    private caja:CajaService,
+    private cajafuerte:CajafuerteService,
+    private usuario:UsuarioService,
+    private rol:RolService,
+    private login:LoginService,
+    private perfil:PerfilService,
+    private usuariorol:UsuarioRolService
 
       
       ) {}
@@ -109,5 +125,37 @@ export class DataService {
   
   ventas(): VentaService {
     return this.venta;
+  }
+
+  egresos(): EgresoService{
+    return this.egreso;
+  }
+
+  cajas(): CajaService{
+    return this.caja;
+  }
+
+  cajaFuertes():CajafuerteService{
+    return this.cajafuerte;
+  }
+
+  usuarios():UsuarioService{
+    return this.usuario;
+  }
+
+  usuarioroles():UsuarioRolService{
+    return this.usuariorol;
+  }
+
+  roles():RolService{
+    return this.rol;
+  }
+
+  logins():LoginService{
+    return this.login;
+  }
+  
+  perfiles():PerfilService{
+    return this.perfil;
   }
 }

@@ -4,51 +4,65 @@
   <form class="example-form" [formGroup]="form" (ngSubmit)="operar()" #f="ngForm">
     <div fxLayout="row" fxLayout.xs="column">
       <div fxFlex="25%;" fxFlex.xs="50%">
-        <mat-form-field class="field-container">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Cod Producto</mat-label>
           <input matInput placeholder="Cod Producto" required formControlName="codProducto">
         </mat-form-field>
       </div>
       <div fxFlex="50%;" fxFlex.xs="50%">
-        <mat-form-field class="field-container">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Descripcion del Producto</mat-label>
           <input matInput placeholder="Nombre Producto" required formControlName="nombre">
         </mat-form-field>
       </div>
       <div fxFlex="25%;" fxFlex.xs="50%">
-        <mat-form-field class="field-container">
+        <mat-form-field class="field-container" appearance="outline">
+            <mat-label>Marca Producto</mat-label>
           <input matInput placeholder="Marca Producto" required formControlName="marcaProducto">
         </mat-form-field>
       </div>
     </div>
+    <!-- opcional -->
     <div fxLayout="row" fxLayout.xs="column">
       <div fxFlex="25%;" fxFlex.xs="50%">
-        <mat-form-field class="field-container">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Modelo Producto</mat-label>
+          <input matInput placeholder="Modelo Producto" required formControlName="modeloProducto">
+        </mat-form-field>
+      </div>
+      <div fxFlex="25%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Stock</mat-label>
           <input matInput placeholder="Stock" required formControlName="stock">
         </mat-form-field>
       </div>
       <div fxFlex="25%;" fxFlex.xs="50%">
-        <mat-form-field class="field-container">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Precio Compra</mat-label>
           <input matInput placeholder="Precio Compra" required formControlName="precioCompra">
         </mat-form-field>
       </div>
       <div fxFlex="25%;" fxFlex.xs="50%">
-        <mat-form-field class="field-container">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Precio Venta</mat-label>
           <input matInput placeholder="Precio Venta" required formControlName="precioVenta">
         </mat-form-field>
       </div>
-      <div fxFlex="25%;" fxFlex.xs="50%">
-        <mat-form-field class="field-container">
-          <mat-select placeholder="Unidad Medida" formControlName="unidadMedida" [compareWith]="compareUnidadMedida">
-            <mat-option *ngFor="let Unidadmedida of lstunidadmedidas" [value]="Unidadmedida">
-              {{Unidadmedida.descripcion}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
     </div>
-
     <div fxLayout="row" fxLayout.xs="column">
       <div fxFlex="25%;" fxFlex.xs="50%">
-        <mat-form-field class="field-container">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Unidad Medida</mat-label>
+            <mat-select placeholder="Unidad Medida" formControlName="unidadMedida" [compareWith]="compareUnidadMedida">
+              <mat-option *ngFor="let Unidadmedida of lstunidadmedidas" [value]="Unidadmedida">
+                {{Unidadmedida.descripcion}}
+              </mat-option>
+            </mat-select>
+        </mat-form-field>
+      </div>
+      <div fxFlex="25%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Categoria</mat-label>
           <mat-select placeholder="Categoria" formControlName="categoria" [compareWith]="compareCategoria">
             <mat-option *ngFor="let Categoria of lstcategorias" [value]="Categoria">
               {{Categoria.descripcion}}
@@ -57,7 +71,8 @@
         </mat-form-field>
       </div>
       <div fxFlex="25%;" fxFlex.xs="50%">
-        <mat-form-field class="field-container">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Tipo Producto</mat-label>
           <mat-select placeholder="Tipo Producto" formControlName="tipoProducto" [compareWith]="compareTipoProducto">
             <mat-option *ngFor="let Tipoproducto of lsttipoProductos" [value]="Tipoproducto">
               {{Tipoproducto.descripcion}}
@@ -66,7 +81,8 @@
         </mat-form-field>
       </div>
       <div fxFlex="25%;" fxFlex.xs="50%">
-        <mat-form-field class="field-container">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Organizacion</mat-label>
           <mat-select placeholder="Organizacion" formControlName="organizacion" [compareWith]="compareOrganizacion">
             <mat-option *ngFor="let Organizacion of lstorganizacions" [value]="Organizacion">
               {{Organizacion.nombreComercial}}
@@ -74,13 +90,16 @@
           </mat-select>
         </mat-form-field>
       </div>
+    </div>
+    <!-- opcional -->
+    <div fxLayout="row" fxLayout.xs="column">
       <div fxFlex="25%;" fxFlex.xs="50%">
-        <mat-form-field class="field-container">
-          <mat-select placeholder="Estado Producto">
-            <mat-option>NINGUNO</mat-option>
-            <!--cntrol+k+c -->
-            <mat-option *ngFor="let estadoprod of listestados" [value]="estadoprod">{{estadoprod}}</mat-option>
-          </mat-select>
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Estado Producto</mat-label>
+            <mat-select placeholder="Estado Producto" formControlName="estadoProducto" [compareWith]="compareestadoProducto">
+                <!--cntrol+k+c -->
+              <mat-option *ngFor="let estadoprod of listestados" [value]="estadoprod">{{estadoprod}}</mat-option>
+            </mat-select>
         </mat-form-field>
       </div>
     </div>

@@ -1,0 +1,53 @@
+<div class="page-layout blank p-24" megaPerfectScrollbar>
+  <mat-toolbar>Ingrese los gastos realizados del dia</mat-toolbar>
+  <br />
+  <form class="container" [formGroup]="form" (ngSubmit)="operar()" #f="ngForm">
+    <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="15%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Fecha</mat-label>
+          <input matInput formControlName="fecha" [matDatepicker]="picker" [max]="maxDate" placeholder="Fecha"
+            required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div fxFlex="35%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Descripcion</mat-label>
+          <input matInput placeholder="Descripcion" required formControlName="descripcion">
+        </mat-form-field>
+      </div>
+      <div fxFlex="35%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Benificiario</mat-label>
+          <input matInput placeholder="Benificiario" required formControlName="benificiario">
+        </mat-form-field>
+      </div>
+      <div fxFlex="15%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container" appearance="outline">
+            <mat-label>Monto</mat-label>
+          <input matInput placeholder="Monto" required formControlName="monto">
+        </mat-form-field>
+      </div>
+  </div>
+  <div fxLayout="row" fxLayout.xs="column">
+    <div fxFlex="12%;" fxFlex.xs="50%" class="field-container">
+      <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
+        <mat-icon>done</mat-icon>
+        <span>Aceptar</span>
+      </button>
+    </div>
+    <div fxFlex="1%;" fxFlex.xs="5%"></div>
+    <div fxFlex="12%;" fxFlex.xs="50%" class="field-container">
+      <button mat-raised-button color="accent" (click)="cancel()" type="button">
+        <mat-icon>close</mat-icon>
+        <span>Cancelar</span>
+      </button>
+    </div>
+  </div>
+  </form>
+
+  <br />
+
+</div>

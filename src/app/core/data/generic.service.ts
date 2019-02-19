@@ -1,6 +1,7 @@
+import { TOKEN_NAME } from './../../../config/auth.config';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Configuration } from '../../../config/mega.config';
 import { Observable, throwError } from 'rxjs';
 
@@ -8,13 +9,19 @@ import { Observable, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class GenericService {
-  private url: string;
-  private headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  private url: string; 
 
   constructor(private _http: HttpClient, private configuration: Configuration) {
-    this.url = configuration.api;
+    this.url = configuration.api;    
   }
-
+  
+  getAccessToken(): HttpHeaders {   
+    const token = JSON.parse(sessionStorage.getItem(TOKEN_NAME))
+    if(token){      
+    return new HttpHeaders().set("Authorization", `bearer ${token.access_token}`).set("Content-Type", "application/json");
+    }
+      return  new HttpHeaders().set("Content-Type", "application/json");
+  }  
   get path() {
     return this.url;
   }
@@ -36,14 +43,14 @@ export class GenericService {
   }
 
   get(): Observable<Response> {
-    return this._http.get(this.url, { headers: this.headers }).pipe(
+    return this._http.get(this.url, { headers: this.getAccessToken() }).pipe(
       map((response) => {
         return response as any;
       }), catchError((res) => { return this.onError(res); }));
   }
 
   post(obj?: any): Observable<Response> {
-    return this._http.post(this.url, obj, { headers: this.headers }).pipe(
+    return this._http.post(this.url, obj, { headers: this.getAccessToken() }).pipe(
       map((response) => {
         return response as any;
       }), catchError((res) => { return this.onError(res); }));
@@ -52,14 +59,14 @@ export class GenericService {
   put(obj: any): Observable<Response> {
     const clone = Object.assign({}, obj);
     delete clone['_restangular'];
-    return this._http.put(this.url, clone, { headers: this.headers }).pipe(
+    return this._http.put(this.url, clone, { headers: this.getAccessToken() }).pipe(
       map((response) => {
         return response as any;
       }), catchError((res) => { return this.onError(res); }));
   }
 
   delete(): Observable<Response> {
-    return this._http.delete(this.url).pipe(
+    return this._http.delete(this.url, { headers: this.getAccessToken() }).pipe(
       map((response) => {
         return response as any;
       }),

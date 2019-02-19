@@ -1,4 +1,73 @@
-<div class="container">
+<mat-toolbar>Lista De productos</mat-toolbar>
+<mat-dialog-content class="mat-typography">
+  <div fxLayout="row" fxLayout.xs="column">
+    <div fxFlex="50%;" fxFlex.xs="50%">
+      <mat-form-field class="field-container" appearance="outline">
+        <mat-label>Buscar Proforma</mat-label>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar Producto">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+  </div>
+  <mat-table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="codProducto">
+      <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="13%"> CODIGO </mat-header-cell>
+      <mat-cell fxFlex="13%" *matCellDef="let element"> {{element.codProducto}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="unidadMedida.codUnidadmedida">
+      <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="13%"> UNID. MEDIDA </mat-header-cell>
+      <mat-cell fxFlex="13%" *matCellDef="let element"> {{element.unidadMedida.codUnidadmedida}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="nombre">
+      <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="29%"> PRODUCTO </mat-header-cell>
+      <mat-cell fxFlex="29%" *matCellDef="let element"> {{element.nombre}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="stock">
+      <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%"> STOCK </mat-header-cell>
+      <mat-cell fxFlex="10%" *matCellDef="let element"> {{element.stock}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="cantidad">
+      <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%">CANTIDAD</mat-header-cell>
+      <mat-cell fxFlex="10%" *matCellDef="let element; let i = index">
+          <mat-form-field class="field-container">
+            <input matInput name="cantidad" [(ngModel)]="element.cantidad">
+          </mat-form-field>
+      </mat-cell>
+    </ng-container> 
+
+    <ng-container matColumnDef="precioVenta">
+      <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="17%">PREC. DE VENTA</mat-header-cell>
+      <mat-cell fxFlex="17%" *matCellDef="let element; let i = index">
+          <mat-form-field class="field-container">
+            <input matInput name="precioVenta" [(ngModel)]="element.precioVenta">
+          </mat-form-field>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="acciones">
+      <mat-header-cell *matHeaderCellDef fxFlex="8%">ACCIONES</mat-header-cell>
+      <mat-cell fxFlex="8%" *matCellDef="let row">
+        <button mat-icon-button matTooltip="Agregar" color="primary" (click)="agregar(row)">
+          <mat-icon>add_shopping_cart</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="accent" mat-dialog-close>Cancel</button>
+</mat-dialog-actions>
+
+
+
+<!--<div class="container">
   <mat-toolbar>Lista De productos</mat-toolbar>
   <div>
     <mat-form-field>
@@ -52,4 +121,4 @@
   </mat-table>
   <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
   <button mat-raised-button color="accent" (click)="cerrar()" type="button">Cerrar</button>
-</div>
+</div>-->

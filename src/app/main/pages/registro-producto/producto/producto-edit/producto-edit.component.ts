@@ -53,7 +53,9 @@ export class ProductoEditComponent implements OnInit {
       unidadMedida:[null,Validators.compose([Validators.required])],
       categoria:[null,Validators.compose([Validators.required])],
       tipoProducto:[null,Validators.compose([Validators.required])],
-      organizacion:[null,Validators.compose([Validators.required])]
+      organizacion:[null,Validators.compose([Validators.required])],
+      modeloProducto:[null,Validators.compose([Validators.required])],
+      estadoProducto:[null,Validators.compose([Validators.required])]
     });
   }
 
@@ -103,6 +105,10 @@ export class ProductoEditComponent implements OnInit {
 
   compareOrganizacion(x: any, y: any): boolean {
     return x && y ? x.idOrganizacion === y.idOrganizacion : x === y;
+  }
+
+  compareestadoProducto(x: any, y: any): boolean {
+    return x && y ? x.estadoProducto === y.estadoProducto : x === y;
   }
 
   cancel(){

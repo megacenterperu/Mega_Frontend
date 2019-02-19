@@ -8,6 +8,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { NavigationModule } from '../../shared/components/navigation/navigation.module';
 import { SearchBarModule } from '../../shared/components/search-bar/search-bar.module';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import { SearchBarModule } from '../../shared/components/search-bar/search-bar.m
     NavbarComponent,
     FooterComponent,
     ContentComponent,
-    NavbarVerticalToggleDirective
+    NavbarVerticalToggleDirective,
+    LoginComponent
   ],
   exports: [
     NavigationModule,
@@ -29,7 +31,8 @@ import { SearchBarModule } from '../../shared/components/search-bar/search-bar.m
     ToolbarComponent,
     NavbarComponent,
     FooterComponent,
-    ContentComponent
+    ContentComponent,
+    LoginComponent
   ]
 })
 export class LayoutModule { }

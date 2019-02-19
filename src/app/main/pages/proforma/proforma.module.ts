@@ -8,6 +8,7 @@ import { SharedModule } from "../../../shared/shared.module";
 import { SatPopoverModule } from "@ncstate/sat-popover";
 import { ProductoDialogComponent } from "./proforma-edit/producto-dialog/producto-dialog.component";
 import { ClienteDialogComponent } from "./proforma-edit/cliente-dialog/cliente-dialog.component";
+import { DetalleDialogProformaComponent } from './proforma-list/detalle-dialog-proforma/detalle-dialog-proforma.component';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { ClienteDialogComponent } from "./proforma-edit/cliente-dialog/cliente-d
     ProformaListComponent,
     ProformaEditComponent,
     ProductoDialogComponent,
-    ClienteDialogComponent
+    ClienteDialogComponent,
+    DetalleDialogProformaComponent
   ]
 })
 export class ProformaModule {}

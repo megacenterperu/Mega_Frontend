@@ -1,3 +1,4 @@
+import { TOKEN_NAME } from './../../../config/auth.config';
 import { Injectable } from "@angular/core";
 import { GenericService } from "./generic.service";
 import { Observable } from "rxjs";
@@ -14,6 +15,10 @@ export class ProformaService {
 
   getAll(): Observable<any> {
     return this.generic.all(basePath).get();
+  }
+
+  getAllDetalle(id: number): Observable<any> {
+    return this.generic.all(basePath).one("proforma-detalle", id).get();
   }
 
   getNumero(): Observable<any> {
@@ -70,6 +75,15 @@ export class ProformaService {
           console.log("error downloading file");
         }
       );  
+  }
+
+  pdf(id) {
+    let access_token = JSON.parse(sessionStorage.getItem(TOKEN_NAME)).access_token;
+    const proforma = this.generic.all(basePath).one("reporte-proforma", id);
+    return proforma.http.get(proforma.path, {
+      responseType: 'blob',
+      headers: new HttpHeaders().set('Authorization', `bearer ${access_token}`).set('Content-Type', 'application/json')
+    });
   }
 
 }

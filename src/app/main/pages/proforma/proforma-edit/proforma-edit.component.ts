@@ -264,6 +264,9 @@ export class ProformaEditComponent implements OnInit {
     } else {
       //insert
       this.dataService.proformas().create(this.form.value).subscribe(data => {
+        if (data.idProforma) {
+          this.print(data.idProforma);
+        }
         this.dataService.proformas().getAll().subscribe(p => {
           this.dataService.providers().cambio.next(p);
           this.dataService.providers().mensaje.next('Proforma Generado con exito');
@@ -273,6 +276,17 @@ export class ProformaEditComponent implements OnInit {
     this.cancel();
   }
 
+  print(id) {
+    this.dataService.proformas().pdf(id).subscribe((response) => {
+      var blob = new Blob([response], { type: 'application/pdf' });
+      const blobUrl = URL.createObjectURL(blob);
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = blobUrl;
+      document.body.appendChild(iframe);
+      iframe.contentWindow.print();
+    });
+  }
 
 }
 

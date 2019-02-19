@@ -1,3 +1,4 @@
+import { TOKEN_NAME } from './../../config/auth.config';
 import { Component, ElementRef, HostBinding, Inject, OnDestroy, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Platform } from '@angular/cdk/platform';
@@ -13,6 +14,8 @@ import { ConfigService } from '../shared/services/config.service';
 export class MainComponent implements OnInit, OnDestroy {
   onSettingsChanged: Subscription;
   megaSettings: any;
+  isLogin=false;
+
   @HostBinding('attr.ms-layout-mode') layoutMode;
 
   constructor(
@@ -36,7 +39,10 @@ export class MainComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit() {
+  ngOnInit() {  
+    let token = sessionStorage.getItem(TOKEN_NAME);
+    this.isLogin= token != null;
+    console.log(this.isLogin)
   }
 
   ngOnDestroy() {

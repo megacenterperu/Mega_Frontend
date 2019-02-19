@@ -9,7 +9,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from './../../../../core/data/data.service';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
-import { Producto } from 'src/app/core/model/producto.model';
 import { VentaDialogoComponent } from './venta-dialogo/venta-dialogo.component';
 import { ClienteventaDialoComponent } from './clienteventa-dialo/clienteventa-dialo.component';
 
@@ -44,13 +43,13 @@ export class VentaEditComponent implements OnInit {
     this.dataService.providers().dialogo.subscribe(data => {
       const formGroup = this.addDetalleFormControl();
       formGroup.patchValue({
-        precio: +data.precio.toFixed(2),
+        precio: +data.precio,
         cantidad: data.cantidad,
         importeTotalItem: +data.importeTotalItem.toFixed(2),
         producto: data.producto,
         productoT: data.producto,
         unidadMedida: data.producto.unidadMedida.descripcion
-      });
+      });      
     });
     this.route.params.subscribe((params: Params) => {
       this.id = params['id'];
@@ -84,7 +83,7 @@ export class VentaEditComponent implements OnInit {
       detalleVenta: this.formBuilder.array([], Validators.compose([]))
 
     });
-    this.detalleVenta.valueChanges.subscribe(value => {
+    this.detalleVenta.valueChanges.subscribe(value => {     
       this.calcularVentaTotales();
     });
   }
@@ -119,6 +118,8 @@ export class VentaEditComponent implements OnInit {
       });
     });
     formGroup.get("cantidad").valueChanges.subscribe(value => {
+      const producto=formGroup.value;
+     console.log(producto);
       const precio = formGroup.get("precio").value || 0;
       const cantidad = value || 0;
       let subTotalv = parseFloat(precio) * parseFloat(cantidad);
@@ -140,8 +141,8 @@ export class VentaEditComponent implements OnInit {
       const cantidad = fromControl.get("cantidad").value || 0;
       total = total + parseFloat(precio) * parseFloat(cantidad);
     });
-    const igv = total * 0.18;
-    const neto = total - igv;
+    const neto = total/1.18;
+    const igv = neto * 0.18;
     this.form.patchValue({
       montoTotal: +total.toFixed(2),
       subTotal: +neto.toFixed(2),
@@ -188,14 +189,23 @@ export class VentaEditComponent implements OnInit {
     });
   }
 
-  AgregarProducto() {
+  /*AgregarProducto() {
     let producto = new Producto();
     let dialogRef = this.dialog.open(VentaDialogoComponent, {
       width: '900px',
       disableClose: true,
       data: producto
     });
+  }*/
+
+  AgregarProducto() {
+    const dialogRef = this.dialog.open(VentaDialogoComponent,{width: '900px'});
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
+
 
   cancel() {
     if (this.edicion) {
@@ -204,6 +214,7 @@ export class VentaEditComponent implements OnInit {
       this.router.navigate(['../'], { relativeTo: this.route })
     }
   }
+
   openDialog(cliente: Cliente): void {
     let cli = cliente != null ? cliente : new Cliente();
     let dialogRef = this.dialog.open(ClienteventaDialoComponent, {
@@ -262,8 +273,10 @@ export class VentaEditComponent implements OnInit {
             producto: data,
             productoT: data,
             unidadMedida: data.unidadMedida.descripcion
-          }
-          this.dataService.providers().dialogo.next(detalle);
+          }        
+          const formGroup = this.addDetalleFormControl();
+                formGroup.patchValue(detalle);  
+          // this.dataService.providers().dialogo.next(detalle);
           this.form.patchValue({ search: "" });
         },
           error => {

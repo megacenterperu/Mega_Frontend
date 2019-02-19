@@ -8,50 +8,53 @@
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
     </div>
-    <div fxFlex="20%;" fxFlex.xs="50%">
-      <button mat-button color="primary" (click)="PrintDetalle()">Imprimir</button>
-    </div>
   </div>
   <div class="mat-elevation-z8">
     <mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="fecha">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> FECHA PROF </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.fecha | date: 'dd/MM/yyyy'}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="13%"> FECHA PROF </mat-header-cell>
+        <mat-cell fxFlex="13%" *matCellDef="let element"> {{element.fecha | date: 'dd/MM/yyyy'}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="cliente.persona.nombre">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> CLIENTE </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.cliente.persona.nombre}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="27%"> CLIENTE </mat-header-cell>
+        <mat-cell fxFlex="27%" *matCellDef="let element"> {{element.cliente.persona.nombre}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="numeroProforma">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> NUMERO PROF </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.numeroProforma}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="12%"> NUMERO PROF </mat-header-cell>
+        <mat-cell fxFlex="12%" *matCellDef="let element"> {{element.numeroProforma}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="acuenta">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> A CUENTA </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.acuenta | number : '1.2-2'}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%"> A CUENTA </mat-header-cell>
+        <mat-cell fxFlex="10%" *matCellDef="let element"> {{element.acuenta | number : '1.2-2'}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="saldo">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> SALDO </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.saldo | number : '1.2-2'}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%"> SALDO </mat-header-cell>
+        <mat-cell fxFlex="10%" *matCellDef="let element"> {{element.saldo | number : '1.2-2'}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="total">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> MONTO TOTAL </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.total | number : '1.2-2'}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%"> MONTO TOTAL </mat-header-cell>
+        <mat-cell fxFlex="10%" *matCellDef="let element"> {{element.total | number : '1.2-2'}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="acciones">
-        <mat-header-cell *matHeaderCellDef>ACCIONES</mat-header-cell>
-        <mat-cell *matCellDef="let row">
-          <button mat-button color="primary" [routerLink]="['./edicion', row.idProforma]">
+        <mat-header-cell *matHeaderCellDef fxFlex="18%">ACCIONES</mat-header-cell>
+        <mat-cell fxFlex="18%" *matCellDef="let row">
+          <button mat-icon-button matTooltip="Editar" color="primary" [routerLink]="['./edicion', row.idProforma]">
             <mat-icon>edit</mat-icon>
           </button>
-          <button mat-button color="warn" (click)="eliminar(row.idProforma)">
+          <button mat-icon-button matTooltip="Eliminar" color="warn" (click)="eliminar(row.idProforma)">
             <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Ver Detalle" color="primary" (click)="openDialog(row)">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="PDF" color="warn" (click)="print(row.idProforma)">
+            <mat-icon>local_printshop</mat-icon>
           </button>
         </mat-cell>
       </ng-container>

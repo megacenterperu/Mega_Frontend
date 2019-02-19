@@ -1,10 +1,11 @@
+import { AuthGuard } from './../core/guard/auth.guard';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { MainComponent } from './main.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'ventas', pathMatch: 'full' },
-    { path: 'ventas', loadChildren: '../main/pages/pages.module#PagesModule' }   
+    { path: 'ventas', loadChildren: '../main/pages/pages.module#PagesModule'}   
 ];
 
 @NgModule({

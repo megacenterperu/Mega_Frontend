@@ -34,7 +34,7 @@ import { Configuration } from '../config/mega.config';
     SplashScreenService,
     ConfigService,
     NavigationService,
-    Configuration
+    Configuration    
   ],
   bootstrap: [AppComponent]
 })

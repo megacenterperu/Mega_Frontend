@@ -1,7 +1,8 @@
 import { ViewChild } from '@angular/core';
-import { MatSnackBar, MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
+import { MatSnackBar, MatTableDataSource, MatPaginator, MatSort, MatDialogRef, MatDialog } from '@angular/material';
 import { DataService } from './../../../../core/data/data.service';
 import { Component, OnInit } from '@angular/core';
+import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confirmation.component';
 
 @Component({
   selector: 'ms-venta-list',
@@ -9,13 +10,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./venta-list.component.scss']
 })
 export class VentaListComponent implements OnInit {
+  dialogRef: MatDialogRef<DialogConfirmationComponent>;
   lista: any[] = [];
-  displayedColumns: string[] = ['cliente.nombre', 'fecha', 'montoTotal', 'numeroComprobante', 'acciones'];
+  displayedColumns: string[] = ['cliente.nombre', 'fecha', 'montoTotal','descripcion', 'numeroComprobante', 'acciones'];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  constructor(private dataService: DataService, private snackBar: MatSnackBar) { }
+  constructor(private dataService: DataService, private snackBar: MatSnackBar,public dialog: MatDialog) { }
 
   ngOnInit() {
     this.dataService.ventas().getAll().subscribe(data => this.setData(data));
@@ -35,10 +37,21 @@ export class VentaListComponent implements OnInit {
   }
 
   eliminar(id) {
-    this.dataService.ventas().delete(id).subscribe(r => {
-      this.snackBar.open("Proveedor Eliminado", 'Aviso', { duration: 2000 });
-      this.dataService.compras().getAll().subscribe(data => this.setData(data));
+    this.dialogRef = this.dialog.open(DialogConfirmationComponent, {
+      disableClose: false
     });
+
+    this.dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        console.log("Eliminado")
+        this.dataService.ventas().delete(id).subscribe(r => {
+          this.snackBar.open("Venta Eliminado", 'Aviso', { duration: 2000 });
+          this.dataService.compras().getAll().subscribe(data => this.setData(data));
+        });
+      }
+      this.dialogRef = null;
+    });
+
   }
 
   print(id) {

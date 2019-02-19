@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { VentaDialogoComponent } from './venta-edit/venta-dialogo/venta-dialogo.component';
 import { ClienteventaDialoComponent } from './venta-edit/clienteventa-dialo/clienteventa-dialo.component';
+import { DialogConfirmationComponent } from './venta-list/dialog-confirmation/dialog-confirmation.component';
 
 
 const routes: Routes = [
@@ -20,7 +21,9 @@ const routes: Routes = [
 
     { path: 'popupVentas', component: VentaDialogoComponent },
     
-    { path: 'NuevoCliente', component: ClienteventaDialoComponent }
+    { path: 'NuevoCliente', component: ClienteventaDialoComponent },
+
+    { path: 'MensajeConfirmacion', component: DialogConfirmationComponent }
 ];
 
 @NgModule({

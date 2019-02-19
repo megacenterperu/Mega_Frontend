@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ProformaListComponent } from './proforma-list/proforma-list.component';
 import { ProformaEditComponent } from './proforma-edit/proforma-edit.component';
 import { ProductoDialogComponent } from './proforma-edit/producto-dialog/producto-dialog.component';
+import { DetalleDialogProformaComponent } from './proforma-list/detalle-dialog-proforma/detalle-dialog-proforma.component';
 
 const routes: Routes = [
   {
@@ -19,7 +20,9 @@ const routes: Routes = [
 
 { path: 'NuevoPaciente', component: ProductoDialogComponent },
 
-{ path: 'NuevoCliente', component: ClienteDialogComponent }
+{ path: 'NuevoCliente', component: ClienteDialogComponent },
+
+{ path: 'VerdetalleProforma', component: DetalleDialogProformaComponent }
 ];
 
 @NgModule({

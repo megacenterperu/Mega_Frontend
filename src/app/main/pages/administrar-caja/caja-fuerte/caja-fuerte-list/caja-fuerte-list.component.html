@@ -1,0 +1,74 @@
+<div class="page-layout blank p-24" megaPerfectScrollbar>
+  <mat-toolbar>Cierre de Caja Fuerte</mat-toolbar>
+  <form [formGroup]="form" (ngSubmit)="buscar()">
+    <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="15%;" fxFlex.xs="50%">
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker" [max]="maxFecha" placeholder="Escoge una fecha" formControlName="fechaConsulta">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div fxFlex="5%;" fxFlex.xs="50%"></div>
+      <div fxFlex="15%;" fxFlex.xs="50%">
+        <button mat-raised-button color="primary" type="submit">
+          <mat-icon>search</mat-icon>Buscar
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <div class="mat-elevation-z8">
+      <mat-table [dataSource]="dataSource" matSort>
+          <ng-container matColumnDef="fechaCierre">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="20%"> FECHA </mat-header-cell>
+              <mat-cell fxFlex="20%" *matCellDef="let element"> {{element.fechaCierre | date:'dd/MM/yyyy h:mma'}} </mat-cell>
+              <mat-footer-cell *matFooterCellDef fxFlex="20%"></mat-footer-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="montoInicioTurno">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="13%"> MONTO DE INICIO DE TURNO </mat-header-cell>
+            <mat-cell fxFlex="13%" *matCellDef="let element"> {{element.montoInicioTurno | number : '1.2-2'}} </mat-cell>
+            <mat-footer-cell *matFooterCellDef fxFlex="13%"></mat-footer-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="montoTotalRegistrado">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="15%"> MONTO TOTAL REGISTRADO </mat-header-cell>
+              <mat-cell fxFlex="15%" *matCellDef="let element"> {{element.montoTotalRegistrado | number : '1.2-2'}} </mat-cell>
+              <mat-footer-cell *matFooterCellDef fxFlex="15%"></mat-footer-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="montoTotalDia">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="15%"> MONTO TOTAL DEL DIA </mat-header-cell>
+            <mat-cell fxFlex="15%" *matCellDef="let element"> {{element.montoTotalDia | number : '1.2-2'}} </mat-cell>
+            <mat-footer-cell *matFooterCellDef fxFlex="15%">MONTO TOTAL EN CAJA</mat-footer-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="conteoFinTurno">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="15%"> CONTEO FIN DE TURNO </mat-header-cell>
+            <mat-cell fxFlex="15%" *matCellDef="let element"> {{element.conteoFinTurno | number : '1.2-2'}} </mat-cell>
+            <mat-footer-cell *matFooterCellDef fxFlex="15%">{{total+montoInicioTurno | number : '1.2-2'}}</mat-footer-cell>
+          </ng-container>
+
+        <ng-container matColumnDef="estadoCaja">
+          <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="15%"> ESTADO CAJA </mat-header-cell>
+          <mat-cell fxFlex="15%" *matCellDef="let element"> {{element.estadoCaja}} </mat-cell>
+          <mat-footer-cell *matFooterCellDef fxFlex="15%"></mat-footer-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="acciones">
+          <mat-header-cell *matHeaderCellDef fxFlex="8%">ACCIONES</mat-header-cell>
+          <mat-cell fxFlex="8%" *matCellDef="let row">
+              <button mat-icon-button matTooltip="Cerrar Caja Fuerte" color="primary" (click)="openDialog(row)">
+                <mat-icon>vpn_key</mat-icon>
+              </button>
+          </mat-cell>
+          <mat-footer-cell *matFooterCellDef fxFlex="8%"></mat-footer-cell>
+      </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
+      </mat-table>
+  </div>
+</div>

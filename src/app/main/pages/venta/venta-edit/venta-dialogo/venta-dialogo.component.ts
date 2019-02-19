@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource, MatPaginator, MatSort, MatDialogRef } from '@angular/material';
+import { MatTableDataSource, MatPaginator, MatSort, MatDialogRef, MatSnackBar } from '@angular/material';
 import { DataService } from 'src/app/core/data/data.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { DataService } from 'src/app/core/data/data.service';
 export class VentaDialogoComponent implements OnInit {
 
   lista: any[] = [];
-  displayedColumns: string[] = ['codProducto','unidadMedida.codUnidadmedida',  'nombre', 'cantidad', 'precioVenta', 'acciones'];
+  displayedColumns: string[] = ['codProducto','unidadMedida.codUnidadmedida',  'nombre','stock', 'cantidad', 'precioVenta', 'acciones'];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
 
@@ -18,13 +18,17 @@ export class VentaDialogoComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   constructor(
     private dataService: DataService,
-    public dialogRef: MatDialogRef<VentaDialogoComponent>,
+    public dialogRef: MatDialogRef<VentaDialogoComponent>,private snackBar:MatSnackBar
     
   ) { }
 
   ngOnInit() {
     this.dataService.productos().getAll().subscribe(data => this.setData(data));
+    this.dataService.providers().mensaje.subscribe(data => {
+      this.snackBar.open(data, 'Aviso', { duration: 4000 });
+      }); 
   }
+
   setData(data) {
     if (data) {
       data.forEach(element => { element.cantidad = 1; });
@@ -34,23 +38,29 @@ export class VentaDialogoComponent implements OnInit {
       this.dataSource.paginator=this.paginator;
       this.dataSource.sort = this.sort;
     }
-
   }
+
   agregar(data) {
-    this.dataService.productos().findById(data.idProducto).subscribe(r => {
-      let detalle = {
-        precio: data.precioVenta,
-        cantidad: data.cantidad,
-        importeTotalItem: data.precioVenta * data.cantidad,
-        producto: r
-      }
-      this.dataService.providers().dialogo.next(detalle);
-    });
+    const stock=data.stock;
+    const cantidadItem=data.cantidad;
+    if(cantidadItem>stock){
+      this.dataService.providers().mensaje.next("NO TIENE STOCK SUFICIENTE");
+    }else{
+      this.dataService.productos().findById(data.idProducto).subscribe(r => {
+        let detalle = {
+          precio: data.precioVenta,
+          cantidad: data.cantidad,
+          importeTotalItem: data.precioVenta * data.cantidad,
+          producto: r
+        }
+        this.dataService.providers().dialogo.next(detalle);
+      });
+    }
   }
 
-  cerrar() {
+  /*cerrar() {
     this.dialogRef.close();
-  }
+  }*/
 
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim();
