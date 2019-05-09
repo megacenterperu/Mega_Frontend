@@ -9,7 +9,7 @@ export class NavigationModel {
                 'type': 'collapse',
                 'icon': 'shopping_cart',
                 'children': [
-                    {
+                    /*{
                         'id': 'persona',
                         'title': 'PERSONA',
                         'type': 'item',
@@ -20,7 +20,7 @@ export class NavigationModel {
                             'bg': '#F44336',
                             'fg': '#FFFFFF'
                         }
-                    },
+                    },*/
                     {
                         'id': 'persona',
                         'title': 'CLIENTE',
@@ -101,13 +101,13 @@ export class NavigationModel {
                 'type': 'collapse',
                 'icon': 'important_devices',
                 'children':[
-                    {
+                    /*{
                         'id': 'tipoproducto',
                         'title': 'Tipo Producto',
                         'type': 'item',
                         'icon': 'store',//NOMBRE DEL ICONO
                         'url': '/ventas/tipo/t-produto'// RUTA DEL MODULO por ahora no existe
-                    },
+                    },*/
                     {
                         'id': 'tipodocumento',
                         'title': 'Tipo Documento',
@@ -119,17 +119,24 @@ export class NavigationModel {
             },
             {
                 'id': 'idmenuProducto',
-                'title': 'PRODUCTO',
+                'title': 'ALMACEN',
                 'type': 'collapse', 
-                'icon': 'laptop',
+                'icon': 'store',
                 'children':[
                     {
+                        'id': 'tipoproducto',
+                        'title': 'Tipo Producto',
+                        'type': 'item',
+                        'icon': 'store',//NOMBRE DEL ICONO
+                        'url': '/ventas/rproducto/t-produto'// RUTA DEL MODULO por ahora no existe
+                    },
+                    /*{
                         'id': 'categoria',
                         'title': 'Categoria',
                         'type': 'item',
                         'icon': 'category',
                         'url': '/ventas/rproducto/r-categoria'
-                    },
+                    },*/
                     {
                         'id': 'unidadmedida',
                         'title': 'Unidad Medida',
@@ -184,21 +191,6 @@ export class NavigationModel {
                 ]
             },
             {
-                'id': 'reportes',//el nombre del grupo o menu donde van estar
-                'title': 'REPORTES',
-                'type': 'collapse',
-                'icon': 'picture_as_pdf',
-                'children': [
-                    {
-                        'id': 'reporteproforma',
-                        'title': 'REPORTE PROFORMA',
-                        'type': 'item',
-                        'icon': 'people',
-                        'url': '/ventas/reportes'
-                    }
-                ]
-            },
-            {
                 'id': 'idAdminUsuario',
                 'title': 'ADMIN USUARIO',
                 'type': 'collapse', 
@@ -217,6 +209,64 @@ export class NavigationModel {
                         'type': 'item',
                         'icon': 'folder',
                         'url': '/ventas/usuario/ListRol'
+                    }
+                ]
+            },
+            {
+                'id': 'idConsultas',
+                'title': 'CONSULTAS',
+                'type': 'collapse', 
+                'icon': 'local_library',
+                'children':[
+                    {
+                        'id': 'idUstilidadpordia',
+                        'title': 'Utilidad por Dia',
+                        'type': 'item',
+                        'icon': 'trending_up',
+                        'url': '/ventas/consulta/listUtilidad'
+                    },
+                    {
+                        'id': 'idUstilidadpormes',
+                        'title': 'Utilidad por Mes',
+                        'type': 'item',
+                        'icon': 'trending_up',
+                        'url': '/ventas/consulta/listUtilidadMes'
+                    },
+                    {
+                        'id': 'idPrecioProductoAlmacen',
+                        'title': 'Producto en Almacen',
+                        'type': 'item',
+                        'icon': 'folder',
+                        'url': '/ventas/consulta/listProductoAlmacen'
+                    },
+                    {
+                        'id': 'idVentausuario',
+                        'title': 'Ventas por Usuario',
+                        'type': 'item',
+                        'icon': 'folder',
+                        'url': '/ventas/consulta/listVentaUsuario'
+                    },
+                    {
+                        'id': 'idAnularComprobante',
+                        'title': 'Anular Comprobante',
+                        'type': 'item',
+                        'icon': 'file_copy',
+                        'url': '/ventas/consulta/listVentaPorAnular'
+                    }
+                ]
+            },
+            {
+                'id': 'idReportes',
+                'title': 'REPORTES',
+                'type': 'collapse',
+                'icon': 'picture_as_pdf',
+                'children': [
+                    {
+                        'id': 'reporteproforma',
+                        'title': 'REPORTE PROFORMA',
+                        'type': 'item',
+                        'icon': 'people',
+                        'url': '/ventas/reportes'
                     }
                 ]
             }

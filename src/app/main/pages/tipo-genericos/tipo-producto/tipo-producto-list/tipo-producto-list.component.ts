@@ -9,7 +9,7 @@ import { DataService } from "../../../../../core/data/data.service";
 })
 export class TipoProductoListComponent implements OnInit {
   lista: any[] = [];
-  displayedColumns: string[] = ['idTipoproducto',"descripcion","acciones"];
+  displayedColumns: string[] = ["descripcion","acciones"];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -25,11 +25,12 @@ export class TipoProductoListComponent implements OnInit {
     });
   }
 
-  setData(data){
-    let r =data;
-    this.cantidad=JSON.parse(JSON.stringify(data)).length;
-    this.dataSource=new MatTableDataSource(r);
-    this.dataSource.sort=this.sort;
+  setData(data) {
+    let r = data;
+    this.cantidad = JSON.parse(JSON.stringify(data)).length;
+    this.dataSource = new MatTableDataSource(r);
+    this.dataSource.paginator=this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   applyFilter(filterValue: string) {

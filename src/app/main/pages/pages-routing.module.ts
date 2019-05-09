@@ -15,7 +15,8 @@ const routes: Routes = [
     { path: 'venta', loadChildren: '../../main/pages/venta/venta.module#VentaModule'},
     { path: 'reportes', loadChildren: '../../main/pages/reportes/reportes.module#ReportesModule' },
     { path: 'admincaja', loadChildren: '../../main/pages/administrar-caja/administrar-caja.module#AdministrarCajaModule' },
-    { path: 'usuario', loadChildren: '../../main/pages/login-usuario/login-usuario.module#LoginUsuarioModule' }
+    { path: 'usuario', loadChildren: '../../main/pages/login-usuario/login-usuario.module#LoginUsuarioModule' },
+    { path: 'consulta', loadChildren: '../../main/pages/consulta/consulta.module#ConsultaModule' }
 ];
 
 @NgModule({

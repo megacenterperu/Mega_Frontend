@@ -34,9 +34,11 @@ export class RolEditComponent implements OnInit {
   }
 
   private loadDataFrom(){
+    if(this.id !=null && this.data.idRol>0){
       this.dataService.roles().findById(this.id).subscribe(data =>{
         this.form.patchValue(data);
       });
+    }
   }
 
   operar(){

@@ -10,6 +10,8 @@ import { ActivatedRoute, Router, Params } from "@angular/router";
   styleUrls: ["./personal-edit.component.scss"]
 })
 export class PersonalEditComponent implements OnInit {
+
+  maxDate: Date = new Date();
   id: number;
   form: FormGroup;
   edicion: boolean = false;
@@ -42,17 +44,11 @@ export class PersonalEditComponent implements OnInit {
       }),
       persona: this.formBuilder.group({
         idPersona: [null],
-        nombre: [
-          null,
-          Validators.compose([Validators.required, Validators.maxLength(100)])
-        ],
-        numeroDocumento: [
-          null,
-          Validators.compose([Validators.required, Validators.maxLength(150)])
-        ],
-        telfMovil: [null, Validators.compose([Validators.maxLength(150)])],
-        direccion: [null, Validators.compose([Validators.maxLength(150)])],
-        email: [null, Validators.compose([Validators.maxLength(150)])],
+        nombre: [null,Validators.compose([Validators.required])],
+        numeroDocumento: [null,Validators.compose([Validators.required])],
+        telfMovil: [null, Validators.compose([Validators.required])],
+        direccion: [null, Validators.compose([Validators.required])],
+        email: [null],
         tipoDocumeto: [null, Validators.compose([Validators.required])]
       })
     });
@@ -110,7 +106,7 @@ export class PersonalEditComponent implements OnInit {
       this.dataService.personales().update(this.form.value).subscribe(data => {
         this.dataService.personales().getAll().subscribe(p => {
           this.dataService.providers().cambio.next(p);
-          this.dataService.providers().mensaje.next("se Actualizo con éxito!");
+          this.dataService.providers().mensaje.next("Se Actualizo con éxito!");
         });
       });
     } else {

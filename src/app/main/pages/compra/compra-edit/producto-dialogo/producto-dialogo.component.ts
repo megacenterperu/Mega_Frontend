@@ -1,6 +1,6 @@
-import { MatTableDataSource, MatPaginator, MatSort, MatDialogRef } from '@angular/material';
-import { DataService } from './../../../../../core/data/data.service';
+import { MatTableDataSource, MatPaginator, MatSort, MatDialogRef, MatSnackBar } from '@angular/material';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { DataService } from 'src/app/core/data/data.service';
 
 @Component({
   selector: 'ms-producto-dialogo',
@@ -17,11 +17,15 @@ export class ProductoDialogoComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   constructor(
     private dataService: DataService,
-    public dialogRef: MatDialogRef<ProductoDialogoComponent>,
+    public dialogRef: MatDialogRef<ProductoDialogoComponent>,private snackBar:MatSnackBar
   ) { }
 
   ngOnInit() {
     this.dataService.productos().getAll().subscribe(data => this.setData(data));
+    this.dataService.providers().cambio.subscribe(data => this.setData(data));
+    this.dataService.providers().mensaje.subscribe(data => {
+      this.snackBar.open(data, 'Aviso', { duration: 4000 });
+    }); 
   }
 
   setData(data) {
@@ -33,8 +37,8 @@ export class ProductoDialogoComponent implements OnInit {
       this.dataSource.paginator=this.paginator;
       this.dataSource.sort = this.sort;
     }
-
   }
+
   agregar(data) {
     this.dataService.productos().findById(data.idProducto).subscribe(r => {
       let detalle = {
@@ -46,11 +50,7 @@ export class ProductoDialogoComponent implements OnInit {
       this.dataService.providers().dialogo.next(detalle);
     });
   }
-
-  cerrar() {
-    this.dialogRef.close();
-  }
-
+  
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim();
     filterValue = filterValue.toLowerCase();

@@ -1,0 +1,124 @@
+<div class="page-layout blank p-24" megaPerfectScrollbar>
+  <mat-toolbar>Utilidad por Mes</mat-toolbar>
+  <form [formGroup]="form" (ngSubmit)="buscar()">
+    <div fxLayout="row" fxLayout.xs="column">
+      <mat-form-field fxFlex="20%;" fxFlex.xs="50%" appearance="outline">
+        <mat-label>Escoge fecha inicio</mat-label>
+        <input matInput [matDatepicker]="picker" [max]="maxFecha" placeholder="Escoge la fecha inicial" formControlName="fechaConsulta">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <div fxFlex="1%" fxFlex.xs="50%"></div>
+      <mat-form-field fxFlex="20%;" fxFlex.xs="50%" appearance="outline">
+        <mat-label>Escoge fecha final</mat-label>
+        <input matInput [matDatepicker]="picker2" placeholder="Escoge la fecha final" formControlName="fechaSgte">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
+      <div fxFlex="1%" fxFlex.xs="50%"></div>
+      <div fxFlex="15%;" fxFlex.xs="50%">
+        <button  mat-fab matTooltip="Escoje de que fecha a que fecha desea consultar" color="accent" type="submit">
+          <mat-icon>search</mat-icon>
+        </button>
+        <div fxFlex="5%" fxFlex.xs="50%"></div>
+        <button mat-fab matTooltip="Imprimir Salidad de Productos" color="warn"  type="button" (click)="print()">
+          <mat-icon>print</mat-icon>
+        </button>
+      </div>
+    </div>
+  </form>
+  <label>Lista de Productos Vendidos</label>
+  <div class="mat-elevation-z8">
+      <mat-table [dataSource]="dataSource" matSort>
+          <ng-container matColumnDef="cantidad">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%" fxFlex.xs="100%"> CANTIDAD </mat-header-cell>
+              <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.cantidad}} </mat-cell>
+              <mat-footer-cell *matFooterCellDef fxFlex="10%"></mat-footer-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="nombreProducto">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="40%" fxFlex.xs="100%"> DESCRIPCION DE PRODUCTO/SERVICIO </mat-header-cell>
+            <mat-cell fxFlex="40%" fxFlex.xs="100%" *matCellDef="let element"> {{element.nombreProducto}} </mat-cell>
+            <mat-footer-cell *matFooterCellDef fxFlex="40%"></mat-footer-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="precioCompra">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="12.5%" fxFlex.xs="100%"> PRECIO COMPRA </mat-header-cell>
+            <mat-cell fxFlex="12.5%" fxFlex.xs="100%" *matCellDef="let element"> {{element.precioCompra | number : '1.2-2'}} </mat-cell>
+            <mat-footer-cell *matFooterCellDef fxFlex="12.5%"></mat-footer-cell>
+          </ng-container>
+
+        <ng-container matColumnDef="precioVentaUnitario">
+          <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="12.5%" fxFlex.xs="100%"> PRECIO VENTA UNIT. </mat-header-cell>
+          <mat-cell fxFlex="12.5%" fxFlex.xs="100%" *matCellDef="let element"> {{element.precioVentaUnitario | number : '1.2-2'}} </mat-cell>
+          <mat-footer-cell *matFooterCellDef fxFlex="7.5%"></mat-footer-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="utilidadUnitaria">
+          <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="12%" fxFlex.xs="100%"> UTILIDAD UNIT. </mat-header-cell>
+          <mat-cell fxFlex="12%" fxFlex.xs="100%" *matCellDef="let element"> {{element.utilidadUnitaria | number : '1.2-2'}} </mat-cell>
+          <mat-footer-cell *matFooterCellDef fxFlex="15%">UTILIDAD TOTAL</mat-footer-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="utilidadNeta">
+          <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="13%" fxFlex.xs="100%"> UTILIDAD TOTAL </mat-header-cell>
+          <mat-cell fxFlex="13%" fxFlex.xs="100%" *matCellDef="let element"> {{element.utilidadNeta | number : '1.2-2'}} </mat-cell>
+          <mat-footer-cell *matFooterCellDef fxFlex="13%">{{total | number : '1.2-2'}}</mat-footer-cell>
+        </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
+      </mat-table>
+  </div>
+  <br>
+  <label>Lista Egresos</label>
+  <div class="mat-elevation-z8">
+      <mat-table [dataSource]="dataSourceEgreso" matSort>
+        <ng-container matColumnDef="fecha">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="20%" fxFlex.xs="100%"> FECHA </mat-header-cell>
+            <mat-cell fxFlex="20%" fxFlex.xs="100%" *matCellDef="let element"> {{element.fecha | date:'dd/MM/yyyy h:mma'}} </mat-cell>
+            <mat-footer-cell *matFooterCellDef fxFlex="20%" fxFlex.xs="100%"></mat-footer-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="tipoPago">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%" fxFlex.xs="100%"> TIPO PAGO </mat-header-cell>
+            <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.tipoPago}} </mat-cell>
+            <mat-footer-cell *matFooterCellDef fxFlex="10%" fxFlex.xs="100%"></mat-footer-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="descripcion">
+          <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="36%" fxFlex.xs="100%"> DESCRIPCION </mat-header-cell>
+          <mat-cell fxFlex="36%" fxFlex.xs="100%" *matCellDef="let element"> {{element.descripcion}} </mat-cell>
+          <mat-footer-cell *matFooterCellDef fxFlex="36%" fxFlex.xs="100%"></mat-footer-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="benificiario">
+          <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="22%" fxFlex.xs="100%"> BENIFICIARIO </mat-header-cell>
+          <mat-cell fxFlex="22%" fxFlex.xs="100%" *matCellDef="let element"> {{element.benificiario}} </mat-cell>
+          <mat-footer-cell *matFooterCellDef fxFlex="22%" fxFlex.xs="100%">TOTAL</mat-footer-cell>
+        </ng-container>
+
+      <ng-container matColumnDef="monto">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="12%" fxFlex.xs="100%"> MONTO </mat-header-cell>
+        <mat-cell fxFlex="12%" fxFlex.xs="100%" *matCellDef="let element"> {{element.monto | number : '1.2-2'}} </mat-cell>
+        <mat-footer-cell *matFooterCellDef fxFlex="12%" fxFlex.xs="100%">{{totalEgreso | number : '1.2-2'}}</mat-footer-cell>
+      </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumnsegreso"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumnsegreso;"></mat-row>
+        <mat-footer-row *matFooterRowDef="displayedColumnsegreso"></mat-footer-row>
+    </mat-table>
+  </div>
+  <br>
+  <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="100%;" fxFlex.xs="50%">
+        <mat-card>
+          <div fxFlex="100%;" fxFlex.xs="50%" class="mat-label">
+            <mat-label>UTILIDAD NETA: </mat-label>
+            {{(total-totalEgreso) | number : '1.2-2'}}
+          </div>
+        </mat-card>
+      </div>
+    </div>
+</div>

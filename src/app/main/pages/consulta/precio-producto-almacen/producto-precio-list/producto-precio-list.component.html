@@ -1,0 +1,49 @@
+<div class="page-layout blank p-24" megaPerfectScrollbar>
+    <mat-toolbar>COSTO DE COMPRA DE PRODUCTOS EN ALMACEN</mat-toolbar>
+
+    <div class="mat-elevation-z8">
+        <mat-table [dataSource]="dataSource" matSort>
+  
+            <ng-container matColumnDef="codProducto">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="12.5%" fxFlex.xs="100%"> COD </mat-header-cell>
+                <mat-cell fxFlex="12.5%" fxFlex.xs="100%" *matCellDef="let element"> {{element.codProducto}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef fxFlex="12.5%"></mat-footer-cell>
+            </ng-container>
+  
+            <ng-container matColumnDef="nombreProducto">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="40%" fxFlex.xs="100%"> DESCRIPCION DE PRODUCTO/SERVICIO </mat-header-cell>
+              <mat-cell fxFlex="40%" fxFlex.xs="100%" *matCellDef="let element"> {{element.nombreProducto}} </mat-cell>
+              <mat-footer-cell *matFooterCellDef fxFlex="40%"></mat-footer-cell>
+            </ng-container>
+  
+            <ng-container matColumnDef="marcaProducto">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="13.5%" fxFlex.xs="100%"> MARCA </mat-header-cell>
+              <mat-cell fxFlex="13.5%" fxFlex.xs="100%" *matCellDef="let element"> {{element.marcaProducto}} </mat-cell>
+              <mat-footer-cell *matFooterCellDef fxFlex="13.5%"></mat-footer-cell>
+            </ng-container>
+  
+          <ng-container matColumnDef="stock">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%" fxFlex.xs="100%"> STOCK </mat-header-cell>
+            <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.stock}} </mat-cell>
+            <mat-footer-cell *matFooterCellDef fxFlex="10%"></mat-footer-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="precioCompra">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="11%" fxFlex.xs="100%"> PREC. COMPRA </mat-header-cell>
+            <mat-cell fxFlex="11%" fxFlex.xs="100%" *matCellDef="let element"> {{element.precioCompra | number : '1.2-2'}} </mat-cell>
+            <mat-footer-cell *matFooterCellDef fxFlex="11%">COSTO TOTAL</mat-footer-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="importeCompra">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="13%" fxFlex.xs="100%"> IMPORTE TOTAL </mat-header-cell>
+            <mat-cell fxFlex="13%" fxFlex.xs="100%" *matCellDef="let element"> {{element.importeCompra | number : '1.2-2'}} </mat-cell>
+            <mat-footer-cell *matFooterCellDef fxFlex="10%">{{total | number : '1.2-2'}}</mat-footer-cell>
+          </ng-container>
+  
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[10, 20, 30, 100]"></mat-paginator>
+    </div>
+  </div>

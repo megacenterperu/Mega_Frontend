@@ -1,3 +1,4 @@
+import { USER_DATA } from 'src/config/auth.config';
 import { Injectable } from '@angular/core';
 import { GenericService } from './generic.service';
 import { Observable } from 'rxjs';
@@ -23,10 +24,14 @@ export class ProductoService {
   }
 
   create(data: any): Observable<any> {
+    const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+    data.idRegUsuaRegistra=user.idUsuario;
     return this.generic.all(basePath).all("registrar").post(data);
   }
 
   update(data: any): Observable<any> {
+    const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+    data.idRegUsuaModifica=user.idUsuario;
     return this.generic.all(basePath).all("actualizar").put(data);
   }
 
@@ -37,4 +42,10 @@ export class ProductoService {
     return this.generic.all(basePath).all("buscar").all(data).get();
 
   }
+
+  listPrecioProductoAlamacen(): Observable<any>{
+    return this.generic.all(basePath).all("listPrecioProductoAlamacen").post();
+
+  }
+  
 }

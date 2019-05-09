@@ -1,55 +1,11 @@
-<!-- <div fxLayout="row" fxLayoutAlign="center">
-    <mat-card class="example-card" fxFlex="400px">
-        <mat-card-header>
-          <mat-card-title>Login</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <form class="container" #loginForm="ngForm">
-            <mat-form-field class="field-container" appearance="outline">
-              <mat-label>Usuario</mat-label>
-              <input matInput placeholder="Username" [(ngModel)]="usuario" name="usuario" required>
-            </mat-form-field>
-      
-            <mat-form-field class="field-container" appearance="outline">
-              <mat-label>Password</mat-label>
-              <input matInput placeholder="Password" [(ngModel)]="clave" name="clave" required [type]="hide ? 'password' : 'text'">
-              <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </mat-form-field>
-            
-            <mat-card *ngIf="mensaje">{{mensaje}}</mat-card>
-            <mat-card *ngIf="error">{{error}}</mat-card>
-          </form>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-raised-button id="login" color="accent" (click)="iniciarSesion()" type="button">
-            <mat-icon>vpn_key</mat-icon>
-            <span>Iniciar Sesión</span>
-          </button>
-        </mat-card-actions>
-      </mat-card>
-</div> -->
-
-<!-- <div class="ps__rail-x" style="left: 0px; bottom: -473px;">
-  <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-</div>
-<div class="ps__rail-y" style="top: 432px; right: 0px; height: 432px;">
-  <div class="ps__thumb-y" tabindex="0" style="top: 206px; height: 206px;"></div>
-</div> -->
-
 <div id="login" fxLayout="column">
-
   <div id="login-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
-
       <div id="login-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
-
           <div class="logo">
               <img src="assets/images/logos/fuse.svg">
           </div>
-
           <div class="title">INGRESE CON SU CUENTA</div>
-
           <form name="loginForm" [formGroup]="loginForm" novalidate (ngSubmit)="iniciarSesion()" #f="ngForm">
-
               <mat-form-field class="field-container" appearance="outline">
                   <mat-label>Usuario</mat-label>
                   <input matInput placeholder="usuario" formControlName="usuario">
@@ -63,7 +19,6 @@
                               Por favor ingrese un usuario válido
                   </mat-error>
               </mat-form-field>
-
               <mat-form-field class="field-container" appearance="outline">
                   <mat-label>Password</mat-label>
                   <input matInput type="password" placeholder="Clave" formControlName="clave">
@@ -71,50 +26,12 @@
                   <mat-error>
                     clave es requerido
                   </mat-error>
-              </mat-form-field>
-
-              <!-- <div class="remember-forgot-password" fxLayout="row" fxLayout.xs="column"
-                   fxLayoutAlign="space-between center">
-                  <mat-checkbox class="remember-me" aria-label="Remember Me">
-                      Remember Me
-                  </mat-checkbox>
-
-                  <a class="forgot-password" [routerLink]="'/pages/auth/forgot-password'">
-                      Forgot Password?
-                  </a>
-              </div> -->
-
+              </mat-form-field>    
               <button mat-raised-button color="accent" class="submit-button" aria-label="LOG IN" [disabled]="f.invalid">
                 <mat-icon>how_to_reg</mat-icon>
                 <span>LOGIN</span>
-              </button>
-
-              <!-- <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
-                  <mat-icon>done</mat-icon>
-                  <span>Aceptar</span>
-                </button> -->
-
-          </form>
-
-           <!-- <div class="separator">
-              <span class="text">OR</span>
-          </div>  -->
-
-          <!-- <button mat-raised-button class="google">
-              Log in with Google
-          </button>
-
-          <button mat-raised-button class="facebook">
-              Log in with Facebook
-          </button> -->
-
-          <!-- <div class="register" fxLayout="column" fxLayoutAlign="center center">
-              <span class="text">Don't have an account?</span>
-              <a class="link" [routerLink]="'/pages/auth/register'">Create an account</a>
-          </div> -->
-
+              </button>             
+          </form>    
       </div>
-
   </div>
-
 </div>

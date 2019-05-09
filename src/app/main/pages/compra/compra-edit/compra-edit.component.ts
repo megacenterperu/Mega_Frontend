@@ -7,8 +7,7 @@ import { Observable } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ProductoDialogoComponent } from './producto-dialogo/producto-dialogo.component';
-import { Producto } from '../../../../core/model/producto.model';
-import { MatDialog, MatTableDataSource, MatPaginator } from '@angular/material';
+import { MatDialog, MatTableDataSource, MatPaginator, MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'ms-compra-edit',
@@ -17,6 +16,7 @@ import { MatDialog, MatTableDataSource, MatPaginator } from '@angular/material';
 })
 export class CompraEditComponent implements OnInit {
 
+  maxDate: Date = new Date();
   id: number;
   form: FormGroup;
   edicion: boolean = false;
@@ -31,6 +31,7 @@ export class CompraEditComponent implements OnInit {
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private router: Router,
+    /*private snackBar:MatSnackBar,*/
     private formBuilder: FormBuilder) { }
 
 
@@ -41,15 +42,25 @@ export class CompraEditComponent implements OnInit {
     this.listaSucrusal();
     this.listaTipoComprobante();
     this.dataService.providers().dialogo.subscribe(data => {
+      let item=this.detalleCompra.value.filter((test, index, array) =>
+      index === array.findIndex((findTest) =>
+      findTest.producto.idProducto === data.producto.idProducto));
+      if(item.length>0){
+        this.dataService.providers().mensaje.next('El producto ya fue agreagado')
+        return;
+      }  
       const formGroup = this.addDetalleFormControl();
       formGroup.patchValue({
-        precioItem: +data.precioItem.toFixed(2),
+        precioItem: +data.precioItem,
         cantidaditem: data.cantidaditem,
         importeTotalItem: +data.importeTotalItem.toFixed(2),
         producto: data.producto,
         productoT: data.producto
       });
     });
+    /*this.dataService.providers().mensaje.subscribe(data => {
+      this.snackBar.open(data, 'Aviso', { duration: 4000 });
+    });*/  
 
     this.route.params.subscribe((params: Params) => {
       this.id = params['id'];
@@ -68,9 +79,11 @@ export class CompraEditComponent implements OnInit {
   }
 
   initFormBuilder() {
+    var tzoffset = (this.maxDate).getTimezoneOffset() * 60000; //offset in milliseconds
+    var localISOTime = (new Date(Date.now() - tzoffset)).toISOString()
     this.form = this.formBuilder.group({
       idCompra: [null],
-      fecha: [new Date(), Validators.compose([Validators.required])],
+      fecha: [localISOTime, Validators.compose([Validators.required])],
       montoTotal: [0, Validators.compose([Validators.required])],
       neto: [0, Validators.compose([Validators.required])],
       igv: [0, Validators.compose([Validators.required])],
@@ -130,19 +143,21 @@ export class CompraEditComponent implements OnInit {
 
   calcularTotales() {
     let total = 0;
-    let igv = 0;
-    let neto = 0;
+    /*let igv = 0;
+    let neto = 0;*/
     this.detalleCompra.controls.forEach(formControl => {
       const precio = formControl.get("precioItem").value || 0;
       const cantidad = formControl.get("cantidaditem").value || 0;
-      let subTotal = parseFloat(precio) * parseFloat(cantidad);
-      const igvItem = subTotal * 0.18;
+      total = total+ parseFloat(precio) * parseFloat(cantidad);
+      /*const igvItem = total * 0.18;
       neto += subTotal;
       igv += igvItem;
       const totalItem = subTotal + igv;
-      total += totalItem;
+      total += totalItem;*/
 
     });
+    const neto = total/1.18;
+    const igv = neto * 0.18;
     this.form.patchValue({
       montoTotal: +total.toFixed(2),
       neto: +neto.toFixed(2),
@@ -200,13 +215,10 @@ export class CompraEditComponent implements OnInit {
     }
   }
 
-
   AgregarProducto() {
-    let producto = new Producto();
-    let dialogRef = this.dialog.open(ProductoDialogoComponent, {
-      width: '900px',
-      disableClose: true,
-      data: producto
+    const dialogRef = this.dialog.open(ProductoDialogoComponent,{width: '900px'});
+    dialogRef.afterClosed().subscribe(result => {
+    //  console.log(`Dialog result: ${result}`);
     });
   }
 
@@ -241,6 +253,13 @@ export class CompraEditComponent implements OnInit {
             importeTotal: +data.precioCompra.toFixed(2),
             producto: data,
             productoT: data
+          }
+          let item=this.detalleCompra.value.filter((test, index, array) =>
+          index === array.findIndex((findTest) =>
+          findTest.producto.idProducto === data.idProducto));
+          if(item.length>0){
+            this.dataService.providers().mensaje.next('El producto ya fue agreagado')
+            return;
           }
           this.dataService.providers().dialogo.next(detalle);
           this.form.patchValue({ search: "" });

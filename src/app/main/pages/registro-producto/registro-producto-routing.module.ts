@@ -4,6 +4,7 @@ import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confir
 
 const routes: Routes = [
   { path: '', redirectTo: 'r-producto', pathMatch: 'full' },
+  { path: 't-produto', loadChildren: '../../../main/pages/tipo-genericos/tipo-producto/tipo-producto.module#TipoProductoModule' },
   { path: 'r-categoria', loadChildren: '../../../main/pages/registro-producto/categoria/categoria.module#CategoriaModule' },
   { path: 'r-unidadmedida', loadChildren: '../../../main/pages/registro-producto/unidadmedida/unidadmedida.module#UnidadmedidaModule' },
   { path: 'r-producto', loadChildren: '../../../main/pages/registro-producto/producto/producto.module#ProductoModule' },

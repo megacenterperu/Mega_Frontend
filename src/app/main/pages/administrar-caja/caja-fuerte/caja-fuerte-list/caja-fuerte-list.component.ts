@@ -13,6 +13,7 @@ import { caja } from 'src/app/core/model/caja.model';
 })
 export class CajaFuerteListComponent implements OnInit {
 
+  maxFecha: Date = new Date();
   form: FormGroup;
   montoInicioTurno:number=0;
   total: number = 0;
@@ -26,8 +27,10 @@ export class CajaFuerteListComponent implements OnInit {
   constructor(private dataService:DataService,private formBuilder: FormBuilder, private snackBar:MatSnackBar,public dialog: MatDialog) { }
 
   ngOnInit() {
+    var tzoffset = (this.maxFecha).getTimezoneOffset() * 60000; //offset in milliseconds
+    var localISOTime = (new Date(Date.now() - tzoffset)).toISOString()
     this.form = this.formBuilder.group({
-      fechaConsulta: [ new Date(), Validators.compose([Validators.required])]     
+      fechaConsulta: [localISOTime, Validators.compose([Validators.required])]     
     }); 
     this.dataService.providers().mensaje.subscribe(data => {
       this.snackBar.open(data, 'Aviso', { duration: 4000 });

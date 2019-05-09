@@ -1,37 +1,37 @@
-<div class="page-layout blank p-24" megaPerfectScrollbar>
-    <mat-toolbar>Lista De Compras</mat-toolbar>
-
+<!-- <h2 mat-dialog-title>Detalle de Compra</h2> -->
+<mat-toolbar>Detalle De Compra</mat-toolbar>
+<mat-dialog-content class="mat-typography">
     <mat-table [dataSource]="dataSource" matSort>
 
         <ng-container matColumnDef="producto.codProducto">
-            <mat-header-cell *matHeaderCellDef fxFlex="10%"> CODIGO </mat-header-cell>
-            <mat-cell fxFlex="10%" *matCellDef="let element"> {{element.producto.codProducto}}</mat-cell>
+            <mat-header-cell *matHeaderCellDef fxFlex="10%" fxFlex.xs="100%"> CODIGO </mat-header-cell>
+            <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.producto.codProducto}}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="producto.nombre">
-            <mat-header-cell *matHeaderCellDef fxFlex="30%"> PRODUCTO / SERVICIO </mat-header-cell>
-            <mat-cell fxFlex="30%" *matCellDef="let element"> {{element.producto.nombre}}</mat-cell>
+            <mat-header-cell *matHeaderCellDef fxFlex="30%" fxFlex.xs="100%"> PRODUCTO / SERVICIO </mat-header-cell>
+            <mat-cell fxFlex="30%" fxFlex.xs="100%" *matCellDef="let element"> {{element.producto.nombre}}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="producto.marcaProducto">
-            <mat-header-cell *matHeaderCellDef fxFlex="20%"> MARCA </mat-header-cell>
-            <mat-cell fxFlex="20%" *matCellDef="let element"> {{element.producto.marcaProducto}}</mat-cell>
+            <mat-header-cell *matHeaderCellDef fxFlex="20%" fxFlex.xs="100%"> MARCA </mat-header-cell>
+            <mat-cell fxFlex="20%" fxFlex.xs="100%" *matCellDef="let element"> {{element.producto.marcaProducto}}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="cantidaditem">
-            <mat-header-cell *matHeaderCellDef fxFlex="10%">CANTIDAD</mat-header-cell>
-            <mat-cell fxFlex="10%" *matCellDef="let element"> {{element.cantidaditem}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef fxFlex="10%" fxFlex.xs="100%">CANTIDAD</mat-header-cell>
+            <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.cantidaditem}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="precioItem">
-            <mat-header-cell *matHeaderCellDef fxFlex="20%">PRECIO DE COMPRA </mat-header-cell>
-            <mat-cell fxFlex="20%" *matCellDef="let element"> {{element.precioItem}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef fxFlex="20%" fxFlex.xs="100%">PRECIO DE COMPRA </mat-header-cell>
+            <mat-cell fxFlex="20%" fxFlex.xs="100%" *matCellDef="let element"> {{element.precioItem}} </mat-cell>
         </ng-container>
         <ng-container matColumnDef="importeTotalItem">
-            <mat-header-cell *matHeaderCellDef fxFlex="10%"> SUB TOTAL </mat-header-cell>
-            <mat-cell fxFlex="10%" *matCellDef="let element"> {{element.importeTotalItem}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef fxFlex="10%" fxFlex.xs="100%"> SUB TOTAL </mat-header-cell>
+            <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.importeTotalItem}} </mat-cell>
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-    <button mat-raised-button color="accent" (click)="cerrar()" type="button">Cerrar</button>
-
-</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

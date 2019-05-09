@@ -1,11 +1,10 @@
 import { startWith, map } from 'rxjs/operators';
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { DataService } from 'src/app/core/data/data.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
-import { Producto } from 'src/app/core/model/producto.model';
 import { ProductoDialogComponent } from './producto-dialog/producto-dialog.component';
 import { ClienteDialogComponent } from './cliente-dialog/cliente-dialog.component';
 import { Cliente } from 'src/app/core/model/cliente.model';
@@ -18,6 +17,8 @@ import { Cliente } from 'src/app/core/model/cliente.model';
 
 export class ProformaEditComponent implements OnInit {
 
+  cli:Cliente;
+  maxDate: Date = new Date();
   id: number;
   form: FormGroup;
   edicion: boolean = false;
@@ -27,13 +28,15 @@ export class ProformaEditComponent implements OnInit {
   myControlCliente: FormControl = new FormControl();
   lista: any[] = [];
   displayedColumns: string[] = ["codProducto", "nombre", "marcaProducto", "cantidaditem", "precioitem", 'importetotalitem', "acciones"];
+  redundancia:boolean=false;
 
   constructor(
     private dataService: DataService,
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private snackBar:MatSnackBar
   ) { }
 
   ngOnInit() {
@@ -41,10 +44,17 @@ export class ProformaEditComponent implements OnInit {
     this.generateNumber();
     this.listaClientes();
     this.dataService.providers().dialogo.subscribe(data => {
+      let item=this.detalleProforma.value.filter((test, index, array) =>
+      index === array.findIndex((findTest) =>
+      findTest.producto.idProducto === data.producto.idProducto));
+      if(item.length>0){
+        this.dataService.providers().mensaje.next('El producto ya fue agreagado')
+        return;
+      }
       const formGroup = this.addDetalleFormControl();
       formGroup.patchValue({
         cantidaditem: data.cantidaditem,
-        precioitem: +data.precioitem.toFixed(2),
+        precioitem: +data.precioitem,
         importetotalitem: +data.importetotalitem.toFixed(2),
         producto: data.producto,
         productoT: data.producto
@@ -52,7 +62,9 @@ export class ProformaEditComponent implements OnInit {
       });
       //this.setData(this.detalleProforma.value);
     });
-
+    this.dataService.providers().mensaje.subscribe(data => {
+      this.snackBar.open(data, 'Aviso', { duration: 4000 });
+    }); 
     this.route.params.subscribe((params: Params) => {
       this.id = params['id'];
       this.edicion = params['id'] != null;
@@ -70,10 +82,12 @@ export class ProformaEditComponent implements OnInit {
   }
 
   initFormBuilder() {
+    var tzoffset = (this.maxDate).getTimezoneOffset() * 60000; //offset in milliseconds
+    var localISOTime = (new Date(Date.now() - tzoffset)).toISOString()
     this.form = this.formBuilder.group({
       idProforma: [null],
-      fecha: [new Date(), Validators.compose([Validators.required])],
-      fechaProforma:[{ value: new Date(), disabled: true }, Validators.compose([Validators.required])],
+      fecha: [localISOTime, Validators.compose([Validators.required])],
+      fechaProforma:[{value:new Date(), disabled: true }, Validators.compose([Validators.required])],
       numeroProforma: [null],
       numero: [{ value: '', disabled: true }],
       acuenta: [0, Validators.compose([Validators.required])],
@@ -95,7 +109,6 @@ export class ProformaEditComponent implements OnInit {
         saldo: +SaldoTotal.toFixed(2),
         saldoProforma: +SaldoTotal.toFixed(2)
       });
-      console.log("SaldoTotal is "+SaldoTotal.toFixed(2))
     });
   }
 
@@ -160,7 +173,6 @@ export class ProformaEditComponent implements OnInit {
     this.form.patchValue({
       total: +MontoTotal.toFixed(2)
     });
-    console.log("MontoTotal is "+MontoTotal.toFixed(2))
   }
 
   get detalleProforma(): FormArray {
@@ -206,31 +218,21 @@ export class ProformaEditComponent implements OnInit {
   }
 
   AgregarProducto() {
-    let producto = new Producto();
-    let dialogRef = this.dialog.open(ProductoDialogComponent, {
-      width: '900px',
-      disableClose: true,
-      data: producto
+    const dialogRef = this.dialog.open(ProductoDialogComponent,{width: '900px'});
+    dialogRef.afterClosed().subscribe(result => {
+    //  console.log(`Dialog result: ${result}`);
     });
   }
 
   openDialog(cliente: Cliente): void {
     let cli = cliente != null ? cliente : new Cliente();
     let dialogRef = this.dialog.open(ClienteDialogComponent, {
-      width: '250px',   
-      disableClose: true,   
-      data: cli      
+      data: cli
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
     });
   }
-
-  /*openDialog() {
-    let cliente = new Cliente();
-    let dialogRef = this.dialog.open(ClienteDialogComponent, {
-      width: '250px',   
-      disableClose: true,   
-      data: cliente      
-    });
-  }*/
 
   buscarProducto($event) {
     if ($event.key === "Enter") {
@@ -243,13 +245,20 @@ export class ProformaEditComponent implements OnInit {
             importeTotal: +data.precioVenta.toFixed(2),
             producto: data
           }
+          let item=this.detalleProforma.value.filter((test, index, array) =>
+          index === array.findIndex((findTest) =>
+          findTest.producto.idProducto === data.idProducto));
+          if(item.length>0){
+            this.dataService.providers().mensaje.next('El producto ya fue agreagado')
+            return;
+          }
           this.dataService.providers().dialogo.next(detalle);
         },
-          error => {
-            this.dataService.providers().mensaje.next('Producto no encontrado')
-          });
+        error => {
+          this.dataService.providers().mensaje.next('Producto no encontrado')
+        });
+      }
     }
-  }
 
   save() {
     if (!this.detalleProforma.valid) return;
@@ -287,7 +296,6 @@ export class ProformaEditComponent implements OnInit {
       iframe.contentWindow.print();
     });
   }
-
 }
 
 

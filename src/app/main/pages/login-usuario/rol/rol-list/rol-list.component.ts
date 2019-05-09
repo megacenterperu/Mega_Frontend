@@ -13,6 +13,7 @@ import { Rol } from 'src/app/core/model/rol';
 })
 export class RolListComponent implements OnInit {
 
+  roles:Rol;
   lista: any[] = [];
   displayedColumns: string[] = ['idRol',"nombre","descripcion", "acciones"];
   dataSource: MatTableDataSource<any>;
@@ -47,19 +48,13 @@ export class RolListComponent implements OnInit {
     this.dataSource.filter = filterValue;
   }
 
-  openDialog(id:any) {
+  openDialog(id:any): void{
+    let roles= id != null ? id:new Rol();
     const dialogRef = this.dialog.open(RolEditComponent,{
-      data:id
+      data:roles
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
-
-  openDialogNew() {
-    const dialogRef = this.dialog.open(RolEditComponent);
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      //console.log(`Dialog result: ${result}`);
     });
   }
 

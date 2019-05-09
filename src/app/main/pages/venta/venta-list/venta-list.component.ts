@@ -1,8 +1,10 @@
 import { ViewChild } from '@angular/core';
 import { MatSnackBar, MatTableDataSource, MatPaginator, MatSort, MatDialogRef, MatDialog } from '@angular/material';
-import { DataService } from './../../../../core/data/data.service';
 import { Component, OnInit } from '@angular/core';
 import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confirmation.component';
+import { DataService } from 'src/app/core/data/data.service';
+import { Venta } from 'src/app/core/model/venta.model';
+import { DetalleDialogVentaComponent } from './detalle-dialog-venta/detalle-dialog-venta.component';
 
 @Component({
   selector: 'ms-venta-list',
@@ -12,7 +14,7 @@ import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confir
 export class VentaListComponent implements OnInit {
   dialogRef: MatDialogRef<DialogConfirmationComponent>;
   lista: any[] = [];
-  displayedColumns: string[] = ['cliente.nombre', 'fecha', 'montoTotal','descripcion', 'numeroComprobante', 'acciones'];
+  displayedColumns: string[] = ['cliente.nombre', 'fecha', 'montoTotal','descripcion', 'numeroComprobante','estadoComprobante', 'acciones'];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -21,6 +23,10 @@ export class VentaListComponent implements OnInit {
 
   ngOnInit() {
     this.dataService.ventas().getAll().subscribe(data => this.setData(data));
+    this.dataService.providers().cambio.subscribe(data => this.setData(data));
+    this.dataService.providers().mensaje.subscribe(data => {
+      this.snackBar.open(data, 'Mensaje', { duration: 3000 });
+    });
   }
 
   setData(data) {
@@ -40,18 +46,15 @@ export class VentaListComponent implements OnInit {
     this.dialogRef = this.dialog.open(DialogConfirmationComponent, {
       disableClose: false
     });
-
     this.dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        console.log("Eliminado")
         this.dataService.ventas().delete(id).subscribe(r => {
           this.snackBar.open("Venta Eliminado", 'Aviso', { duration: 2000 });
-          this.dataService.compras().getAll().subscribe(data => this.setData(data));
+          this.dataService.ventas().getAll().subscribe(data => this.setData(data));
         });
       }
       this.dialogRef = null;
     });
-
   }
 
   print(id) {
@@ -63,6 +66,15 @@ export class VentaListComponent implements OnInit {
         iframe.src = blobUrl;
         document.body.appendChild(iframe);
         iframe.contentWindow.print();
+    });
+  }
+
+  openDialog(id:Venta) {
+    const dialogRef = this.dialog.open(DetalleDialogVentaComponent,{
+      width: '820px',
+      data:id
+    });
+    dialogRef.afterClosed().subscribe(result => {
     });
   }
 }

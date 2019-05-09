@@ -1,28 +1,25 @@
 <div class="page-layout blank p-24" megaPerfectScrollbar>
     <mat-toolbar>Tipo Producto</mat-toolbar>
-    <div>
-        <mat-form-field>
+    <div fxLayout="row" fxLayout.xs="column">
+        <mat-form-field fxFlex="40%" appearance="outline">
+            <mat-label>Buscar TipoPoducto</mat-label>
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar TipoPoducto">
         </mat-form-field>
     </div>
     <div class="mat-elevation-z8">
         <mat-table [dataSource]="dataSource" matSort>
-            <ng-container matColumnDef="idTipoproducto">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.idTipoproducto}} </mat-cell>
-            </ng-container>
 
             <ng-container matColumnDef="descripcion">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> DESCRIPCION </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.descripcion}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="80%" fxFlex.xs="100%"> DESCRIPCION </mat-header-cell>
+                <mat-cell fxFlex="80%" fxFlex.xs="100%" *matCellDef="let element"> {{element.descripcion}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="acciones">
-                <mat-header-cell *matHeaderCellDef>ACCIONES</mat-header-cell>
-                <mat-cell *matCellDef="let row">
-                    <button mat-button color="primary" [routerLink]="['edicion', row.idTipoproducto]">
+                <mat-header-cell *matHeaderCellDef fxFlex="20%" fxFlex.xs="100%">ACCIONES</mat-header-cell>
+                <mat-cell fxFlex="20%" fxFlex.xs="100%" *matCellDef="let row">
+                    <button mat-icon-button matTooltip="Editar" color="primary" [routerLink]="['edicion', row.idTipoproducto]">
                         <mat-icon>edit</mat-icon>
                     </button>
-                    <button mat-button color="accent" (click)="eliminar(row.idTipoproducto)">
+                    <button mat-icon-button matTooltip="Eliminar" color="warn" (click)="eliminar(row.idTipoproducto)">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </mat-cell>

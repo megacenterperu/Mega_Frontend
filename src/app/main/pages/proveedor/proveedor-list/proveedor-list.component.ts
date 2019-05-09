@@ -10,7 +10,7 @@ import { DataService } from '../../../../core/data/data.service';
 })
 export class ProveedorListComponent implements OnInit {
   lista: any[] = [];
-  displayedColumns: string[] = ['persona.nombre', 'nombreComercial', 'razonSocial', 'telfEmpresa', 'acciones'];
+  displayedColumns: string[] = ['razonSocial', 'nombreComercial','persona.numeroDocumento', 'telfEmpresa', 'persona.nombre','persona.telfMovil', 'acciones'];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
   @ViewChild(MatPaginator) paginator: MatPaginator;

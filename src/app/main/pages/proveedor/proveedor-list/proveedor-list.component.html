@@ -1,44 +1,51 @@
 <div class="page-layout blank p-24" megaPerfectScrollbar>
-    <mat-toolbar>PROVEEDORES</mat-toolbar>
-    <div>
-        <mat-form-field>
+    <mat-toolbar>LISTA DE PROVEEDORES</mat-toolbar>
+    <div fxLayout="row" fxLayout.xs="column">
+        <mat-form-field fxFlex="40%" appearance="outline">
+            <mat-label>Buscar proveedor</mat-label>
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar proveedor">
             <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
-        <button mat-fab color="warn" style="float:right" routerLink='./nuevo'>
-            <mat-icon>create</mat-icon>
-        </button>
     </div>
     <div class="mat-elevation-z8">
         <mat-table [dataSource]="dataSource" matSort>
-
-            <ng-container matColumnDef="persona.nombre">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> REPRESENTANTE LEGAL </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.persona.nombre}} </mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="nombreComercial">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> NOMBRE COMERCIAL </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.nombreComercial}} </mat-cell>
-            </ng-container>
-
             <ng-container matColumnDef="razonSocial">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>RAZON SOCIAL </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.razonSocial}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="20%" fxFlex.xs="100%">RAZON SOCIAL </mat-header-cell>
+                <mat-cell fxFlex="20%" fxFlex.xs="100%" *matCellDef="let element"> {{element.razonSocial}} </mat-cell>
             </ng-container>
-
+            
+            <ng-container matColumnDef="nombreComercial">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="20%" fxFlex.xs="100%"> NOMBRE COMERCIAL </mat-header-cell>
+                <mat-cell fxFlex="20%" fxFlex.xs="100%" *matCellDef="let element"> {{element.nombreComercial}} </mat-cell>
+            </ng-container>
+            
+            <ng-container matColumnDef="persona.numeroDocumento">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%" fxFlex.xs="100%"> N° RUC </mat-header-cell>
+                <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.persona.numeroDocumento}} </mat-cell>
+            </ng-container>
+            
             <ng-container matColumnDef="telfEmpresa">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> TELEFONO </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.telfEmpresa}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%" fxFlex.xs="100%"> TELEFONO </mat-header-cell>
+                <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.telfEmpresa}} </mat-cell>
             </ng-container>
-
+            
+            <ng-container matColumnDef="persona.nombre">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="20%" fxFlex.xs="100%"> PERSONAL CONTACTO </mat-header-cell>
+                <mat-cell fxFlex="20%" fxFlex.xs="100%" *matCellDef="let element"> {{element.persona.nombre}} </mat-cell>
+            </ng-container>
+            
+            <ng-container matColumnDef="persona.telfMovil">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%" fxFlex.xs="100%"> CEL. PERSONAL </mat-header-cell>
+                <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.persona.telfMovil}} </mat-cell>
+            </ng-container>
+            
             <ng-container matColumnDef="acciones">
-                <mat-header-cell *matHeaderCellDef>ACCIONES</mat-header-cell>
-                <mat-cell *matCellDef="let row">
-                    <button type="button" mat-mini-fab color="accent" [routerLink]="['./edicion', row.idProveedor]">
+                <mat-header-cell *matHeaderCellDef fxFlex="10%" fxFlex.xs="100%">ACCIONES</mat-header-cell>
+                <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let row">
+                    <button type="button" mat-icon-button matTooltip="Editar" color="accent" [routerLink]="['./edicion', row.idProveedor]">
                         <mat-icon>edit</mat-icon>
                     </button>
-                    <button type="button" mat-mini-fab color="accent" (click)="eliminar(row.idProveedor)">
+                    <button type="button" mat-icon-button matTooltip="Eliminar" color="warn" (click)="eliminar(row.idProveedor)">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </mat-cell>
@@ -47,7 +54,9 @@
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
         </mat-table>
         <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+
+        <button mat-fab matTooltip="Agregar un nuevo Producto" color="accent" style="float:right" routerLink='./nuevo'>
+            <mat-icon>create</mat-icon>
+        </button>
     </div>
-
-
 </div>

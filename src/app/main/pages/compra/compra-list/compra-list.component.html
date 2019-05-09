@@ -1,62 +1,55 @@
 <div class="page-layout blank p-24" megaPerfectScrollbar>
-    <mat-toolbar>Lista De Compras</mat-toolbar>
-    <div>
-        <mat-form-field>
-            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar proveedor">
+    <mat-toolbar>Lista de Compras</mat-toolbar>
+    <div fxLayout="row" fxLayout.xs="column">
+        <mat-form-field fxFlex="40%" appearance="outline">
+            <mat-label>Buscar Compra</mat-label>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar Compra">
             <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
+    </div>
+    <div class="mat-elevation-z8">
+        <mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="proveedor.nombreComercial">
+                <mat-header-cell *matHeaderCellDef fxFlex="25%" fxFlex.xs="100%"> PROVEEDOR </mat-header-cell>
+                <mat-cell fxFlex="25%" fxFlex.xs="100%" *matCellDef="let element"> {{element.proveedor.nombreComercial}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="sucursal.nombre">
+                <mat-header-cell *matHeaderCellDef fxFlex="25%" fxFlex.xs="100%"> SUCURSAL </mat-header-cell>
+                <mat-cell fxFlex="25%" fxFlex.xs="100%" *matCellDef="let element"> {{element.sucursal.nombre}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="fecha">
+                <mat-header-cell *matHeaderCellDef fxFlex="15%" fxFlex.xs="100%"> FECHA DE COMPRA </mat-header-cell>
+                <mat-cell fxFlex="15%" fxFlex.xs="100%" *matCellDef="let element"> {{element.fecha | date: 'dd/MM/yyyy'}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="montoTotal">
+                <mat-header-cell *matHeaderCellDef fxFlex="10%" fxFlex.xs="100%"> MONTO TOTAL </mat-header-cell>
+                <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.montoTotal}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="guiaRemision">
+                <mat-header-cell *matHeaderCellDef fxFlex="10%" fxFlex.xs="100%"> N° GUIA REMISION </mat-header-cell>
+                <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.guiaRemision}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="acciones">
+                <mat-header-cell *matHeaderCellDef fxFlex="15%" fxFlex.xs="100%">ACCIONES</mat-header-cell>
+                <mat-cell fxFlex="15%" fxFlex.xs="100%" *matCellDef="let row">
+                    <button  mat-icon-button matTooltip="Editar" color="primary" [routerLink]="['./edicion', row.idCompra]">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button type="button"  mat-icon-button matTooltip="Eliminar" color="warn" (click)="eliminar(row.idCompra)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <button type="button"  mat-icon-button matTooltip="Ver Detalle" color="accent" (click)="verDetalle(row)">
+                        <mat-icon>visibility</mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        
         <button mat-fab color="warn" style="float:right" routerLink='./nuevo'>
             <mat-icon>add</mat-icon>
         </button>
     </div>
-    <mat-table [dataSource]="dataSource" matSort>
-
-        <ng-container matColumnDef="proveedor.nombreComercial">
-            <mat-header-cell *matHeaderCellDef fxFlex="18%"> PROVEEDOR </mat-header-cell>
-            <mat-cell fxFlex="18%" *matCellDef="let element"> {{element.proveedor.nombreComercial}} </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="sucursal.nombre">
-            <mat-header-cell *matHeaderCellDef fxFlex="15%"> SUCURSAL </mat-header-cell>
-            <mat-cell fxFlex="15%" *matCellDef="let element"> {{element.sucursal.nombre}} </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="fecha">
-            <mat-header-cell *matHeaderCellDef fxFlex="20%"> FECHA DE COMPRA </mat-header-cell>
-            <mat-cell fxFlex="20%" *matCellDef="let element"> {{element.fecha}} </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="montoTotal">
-            <mat-header-cell *matHeaderCellDef fxFlex="10%"> MONTO TOTAL </mat-header-cell>
-            <mat-cell fxFlex="10%" *matCellDef="let element"> {{element.montoTotal}} </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="guiaRemision">
-            <mat-header-cell *matHeaderCellDef fxFlex="20%"> N° GUIA REMISION </mat-header-cell>
-            <mat-cell fxFlex="10%" *matCellDef="let element"> {{element.guiaRemision}} </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="acciones">
-            <mat-header-cell *matHeaderCellDef fxFlex="17%">ACCIONES</mat-header-cell>
-            <mat-cell fxFlex="27%" *matCellDef="let row">
-                <button mat-button color="primary" [routerLink]="['./edicion', row.idCompra]">
-                    Actualizar
-                </button>
-
-                <button type="button" mat-mini-fab color="warn" (click)="eliminar(row.idCompra)">
-                    <mat-icon>delete_sweep</mat-icon>
-                </button>
-                <button type="button" mat-raised-button color="accent" (click)="verDetalle(row)">
-                    Ver Detalle
-                </button>
-            </mat-cell>
-
-        </ng-container>
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-
-
-
 </div>

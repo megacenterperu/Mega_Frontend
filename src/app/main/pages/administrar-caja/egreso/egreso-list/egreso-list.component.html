@@ -1,51 +1,50 @@
 <div class="page-layout blank p-24" megaPerfectScrollbar>
   <mat-toolbar>Lista de Egresos</mat-toolbar>
   <div fxLayout="row" fxLayout.xs="column">
-    <div fxFlex="30%;" fxFlex.xs="50%">
-        <mat-form-field class="field-container" appearance="outline">
-            <mat-label>Buscar</mat-label>
-            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
-        </mat-form-field>
-    </div>
-      <button mat-fab color="accent" style="float:right" routerLink='./buscar'>
-        <mat-icon>search</mat-icon>
-      </button>
+    <mat-form-field fxFlex="30%;" fxFlex.xs="50%" class="field-container" appearance="outline">
+      <mat-label>Buscar</mat-label>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+    </mat-form-field>
+    <div fxFlex="1%" fxFlex.xs="50%"></div>
+    <button mat-fab matTooltip="Buscar por dia" color="accent" style="float:right" routerLink='./buscar'>
+      <mat-icon>search</mat-icon>
+    </button>
   </div>
   <div class="mat-elevation-z8">
       <mat-table [dataSource]="dataSource" matSort>
           <ng-container matColumnDef="fecha">
-              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="20%"> FECHA </mat-header-cell>
-              <mat-cell fxFlex="20%" *matCellDef="let element"> {{element.fecha | date:'dd/MM/yyyy h:mma'}} </mat-cell>
-              <mat-footer-cell *matFooterCellDef fxFlex="20%"></mat-footer-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="20%" fxFlex.xs="100%"> FECHA </mat-header-cell>
+              <mat-cell fxFlex="20%" fxFlex.xs="100%" *matCellDef="let element"> {{element.fecha | date:'dd/MM/yyyy h:mma'}} </mat-cell>
+              <mat-footer-cell *matFooterCellDef fxFlex="20%" fxFlex.xs="100%"></mat-footer-cell>
           </ng-container>
 
           <ng-container matColumnDef="tipoPago">
-              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%"> TIPO PAGO </mat-header-cell>
-              <mat-cell fxFlex="10%" *matCellDef="let element"> {{element.tipoPago}} </mat-cell>
-              <mat-footer-cell *matFooterCellDef fxFlex="10%"></mat-footer-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%" fxFlex.xs="100%"> TIPO PAGO </mat-header-cell>
+              <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.tipoPago}} </mat-cell>
+              <mat-footer-cell *matFooterCellDef fxFlex="10%" fxFlex.xs="100%"></mat-footer-cell>
           </ng-container>
 
           <ng-container matColumnDef="descripcion">
-            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="40%"> DESCRIPCION </mat-header-cell>
-            <mat-cell fxFlex="40%" *matCellDef="let element"> {{element.descripcion}} </mat-cell>
-            <mat-footer-cell *matFooterCellDef fxFlex="40%"></mat-footer-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="40%" fxFlex.xs="100%"> DESCRIPCION </mat-header-cell>
+            <mat-cell fxFlex="40%" fxFlex.xs="100%" *matCellDef="let element"> {{element.descripcion}} </mat-cell>
+            <mat-footer-cell *matFooterCellDef fxFlex="40%" fxFlex.xs="100%"></mat-footer-cell>
           </ng-container>
 
           <ng-container matColumnDef="benificiario">
-            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="20%"> BENIFICIARIO </mat-header-cell>
-            <mat-cell fxFlex="20%" *matCellDef="let element"> {{element.benificiario}} </mat-cell>
-            <mat-footer-cell *matFooterCellDef fxFlex="20%">TOTAL</mat-footer-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="20%" fxFlex.xs="100%"> BENIFICIARIO </mat-header-cell>
+            <mat-cell fxFlex="20%" fxFlex.xs="100%" *matCellDef="let element"> {{element.benificiario}} </mat-cell>
+            <mat-footer-cell *matFooterCellDef fxFlex="20%" fxFlex.xs="100%">TOTAL</mat-footer-cell>
           </ng-container>
 
         <ng-container matColumnDef="monto">
-          <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%"> MONTO </mat-header-cell>
-          <mat-cell fxFlex="10%" *matCellDef="let element"> {{element.monto | number : '1.2-2'}} </mat-cell>
-          <mat-footer-cell *matFooterCellDef fxFlex="10%">{{total | currency}}</mat-footer-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%" fxFlex.xs="100%"> MONTO </mat-header-cell>
+          <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.monto | number : '1.2-2'}} </mat-cell>
+          <mat-footer-cell *matFooterCellDef fxFlex="10%" fxFlex.xs="100%">{{total | currency}}</mat-footer-cell>
         </ng-container>
 
           <ng-container matColumnDef="acciones">
-              <mat-header-cell *matHeaderCellDef fxFlex="15%">ACCIONES</mat-header-cell>
-              <mat-cell fxFlex="15%" *matCellDef="let row">
+              <mat-header-cell *matHeaderCellDef fxFlex="15%" fxFlex.xs="100%">ACCIONES</mat-header-cell>
+              <mat-cell fxFlex="15%" fxFlex.xs="100%" *matCellDef="let row">
                   <button mat-icon-button matTooltip="Editar" color="primary" [routerLink]="['edicion', row.idEgreso]">
                       <mat-icon>edit</mat-icon>
                   </button>
@@ -53,7 +52,7 @@
                       <mat-icon>delete</mat-icon>
                   </button>
               </mat-cell>
-              <mat-footer-cell *matFooterCellDef fxFlex="15%"></mat-footer-cell>
+              <mat-footer-cell *matFooterCellDef fxFlex="15%" fxFlex.xs="100%"></mat-footer-cell>
           </ng-container>
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
           <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>

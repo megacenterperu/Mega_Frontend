@@ -18,7 +18,7 @@ export class CajaListComponent implements OnInit {
   total: number = 0;
   totalEgreso: number = 0;
   lista: any[]=[];
-  displayedColumns: string[] = ["fecha","numeroComprobante", "tipocomprobante.descripcion","tipopago.nombre","cliente.persona.nombre","montoTotal"];
+  displayedColumns: string[] = ["fecha","numeroComprobante", "tipocomprobante.descripcion","estadoComprobante","tipopago.nombre","cliente.persona.nombre","montoTotal"];
   displayedColumnsegreso: string[] = ["fecha","tipoPago", "descripcion","benificiario","monto"];
   dataSource: MatTableDataSource<any>;
   dataSourceEgreso: MatTableDataSource<any>;
@@ -34,8 +34,10 @@ export class CajaListComponent implements OnInit {
   constructor(private dataService:DataService,private formBuilder: FormBuilder, private snackBar:MatSnackBar) { }
 
   ngOnInit() {
+    var tzoffset = (this.maxFecha).getTimezoneOffset() * 60000; //offset in milliseconds
+    var localISOTime = (new Date(Date.now() - tzoffset)).toISOString()
     this.form = this.formBuilder.group({
-      fechaConsulta: [ new Date(), Validators.compose([Validators.required])],    
+      fechaConsulta: [localISOTime, Validators.compose([Validators.required])],    
     }); 
     this.dataService.providers().mensaje.subscribe(data => {
       this.snackBar.open(data, 'Aviso', { duration: 4000 });

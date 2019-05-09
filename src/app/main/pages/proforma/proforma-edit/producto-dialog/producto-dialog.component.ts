@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource, MatPaginator, MatSort, MatDialogRef } from '@angular/material';
+import { MatTableDataSource, MatPaginator, MatSort, MatDialogRef, MatSnackBar } from '@angular/material';
 import { DataService } from 'src/app/core/data/data.service';
 
 @Component({
@@ -17,23 +17,37 @@ export class ProductoDialogComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
-    public dialogRef: MatDialogRef<ProductoDialogComponent>
+    public dialogRef: MatDialogRef<ProductoDialogComponent>,private snackBar:MatSnackBar
   ) { }
 
   ngOnInit() {
     this.dataService.productos().getAll().subscribe(data => this.setData(data));
+    this.dataService.providers().cambio.subscribe(data => this.setData(data));
+    this.dataService.providers().mensaje.subscribe(data => {
+      this.snackBar.open(data, 'Aviso', { duration: 4000 });
+      }); 
   }
 
   setData(data) {
     if(!data) return;
-    //this.detalle=data;
-    data.forEach(element => { element.cantidad=1;    });
+    data.forEach(element => {element.cantidad=1;});
     let r = data;
     this.cantidad = JSON.parse(JSON.stringify(data)).length;
     this.dataSource = new MatTableDataSource(r);
     this.dataSource.paginator=this.paginator;
     this.dataSource.sort = this.sort;
   }
+
+  /*setData(data) {
+    if (data) {
+      data.forEach(element => { element.cantidad = 1; });
+      let r = data;
+      this.cantidad = JSON.parse(JSON.stringify(data)).length;
+      this.dataSource = new MatTableDataSource(r);
+      this.dataSource.paginator=this.paginator;
+      this.dataSource.sort = this.sort;
+    }
+  }*/
  
   agregar(data) {
     this.dataService.productos().findById(data.idProducto).subscribe(r => {

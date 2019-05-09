@@ -17,12 +17,15 @@ export class ToolbarComponent implements OnInit {
   constructor(private dataService: DataService, private router: Router) {}
 
   ngOnInit() {
-    //const resp= this.loginService.estaLogeado();
     this.dataService.perfiles().perfilCambio.subscribe(response => {
       this.userName = response.usuario;
       this.userRoles = response.roles;
     });
-    console.log(this.userName);
+    const d= this.dataService.logins().getUserData();
+    if(d){
+     this.userName = d.usuario;
+     this.userRoles = d.roles;
+    } 
   }
 
   cerrarSesion() {

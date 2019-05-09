@@ -1,27 +1,28 @@
 <div class="page-layout blank p-24" megaPerfectScrollbar>
     <mat-toolbar>Tipo Documento</mat-toolbar>
-    <div>
-        <mat-form-field>
+    <div fxLayout="row" fxLayout.xs="column">
+        <mat-form-field fxFlex="40%" appearance="outline">
+            <mat-label>Buscar TipoDocumento</mat-label>
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar TipoDocumento">
         </mat-form-field>
     </div>
     <div class="mat-elevation-z8">
         <mat-table [dataSource]="dataSource" matSort>
             <ng-container matColumnDef="abreviatura">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> ABREVIATURA </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.abreviatura}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="20%" fxFlex.xs="100%"> ABREVIATURA </mat-header-cell>
+                <mat-cell fxFlex="20%" fxFlex.xs="100%" *matCellDef="let element"> {{element.abreviatura}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="denominacion">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> DENOMINACION </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.denominacion}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="60%" fxFlex.xs="100%"> DENOMINACION </mat-header-cell>
+                <mat-cell fxFlex="60%" fxFlex.xs="100%" *matCellDef="let element"> {{element.denominacion}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="acciones">
-                <mat-header-cell *matHeaderCellDef>ACCIONES</mat-header-cell>
-                <mat-cell *matCellDef="let row">
-                    <button mat-button color="primary" [routerLink]="['edicion', row.idTipodocumento]">
+                <mat-header-cell *matHeaderCellDef fxFlex="20%" fxFlex.xs="100%">ACCIONES</mat-header-cell>
+                <mat-cell fxFlex="20%" fxFlex.xs="100%" *matCellDef="let row">
+                    <button mat-icon-button matTooltip="Editar" color="primary" [routerLink]="['edicion', row.idTipodocumento]">
                         <mat-icon>edit</mat-icon>
                     </button>
-                    <button mat-button color="accent" (click)="eliminar(row.idTipodocumento)">
+                    <button mat-icon-button matTooltip="Eliminar" color="accent" (click)="eliminar(row.idTipodocumento)">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </mat-cell>

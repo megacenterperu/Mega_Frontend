@@ -1,7 +1,6 @@
 import { DataService } from "src/app/core/data/data.service";
-import { Cliente } from "src/app/core/model/cliente.model";
 import { Component, OnInit, Inject } from "@angular/core";
-import { MatDialogRef} from "@angular/material";
+import { MatDialogRef, MAT_DIALOG_DATA} from "@angular/material";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Observable } from "rxjs";
 import { Params, ActivatedRoute} from "@angular/router";
@@ -21,21 +20,10 @@ export class ClienteDialogComponent implements OnInit {
   
   constructor(
     private dataService: DataService,
-    public dialogRef: MatDialogRef<ClienteDialogComponent>,
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    public dialogRef: MatDialogRef<ClienteDialogComponent>,@Inject(MAT_DIALOG_DATA) public data: any
   ) {}
-
-  /*constructor(public dialogRef: MatDialogRef<DialogoComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Medico,
-    private medicoService: MedicoService) {
-
-  }*/
-
-  /*constructor(
-    private dataService: DataService,
-    public dialogRef: MatDialogRef<ProductoDialogComponent>
-  ) { }*/
 
   ngOnInit() {
     this.initFormBuilder();
@@ -54,11 +42,11 @@ export class ClienteDialogComponent implements OnInit {
       }),
       persona: this.formBuilder.group({
         idPersona: [null],
-        nombre: [null, Validators.compose([Validators.required, Validators.maxLength(100)])],
-        numeroDocumento: [null, Validators.compose([Validators.required, Validators.maxLength(150)])],
-        telfMovil: [null, Validators.compose([ Validators.maxLength(150)])],
-        direccion: [null, Validators.compose([ Validators.maxLength(150)])],
-        email: [null, Validators.compose([ Validators.maxLength(150)])],
+        nombre: [null, Validators.compose([Validators.required])],
+        numeroDocumento: [null, Validators.compose([Validators.required])],
+        telfMovil: [null],
+        direccion: [null],
+        email: [null],
         tipoDocumeto: [null, Validators.compose([Validators.required])]
       })
     });
@@ -112,10 +100,36 @@ export class ClienteDialogComponent implements OnInit {
         });
       });
     }
-    this.cancelar();
+    this.dialogRef.close();
   }
 
-  cancelar() {
-    this.dialogRef.close();
+  getConsulta() {
+    let ruc=this.form.controls.persona.get('numeroDocumento').value;
+    var rucs=new String(ruc);
+    if(rucs.length > 8){
+      this.dataService.clientes().getRuc(this.form.value.persona.numeroDocumento).subscribe(data=>{
+        this.form.controls.persona.patchValue({
+          nombre:data.razonSocial,
+          numeroDocumento:data.ruc,
+          telfMovil: data.telfMovil,
+          direccion:data.direccion,
+          email:data.email
+        });
+      },error => {
+        this.dataService.providers().mensaje.next('RUC invalido o no encontrado')
+      });
+    }else{
+      this.dataService.clientes().getDni(this.form.value.persona.numeroDocumento).subscribe(data=>{
+        this.form.controls.persona.patchValue({
+          nombre:data.nombres+' '+data.apellidoPaterno+' '+data.apellidoMaterno,
+          numeroDocumento:data.dni,
+          telfMovil: data.telfMovil,
+          direccion:data.direccion,
+          email:data.email
+        });
+      },error => {
+        this.dataService.providers().mensaje.next('Dni invalido o no encontrado')
+      });
+    }
   }
 }

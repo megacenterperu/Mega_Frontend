@@ -72,9 +72,7 @@ export class ProformaListComponent implements OnInit {
       data:id
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
     });
-    console.log("id: "+id);
   }
 
 }

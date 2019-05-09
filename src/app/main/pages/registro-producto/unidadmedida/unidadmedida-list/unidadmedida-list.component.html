@@ -1,29 +1,30 @@
 <div class="page-layout blank p-24" megaPerfectScrollbar>
     <mat-toolbar>Lista de Unidad Medida</mat-toolbar>
-    <div>
-        <mat-form-field>
+    <div fxLayout="row" fxLayout.xs="column">
+        <mat-form-field fxFlex="40%" appearance="outline">
+            <mat-label>Buscar Unidad</mat-label>
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar Unidad">
         </mat-form-field>
     </div>
     <div class="mat-elevation-z8">
         <mat-table [dataSource]="dataSource" matSort>
             <ng-container matColumnDef="codUnidadmedida">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> COD UNIDAD </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.codUnidadmedida}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="20%" fxFlex.xs="100%"> COD UNIDAD </mat-header-cell>
+                <mat-cell fxFlex="20%" fxFlex.xs="100%" *matCellDef="let element"> {{element.codUnidadmedida}} </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="descripcion">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> DESCRIPCION </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.descripcion}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="60%" fxFlex.xs="100%"> DESCRIPCION </mat-header-cell>
+                <mat-cell fxFlex="60%" fxFlex.xs="100%" *matCellDef="let element"> {{element.descripcion}} </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="acciones">
-                <mat-header-cell *matHeaderCellDef>ACCIONES</mat-header-cell>
-                <mat-cell *matCellDef="let row">
-                    <button mat-button color="primary" [routerLink]="['edicion', row.idUnidadmedida]">
+                <mat-header-cell *matHeaderCellDef fxFlex="20%" fxFlex.xs="100%">ACCIONES</mat-header-cell>
+                <mat-cell fxFlex="20%" fxFlex.xs="100%" *matCellDef="let row">
+                    <button mat-icon-button matTooltip="Editar" color="primary" [routerLink]="['edicion', row.idUnidadmedida]">
                         <mat-icon>edit</mat-icon>
                     </button>
-                    <button mat-button color="accent" (click)="eliminar(row.idUnidadmedida)">
+                    <button mat-icon-button matTooltip="Eliminar" color="accent" (click)="eliminar(row.idUnidadmedida)">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </mat-cell>

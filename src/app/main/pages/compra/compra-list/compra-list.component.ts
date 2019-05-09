@@ -47,11 +47,12 @@ export class CompraListComponent implements OnInit {
     });
   }
 
-  verDetalle(d: Compra) {
-    let dialogRef = this.dialog.open(DetalleDialogoCompraComponent, {
-      width: '1000px',
-      disableClose: true,
-      data: d
+  verDetalle(id:Compra) {
+    const dialogRef = this.dialog.open(DetalleDialogoCompraComponent,{
+      width: '820px',
+      data:id
+    });
+    dialogRef.afterClosed().subscribe(result => {
     });
   }
 }

@@ -1,0 +1,107 @@
+<div class="page-layout blank p-24" megaPerfectScrollbar>
+  <mat-toolbar>Lista De Ventas Por Dia</mat-toolbar>
+  <form [formGroup]="form" #f="ngForm" (ngSubmit)="buscar()">
+    <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="15%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Buscar</mat-label>
+          <input matInput [matDatepicker]="picker" [max]="maxFecha" placeholder="Escoge una fecha" formControlName="fechaConsulta">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div fxFlex="1%;" fxFlex.xs="50%"></div>
+      <div fxFlex="15%;" fxFlex.xs="50%">
+        <button mat-fab color="accent" type="submit">
+          <mat-icon>search</mat-icon>
+        </button>
+      </div>
+    </div>
+  </form>
+  <div class="mat-elevation-z8">
+    <mat-table [dataSource]="dataSource" matSort>
+
+      <ng-container matColumnDef="cliente.nombre">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="27%" fxFlex.xs="100%">CLIENTE</mat-header-cell>
+        <mat-cell fxFlex="27%" fxFlex.xs="100%" *matCellDef="let element">{{ element.cliente.persona.nombre }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="fecha">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="13%" fxFlex.xs="100%">FECHA DE VENTA</mat-header-cell>
+        <mat-cell fxFlex="13%" fxFlex.xs="100%" *matCellDef="let element">{{ element.fecha | date: "dd/MM/yyyy" }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="descripcion">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="25%" fxFlex.xs="100%">TIPO DE COMPROBANTE</mat-header-cell>
+        <mat-cell fxFlex="25%" fxFlex.xs="100%" *matCellDef="let element">{{ element.tipocomprobante.descripcion }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="numeroComprobante">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="15%" fxFlex.xs="100%">N° COMPROBANTE</mat-header-cell>
+        <mat-cell fxFlex="15%" fxFlex.xs="100%" *matCellDef="let element">{{ element.tipocomprobante.codTipocomprobante }}-{{element.serieComprobante}}-{{ element.numeroComprobante }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="montoTotal">
+          <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%" fxFlex.xs="100%">MONTO TOTAL</mat-header-cell>
+          <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element">{{ element.montoTotal | number: "1.2-2" }}</mat-cell>
+        </ng-container>
+
+      <ng-container matColumnDef="acciones">
+        <mat-header-cell *matHeaderCellDef fxFlex="10%" fxFlex.xs="100%">ACCIONES</mat-header-cell>
+        <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let row">
+          <!-- <button mat-icon-button matTooltip="Ver Detalle" color="primary" (click)="openDialog(row.idVenta)">
+            <mat-icon>visibility</mat-icon>
+          </button> -->
+          <button mat-icon-button matTooltip="Anular" color="primary" (click)="operar(row)">
+              <mat-icon>font_download</mat-icon>
+            </button>
+        </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns" class="example-element-row" (click)="openDialog(row.idVenta)"></mat-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  </div>
+<br>
+<div class="mat-elevation-z8">
+      <mat-table [dataSource]="dataSourceDetalle" matSort>
+        <ng-container matColumnDef="cantidad">
+          <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%" fxFlex.xs="100%">CANTIDAD</mat-header-cell>
+          <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element">{{ element.cantidad}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="producto.codProducto">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="15%" fxFlex.xs="100%">COD. PRODUCTO</mat-header-cell>
+            <mat-cell fxFlex="15%" fxFlex.xs="100%" *matCellDef="let element">{{ element.producto.codProducto}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="producto.unidadMedida.codUnidadmedida">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%" fxFlex.xs="100%">UNIDAD</mat-header-cell>
+              <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element">{{ element.producto.unidadMedida.codUnidadmedida}}</mat-cell>
+            </ng-container>
+
+        <ng-container matColumnDef="producto.nombre">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="45%" fxFlex.xs="100%">PRODUCTO</mat-header-cell>
+            <mat-cell fxFlex="45%" fxFlex.xs="100%" *matCellDef="let element">{{ element.producto.nombre }}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="producto.marcaProducto">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="20%" fxFlex.xs="100%">MARCA</mat-header-cell>
+              <mat-cell fxFlex="20%" fxFlex.xs="100%" *matCellDef="let element">{{ element.producto.marcaProducto }}</mat-cell>
+            </ng-container>
+
+        <ng-container matColumnDef="precio">
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%" fxFlex.xs="100%">PEC. UNIT.</mat-header-cell>
+            <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element">{{ element.precio | number: "1.2-2" }}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="importeTotal">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%" fxFlex.xs="100%">IMPORTE</mat-header-cell>
+              <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element">{{ element.importeTotal | number: "1.2-2" }}</mat-cell>
+            </ng-container>
+  
+        <mat-header-row *matHeaderRowDef="displayedColumnsdetalle"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumnsdetalle"></mat-row>
+      </mat-table>
+    </div>
+</div>

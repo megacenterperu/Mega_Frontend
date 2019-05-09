@@ -10,16 +10,18 @@ import { Observable } from "rxjs";
   styleUrls: ["./producto-edit.component.scss"]
 })
 export class ProductoEditComponent implements OnInit {
+
   id: number;
   form: FormGroup;
   edicion: boolean = false;
   lstunidadmedidas: any[]=[];
-  lstcategorias: any[]=[];
+  //lstcategorias: any[]=[];
   lsttipoProductos: any[]=[];
   lstorganizacions: any[]=[];
   filteredOptions: Observable<any[]>;
-
   listestados: string[] = ['NUEVO', 'SEGUNDA', 'SERVICIO'];
+  
+  //selected: string[] = this.listestados.filter((item, i) => i % 2 === 0);
 
   constructor(
     private dataService: DataService,
@@ -31,7 +33,7 @@ export class ProductoEditComponent implements OnInit {
   ngOnInit() {
     this.initFormBuilder();
     this.listarUnidadMedida();
-    this.listarCategoria();
+    //this.listarCategoria();
     this.listarTipoProducto();
     this.listarOrganizacion();
     this.route.params.subscribe((params:Params)=>{
@@ -51,12 +53,13 @@ export class ProductoEditComponent implements OnInit {
       precioCompra:[null,Validators.compose([Validators.required])],
       precioVenta:[null,Validators.compose([Validators.required])],
       unidadMedida:[null,Validators.compose([Validators.required])],
-      categoria:[null,Validators.compose([Validators.required])],
+      //categoria:[null,Validators.compose([Validators.required])],
       tipoProducto:[null,Validators.compose([Validators.required])],
       organizacion:[null,Validators.compose([Validators.required])],
       modeloProducto:[null,Validators.compose([Validators.required])],
       estadoProducto:[null,Validators.compose([Validators.required])]
     });
+    //this.form.get('estadoProducto').setValue(this.listestados.filter((item,i)=>i%2===0));
   }
 
   private loadDataFrom(){
@@ -77,15 +80,15 @@ export class ProductoEditComponent implements OnInit {
     return x && y ? x.idUnidadmedida === y.idUnidadmedida : x === y;
   }
 
-  listarCategoria() {
+  /*listarCategoria() {
     this.dataService.categorias().getAll().subscribe(data => {
       this.lstcategorias = data;
     });
-  }
+  }*/
 
-  compareCategoria(x: any, y: any): boolean {
+  /*compareCategoria(x: any, y: any): boolean {
     return x && y ? x.idCategoria === y.idCategoria : x === y;
-  }
+  }*/
 
   listarTipoProducto() {
     this.dataService.tipoProductos().getAll().subscribe(data => {

@@ -13,6 +13,14 @@ export class ClienteService {
   getAll(): Observable<any> {
     return this.generic.all(basePath).get();
   }
+  
+  getRuc(numeroruc: string): Observable<any> {
+    return this.generic.getRuc(numeroruc);
+  }
+
+  getDni(numerodni: string): Observable<any> {
+    return this.generic.getDni(numerodni);
+  }
 
   getAllPageable(p: number, s: number): Observable<any> {
     return this.generic.all(basePath).all(`pageable?page=${p}&size=${s}`).get();

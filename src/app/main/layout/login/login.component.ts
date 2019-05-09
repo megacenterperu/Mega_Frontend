@@ -1,5 +1,5 @@
 import { Animations } from './../../../shared/utils/animations';
-import { TOKEN_NAME } from './../../../../config/auth.config';
+import { TOKEN_NAME, USER_DATA } from './../../../../config/auth.config';
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/core/data/data.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -52,6 +52,7 @@ export class LoginComponent implements OnInit {
         });*/
         this.dataService.perfiles().buscar().subscribe(response=>{
           this.dataService.perfiles().perfilCambio.next(response);
+          sessionStorage.setItem(USER_DATA, JSON.stringify(response));
         });       
 
         console.log(decodedToken.authorities);

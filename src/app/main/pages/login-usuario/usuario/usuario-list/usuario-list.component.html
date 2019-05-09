@@ -1,7 +1,8 @@
 <div class="page-layout blank p-24" megaPerfectScrollbar>
   <mat-toolbar>Lista de Usuarios</mat-toolbar>
-  <div>
-      <mat-form-field>
+  <div fxLayout="row" fxLayout.xs="column">
+      <mat-form-field fxFlex="40%" appearance="outline">
+          <mat-label>Buscar Usuario</mat-label>
           <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar Usuario">
       </mat-form-field>
   </div>

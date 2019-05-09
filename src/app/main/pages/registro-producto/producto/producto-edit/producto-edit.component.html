@@ -60,7 +60,7 @@
             </mat-select>
         </mat-form-field>
       </div>
-      <div fxFlex="25%;" fxFlex.xs="50%">
+      <!-- <div fxFlex="25%;" fxFlex.xs="50%">
         <mat-form-field class="field-container" appearance="outline">
           <mat-label>Categoria</mat-label>
           <mat-select placeholder="Categoria" formControlName="categoria" [compareWith]="compareCategoria">
@@ -69,7 +69,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-      </div>
+      </div> -->
       <div fxFlex="25%;" fxFlex.xs="50%">
         <mat-form-field class="field-container" appearance="outline">
           <mat-label>Tipo Producto</mat-label>
@@ -82,27 +82,34 @@
       </div>
       <div fxFlex="25%;" fxFlex.xs="50%">
         <mat-form-field class="field-container" appearance="outline">
-          <mat-label>Organizacion</mat-label>
-          <mat-select placeholder="Organizacion" formControlName="organizacion" [compareWith]="compareOrganizacion">
+          <mat-label>Almacen de</mat-label>
+          <mat-select placeholder="Almacen de" formControlName="organizacion" [compareWith]="compareOrganizacion">
             <mat-option *ngFor="let Organizacion of lstorganizacions" [value]="Organizacion">
               {{Organizacion.nombreComercial}}
             </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
+      <div fxFlex="25%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Estado Producto</mat-label>
+          <mat-select placeholder="Estado Producto" formControlName="estadoProducto" [compareWith]="compareestadoProducto">
+            <mat-option *ngFor="let estadoprod of listestados" [value]="estadoprod">{{estadoprod}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
     </div>
     <!-- opcional -->
-    <div fxLayout="row" fxLayout.xs="column">
+    <!-- <div fxLayout="row" fxLayout.xs="column">
       <div fxFlex="25%;" fxFlex.xs="50%">
         <mat-form-field class="field-container" appearance="outline">
           <mat-label>Estado Producto</mat-label>
             <mat-select placeholder="Estado Producto" formControlName="estadoProducto" [compareWith]="compareestadoProducto">
-                <!--cntrol+k+c -->
               <mat-option *ngFor="let estadoprod of listestados" [value]="estadoprod">{{estadoprod}}</mat-option>
             </mat-select>
         </mat-form-field>
       </div>
-    </div>
+    </div> -->
 
     <div fxLayout="row" fxLayout.xs="column">
       <div fxFlex="20%;" fxFlex.xs="50%" class="field-container">

@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import {TOKEN_AUTH_PASSWORD,TOKEN_AUTH_USERNAME,AUTH_TOKEN,HOST, TOKEN_NAME, MICRO} from "./../../../config/auth.config";
+import {TOKEN_AUTH_PASSWORD,TOKEN_AUTH_USERNAME,AUTH_TOKEN,HOST, TOKEN_NAME, MICRO, USER_DATA} from "./../../../config/auth.config";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Router } from "@angular/router";
@@ -23,6 +23,13 @@ export class LoginService {
     let token = sessionStorage.getItem(TOKEN_NAME);
     return token != null;
   }
+  
+  getUserData() {
+    let data = sessionStorage.getItem(USER_DATA);
+    if(data!=null){
+      return JSON.parse(data);}  
+      return data;
+    }
 
   getAccessToken(): HttpHeaders {   
     const token = JSON.parse(sessionStorage.getItem(TOKEN_NAME))

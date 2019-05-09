@@ -9,10 +9,12 @@ import { Observable, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class GenericService {
-  private url: string; 
+  private url: string;
+  private urlcom: string;
 
   constructor(private _http: HttpClient, private configuration: Configuration) {
-    this.url = configuration.api;    
+    this.url = configuration.api; 
+    this.urlcom = 'http://searchpe.herokuapp.com/public/api';
   }
   
   getAccessToken(): HttpHeaders {   
@@ -34,6 +36,18 @@ export class GenericService {
     const restangular = this.clone();
     restangular.url += (path ? '/' + path : '') + '/' + id;
     return restangular;
+  }
+
+  getRuc(numeroruc: string) {
+    return this.http.get(`${this.urlcom}/ruc/${numeroruc}?token=wolsnut4`, {
+      headers: this.getAccessToken()
+    });
+  }
+
+  getDni(numerodni: string) {
+    return this.http.get(`${this.urlcom}/dni/${numerodni}?token=wolsnut4`, {
+      headers: this.getAccessToken()
+    });
   }
 
   all(path: string): GenericService {
@@ -74,7 +88,7 @@ export class GenericService {
   }
 
   clone(): GenericService {
-    return new GenericService(this._http, { api: this.url });
+    return new GenericService(this._http, {api: this.url});
   }
 
   onError(error: any) {

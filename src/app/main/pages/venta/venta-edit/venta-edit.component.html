@@ -1,7 +1,7 @@
 <div class="page-layout blank p-24" megaPerfectScrollbar>
   <mat-toolbar>Registrar Venta</mat-toolbar>
   <br />
-  <form class="container" [formGroup]="form" (ngSubmit)="save()" #f="ngForm">
+  <form class="container" [formGroup]="form" #f="ngForm">
     <div fxLayout="row" fxLayout.xs="column">
       <div fxFlex="35%;" fxFlex.xs="50%">
         <mat-form-field class="field-container">
@@ -16,7 +16,7 @@
         </mat-form-field>
       </div>
       <div fxFlex="10%;" fxFlex.xs="50%">
-        <button mat-mini-fab color="accent" type="button" (click)="openDialog(cli)">
+        <button mat-mini-fab matTooltip="Agregar Nuevo Cliente" color="accent" type="button" (click)="openDialog(cli)">
           <mat-icon>person_add</mat-icon>
         </button>
       </div>
@@ -41,7 +41,7 @@
         </mat-form-field>
       </div>
       <div fxFlex="20%;" fxFlex.xs="50%">
-        <mat-form-field class="field-container">
+        <mat-form-field>
           <mat-select placeholder="Tipo pago " required formControlName="tipopago">
             <mat-option *ngFor="let TipoP of tipopagos" [value]="TipoP">
               {{TipoP.nombre}}
@@ -50,8 +50,18 @@
           <mat-icon matSuffix>arrow_downward</mat-icon>
         </mat-form-field>
       </div>
+      <!-- <div>
+        <mat-form-field>
+          <mat-label>Select an option</mat-label>
+          <mat-select [(value)]="selected">
+            <mat-option>None</mat-option>
+            <mat-option value="option1">Option 1</mat-option>
+            <mat-option value="option2">Option 2</mat-option>
+            <mat-option value="option3">Option 3</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div> -->
     </div>
-
     <br>
     <mat-card>
       <div fxLayout="row" fxLayout.xs="column">
@@ -84,10 +94,10 @@
           <mat-header-cell *matHeaderCellDef fxFlex="10%">CANTIDAD</mat-header-cell>
         </ng-container>
         <ng-container matColumnDef="precio">
-          <mat-header-cell *matHeaderCellDef fxFlex="13%">PRECIO DE COMPRA </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef fxFlex="13%">PRECIO DE VENTA </mat-header-cell>
         </ng-container>
         <ng-container matColumnDef="importeTotalItem">
-          <mat-header-cell *matHeaderCellDef fxFlex="9%"> SUB TOTAL </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef fxFlex="9%"> IMPORTE </mat-header-cell>
         </ng-container>
         <ng-container matColumnDef="acciones">
           <mat-header-cell *matHeaderCellDef fxFlex="6%">ACCION</mat-header-cell>
@@ -122,7 +132,7 @@
                 <input matInput class="right" formControlName="importeTotalItem">
                 <span matPrefix>s/.&nbsp;</span>
               </mat-form-field>
-              <button type="button" mat-mini-fab color="warn" (click)="eliminar(i)">
+              <button type="button" mat-icon-button matTooltip="Eliminar" color="warn" (click)="eliminar(i)">
                 <mat-icon>delete_sweep</mat-icon>
               </button>
             </div>
@@ -146,7 +156,7 @@
       <mat-divider></mat-divider>
       <!-- <mat-card-actions fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutAlign="end"> -->
       <mat-card-actions>
-        <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
+        <button mat-raised-button color="primary" type="button" [disabled]="!form.valid" (click)="save()">
           <mat-icon>done</mat-icon>
           <span>Aceptar</span>
         </button>

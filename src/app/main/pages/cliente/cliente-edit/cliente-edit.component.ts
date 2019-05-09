@@ -42,11 +42,11 @@ export class ClienteEditComponent implements OnInit {
       }),
       persona: this.formBuilder.group({
         idPersona: [null],
-        nombre: [null, Validators.compose([Validators.required, Validators.maxLength(100)])],
-        numeroDocumento: [null, Validators.compose([Validators.required, Validators.maxLength(150)])],
-        telfMovil: [null, Validators.compose([ Validators.maxLength(150)])],
-        direccion: [null, Validators.compose([ Validators.maxLength(150)])],
-        email: [null, Validators.compose([ Validators.maxLength(150)])],
+        nombre: [null, Validators.compose([Validators.required])],
+        numeroDocumento: [null, Validators.compose([Validators.required])],
+        telfMovil: [null],
+        direccion: [null],
+        email: [null],
         tipoDocumeto: [null, Validators.compose([Validators.required])]
       })
     });

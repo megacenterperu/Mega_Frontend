@@ -4,7 +4,7 @@ import { Params } from '@angular/router';
 
 import { Validators, FormArray } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from './../../../../core/data/data.service';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
@@ -19,6 +19,8 @@ import { ClienteventaDialoComponent } from './clienteventa-dialo/clienteventa-di
   styleUrls: ['./venta-edit.component.scss']
 })
 export class VentaEditComponent implements OnInit {
+  maxDate: Date = new Date();
+  cli:Cliente;
   id: number;
   form: FormGroup;
   edicion: boolean = false;
@@ -29,9 +31,12 @@ export class VentaEditComponent implements OnInit {
   myControlCliente: FormControl = new FormControl();
   displayedColumns: string[] = ['codProducto', 'nombre', 'unidadMedida', 'cantidad', 'precio', 'importeTotalItem', 'acciones'];
 
+  redundancia:boolean=false;
+
   constructor(private dataService: DataService,
     private route: ActivatedRoute,
     public dialog: MatDialog,
+     private snackBar:MatSnackBar,
     private router: Router,
     private formBuilder: FormBuilder) { }
 
@@ -41,6 +46,13 @@ export class VentaEditComponent implements OnInit {
     this.listaTipoComprobante();
     this.listaTipoPago();
     this.dataService.providers().dialogo.subscribe(data => {
+      let item=this.detalleVenta.value.filter((test, index, array) =>
+      index === array.findIndex((findTest) =>
+      findTest.producto.idProducto === data.producto.idProducto));
+      if(item.length>0){
+        this.dataService.providers().mensaje.next('El producto ya fue agreagado')
+         return;
+        }            
       const formGroup = this.addDetalleFormControl();
       formGroup.patchValue({
         precio: +data.precio,
@@ -51,6 +63,9 @@ export class VentaEditComponent implements OnInit {
         unidadMedida: data.producto.unidadMedida.descripcion
       });      
     });
+    this.dataService.providers().mensaje.subscribe(data => {
+      this.snackBar.open(data, 'Aviso', { duration: 4000 });
+      });  
     this.route.params.subscribe((params: Params) => {
       this.id = params['id'];
       this.edicion = params['id'] != null;
@@ -66,10 +81,13 @@ export class VentaEditComponent implements OnInit {
   eliminar(index) {
     this.detalleVenta.removeAt(index);
   }
+
   initFormBuilder() {
+    var tzoffset = (this.maxDate).getTimezoneOffset() * 60000; //offset in milliseconds
+    var localISOTime = (new Date(Date.now() - tzoffset)).toISOString()
     this.form = this.formBuilder.group({
       idVenta: [null],
-      fecha: [new Date(), Validators.compose([Validators.required])],
+      fecha: [localISOTime, Validators.compose([Validators.required])],
       montoTotal: [0, Validators.compose([Validators.required])],
       subTotal: [0, Validators.compose([Validators.required])],
       igv: [0, Validators.compose([Validators.required])],
@@ -81,12 +99,21 @@ export class VentaEditComponent implements OnInit {
       cliente: this.myControlCliente,
       search: [null],//temporal
       detalleVenta: this.formBuilder.array([], Validators.compose([]))
-
     });
+
+    //this.form.get('tipopago').setValue(this.tipopagos.filter((item,i)=>i%2===0));
+    /*this.dataService.tipopagos().getAll().subscribe(data => {
+      this.tipopagos = data;
+      this.form.get('tipopago').setValue(this.tipopagos.filter((item)=>item));
+      console.log(this.tipopagos.filter((item)=>item));
+    });*/
+    
     this.detalleVenta.valueChanges.subscribe(value => {     
       this.calcularVentaTotales();
     });
   }
+
+
 
   addDetalleFormControl(): FormGroup {
     const formGroup = this.formBuilder.group({
@@ -100,7 +127,8 @@ export class VentaEditComponent implements OnInit {
         nombre: [{ value: '', disabled: true }]
       }),
       unidadMedida: [{ value: '', disabled: true }],
-      producto: [null, Validators.compose([Validators.required])]
+      producto: [null, Validators.compose([Validators.required])],
+      estado:['DESPACHADO']
     });
     this.detalleChange(formGroup);
     this.detalleVenta.push(formGroup);
@@ -119,17 +147,32 @@ export class VentaEditComponent implements OnInit {
     });
     formGroup.get("cantidad").valueChanges.subscribe(value => {
       const producto=formGroup.value;
-     console.log(producto);
       const precio = formGroup.get("precio").value || 0;
-      const cantidad = value || 0;
+      let cantidad = value || 0;
+      if(producto.producto){ 
+        const stock= producto.producto.stock;
+        if(cantidad>stock && !this.redundancia){
+          cantidad=stock;
+          this.redundancia=true;
+        }else{ this.redundancia=false;}
+      }  
       let subTotalv = parseFloat(precio) * parseFloat(cantidad);
-      formGroup.patchValue({
-        importeTotalItem: +subTotalv.toFixed(2),
-        importeTotal: +subTotalv.toFixed(2)
-      });
+      if(this.redundancia){
+        this.dataService.providers().mensaje.next('Stock del producto insuficiente como maximo tiene ('+cantidad+') Productos') 
+        formGroup.patchValue({
+          importeTotalItem: +subTotalv.toFixed(2),
+          cantidad:+cantidad,
+          importeTotal: +subTotalv.toFixed(2)
+        });
+      }else{
+        formGroup.patchValue({
+          importeTotalItem: +subTotalv.toFixed(2),
+          importeTotal: +subTotalv.toFixed(2)
+        });
+      }      
     });
   }
-
+  
   get detalleVenta(): FormArray {
     return this.form.get('detalleVenta') as FormArray;
   }
@@ -163,11 +206,14 @@ export class VentaEditComponent implements OnInit {
       this.clientes = data;
     });
   }
+
   filter(val: any) {
     if (val != null && val.idCliente > 0) {
+      this.listaClientes();
       return this.clientes.filter(option =>
         option.persona.nombre.toLowerCase().includes(val.persona.nombre.toLowerCase()) || option.persona.numeroDocumento.includes(val.persona.numeroDocumento));
     } else {
+      this.listaClientes();
       return this.clientes.filter(option =>
         option.persona.nombre.toLowerCase().includes(val.toLowerCase()) || option.persona.numeroDocumento.includes(val));
     }
@@ -179,30 +225,29 @@ export class VentaEditComponent implements OnInit {
 
   listaTipoComprobante() {
     this.dataService.tipocomprobantes().getAll().subscribe(data => {
-      this.tipocomprobantes = data
+      this.tipocomprobantes = data;
+      let selected= this.tipocomprobantes.filter(d=>{return d.isdefaultTipocomprobante;})
+      if(selected) { 
+         this.form.patchValue({tipocomprobante:selected[0]});
+        }
     });
   }
 
   listaTipoPago() {
     this.dataService.tipopagos().getAll().subscribe(data => {
-      this.tipopagos = data;
+      this.tipopagos = data;  
+      let selected= this.tipopagos.filter(d=>{return d.isdefaultTipopago;})
+      if(selected) { 
+         this.form.patchValue({tipopago:selected[0]});
+        }
     });
   }
-
-  /*AgregarProducto() {
-    let producto = new Producto();
-    let dialogRef = this.dialog.open(VentaDialogoComponent, {
-      width: '900px',
-      disableClose: true,
-      data: producto
-    });
-  }*/
 
   AgregarProducto() {
     const dialogRef = this.dialog.open(VentaDialogoComponent,{width: '900px'});
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+    //  console.log(`Dialog result: ${result}`);
     });
   }
 
@@ -218,9 +263,10 @@ export class VentaEditComponent implements OnInit {
   openDialog(cliente: Cliente): void {
     let cli = cliente != null ? cliente : new Cliente();
     let dialogRef = this.dialog.open(ClienteventaDialoComponent, {
-      width: '250px',
-      disableClose: true,
       data: cli
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
     });
   }
 
@@ -242,7 +288,7 @@ export class VentaEditComponent implements OnInit {
           this.dataService.providers().cambio.next(p);
           this.dataService.providers().mensaje.next('se registro');
         });
-        console.log(data);
+        //console.log('data',data.text());
       });
     }
 
@@ -263,25 +309,29 @@ export class VentaEditComponent implements OnInit {
 
   buscarProducto($event) {
     if ($event.key === "Enter") {
-      this.dataService.productos().findProductoByCodProducto($event.target.value)
-        .subscribe(data => {
-          let detalle = {
-            precio: +data.precioVenta.toFixed(2),
-            cantidad: 1,
-            importeTotalItem: +data.precioVenta.toFixed(2),
-            importeTotal: +data.precioVenta.toFixed(2),
-            producto: data,
-            productoT: data,
-            unidadMedida: data.unidadMedida.descripcion
-          }        
+      this.dataService.productos().findProductoByCodProducto($event.target.value).subscribe(data => {
+        let detalle = {
+          precio: +data.precioVenta.toFixed(2),
+          cantidad: 1,
+          importeTotalItem: +data.precioVenta.toFixed(2),
+          importeTotal: +data.precioVenta.toFixed(2),
+          producto: data,
+          productoT: data,
+          unidadMedida: data.unidadMedida.descripcion
+        } 
+        let item=this.detalleVenta.value.filter((test, index, array) =>
+        index === array.findIndex((findTest) =>
+        findTest.producto.idProducto === data.idProducto));
+        if(item.length>0){
+          this.dataService.providers().mensaje.next('El producto ya fue agreagado')
+           return;
+          }
           const formGroup = this.addDetalleFormControl();
-                formGroup.patchValue(detalle);  
-          // this.dataService.providers().dialogo.next(detalle);
+          formGroup.patchValue(detalle); 
           this.form.patchValue({ search: "" });
-        },
-          error => {
-            this.dataService.providers().mensaje.next('Producto no encontrado')
-          });
+        },error => {
+          this.dataService.providers().mensaje.next('Producto no encontrado')
+        });
+      }
     }
-  }
 }

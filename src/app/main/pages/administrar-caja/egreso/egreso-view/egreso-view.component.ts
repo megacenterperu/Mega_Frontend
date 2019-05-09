@@ -32,7 +32,7 @@ export class EgresoViewComponent implements OnInit {
 
   buscar() { 
     if (this.form.valid) {     
-      this.dataService.egresos().buscar(this.form.value).subscribe(data => this.setData(data));
+      this.dataService.egresos().buscarEgresoFechaConsulta(this.form.value).subscribe(data => this.setData(data));
     } else {    
      console.log("ingrese el campo fecha...");
     }

@@ -24,6 +24,7 @@ export class VentaDialogoComponent implements OnInit {
 
   ngOnInit() {
     this.dataService.productos().getAll().subscribe(data => this.setData(data));
+    this.dataService.providers().cambio.subscribe(data => this.setData(data));
     this.dataService.providers().mensaje.subscribe(data => {
       this.snackBar.open(data, 'Aviso', { duration: 4000 });
       }); 
@@ -57,10 +58,6 @@ export class VentaDialogoComponent implements OnInit {
       });
     }
   }
-
-  /*cerrar() {
-    this.dialogRef.close();
-  }*/
 
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim();

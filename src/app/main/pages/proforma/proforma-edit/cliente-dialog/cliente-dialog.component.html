@@ -6,13 +6,13 @@
     </div>
     <div formGroupName="persona">
       <div mat-dialog-content>
-        <mat-form-field>
+        <mat-form-field fxFlex="100%">
           <mat-label>Nombre y Apellidos</mat-label>
           <input matInput placeholder="Nombre y Apellido" required formControlName="nombre" maxlength="50">
         </mat-form-field>
       </div>
       <div mat-dialog-content>
-        <mat-form-field>
+        <mat-form-field fxFlex="100%">
           <mat-label>Tipo Documento</mat-label>
           <mat-select placeholder="Tipo Documento" formControlName="tipoDocumeto">
             <mat-option *ngFor="let tipoDocumeto of tipodocumentos" [value]="tipoDocumeto">
@@ -22,34 +22,37 @@
         </mat-form-field>
       </div>
       <div mat-dialog-content>
-        <mat-form-field>
+        <mat-form-field fxFlex="100%">
           <mat-label>Numero Documento</mat-label>
           <input matInput placeholder="Numero Documento" required formControlName="numeroDocumento" type="number"
             minLength="8" maxlength="20">
         </mat-form-field>
+        <button mat-icon-button matTooltip="Buscar" color="warn" type="button" (click)="getConsulta()">
+          <mat-icon>search</mat-icon>
+        </button>
       </div>
       <div mat-dialog-content>
-        <mat-form-field>
+        <mat-form-field fxFlex="100%">
           <mat-label>N° Celular</mat-label>
-          <input matInput placeholder="N° Celular" required formControlName="telfMovil" type="number" maxlength="20">
+          <input matInput placeholder="N° Celular" formControlName="telfMovil" type="number" maxlength="20">
         </mat-form-field>
       </div>
       <div mat-dialog-content>
-        <mat-form-field>
+        <mat-form-field fxFlex="100%">
           <mat-label>Direccion</mat-label>
-          <input matInput placeholder="Direccion" required formControlName="direccion" maxlength="20">
+          <input matInput placeholder="Direccion" formControlName="direccion">
         </mat-form-field>
       </div>
       <div mat-dialog-content>
-        <mat-form-field>
+        <mat-form-field fxFlex="100%">
           <mat-label>Correo Electronico</mat-label>
-          <input matInput placeholder="Correo Electronico" required formControlName="email" maxlength="20">
+          <input matInput placeholder="Correo Electronico" formControlName="email">
         </mat-form-field>
       </div>
     </div>
   </form>
 </mat-dialog-content>
-<div mat-dialog-actions>
-  <button mat-raised-button color="primary" (click)="save()" [disabled]="f.invalid">Aceptar</button>
-  <button mat-raised-button color="warn" (click)="cancelar()">Cancelar</button>
-</div>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" type="button" (click)="save()" [disabled]="f.invalid">Aceptar</button>
+</mat-dialog-actions>

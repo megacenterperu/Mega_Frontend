@@ -58,4 +58,19 @@ export class UsuarioListComponent implements OnInit {
     });
   }
 
+  eliminar(id){
+    if(confirm('¿Seguro que quieres Eliminar?')){
+      this.dataService.usuarios().delete(id).subscribe(usu =>{
+        this.snackBar.open('Cuenta de Usuario Eliminado','Mensaje',{duration:3000});
+        this.dataService.usuarios().getAll().subscribe(data => this.setData(data));
+      });
+    }
+  }
+
+  setData(data){
+    this.lista = data;
+    this.dataSource = new MatTableDataSource(this.lista);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
 }

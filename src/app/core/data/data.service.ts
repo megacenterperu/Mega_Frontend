@@ -26,6 +26,7 @@ import { RolService } from './rol.service';
 import { LoginService } from './login.service';
 import { PerfilService } from './perfil.service';
 import { UsuarioRolService } from './usuario-rol.service';
+import { AnularcomprobanteService } from './anularcomprobante.service';
 
 @Injectable({
   providedIn: "root"
@@ -56,7 +57,8 @@ export class DataService {
     private rol:RolService,
     private login:LoginService,
     private perfil:PerfilService,
-    private usuariorol:UsuarioRolService
+    private usuariorol:UsuarioRolService,
+    private anularcomprobante:AnularcomprobanteService
 
       
       ) {}
@@ -157,5 +159,9 @@ export class DataService {
   
   perfiles():PerfilService{
     return this.perfil;
+  }
+
+  anularComprobantes():AnularcomprobanteService{
+    return this.anularcomprobante;
   }
 }

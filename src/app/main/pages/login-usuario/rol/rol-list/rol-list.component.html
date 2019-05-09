@@ -1,34 +1,35 @@
 <div class="page-layout blank p-24" megaPerfectScrollbar>
   <mat-toolbar>Lista de Roles</mat-toolbar>
-  <div>
-      <mat-form-field>
+  <div fxLayout="row" fxLayout.xs="column">
+      <mat-form-field fxFlex="40%" appearance="outline">
+          <mat-label>Buscar Categoria</mat-label>
           <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar Categoria">
       </mat-form-field>
   </div>
   <div class="mat-elevation-z8">
       <mat-table [dataSource]="dataSource" matSort>
           <ng-container matColumnDef="idRol">
-              <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
-              <mat-cell *matCellDef="let element"> {{element.idRol}} </mat-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%" fxFlex.xs="100%"> ID </mat-header-cell>
+              <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.idRol}} </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="nombre">
-              <mat-header-cell *matHeaderCellDef mat-sort-header> NOMBRE </mat-header-cell>
-              <mat-cell *matCellDef="let element"> {{element.nombre}} </mat-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="20%" fxFlex.xs="100%"> NOMBRE </mat-header-cell>
+              <mat-cell fxFlex="20%" fxFlex.xs="100%" *matCellDef="let element"> {{element.nombre}} </mat-cell>
           </ng-container>
 
         <ng-container matColumnDef="descripcion">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> DESCRIPCION </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.descripcion}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="50%" fxFlex.xs="100%"> DESCRIPCION </mat-header-cell>
+            <mat-cell fxFlex="50%" fxFlex.xs="100%" *matCellDef="let element"> {{element.descripcion}} </mat-cell>
         </ng-container>
 
           <ng-container matColumnDef="acciones">
-              <mat-header-cell *matHeaderCellDef>ACCIONES</mat-header-cell>
-              <mat-cell *matCellDef="let row">
-                  <button mat-button color="primary" (click)="openDialog(row)">
+              <mat-header-cell *matHeaderCellDef fxFlex="20%" fxFlex.xs="100%">ACCIONES</mat-header-cell>
+              <mat-cell fxFlex="20%" fxFlex.xs="100%" *matCellDef="let row">
+                  <button mat-icon-button matTooltip="Editar" color="primary" (click)="openDialog(row)">
                       <mat-icon>edit</mat-icon>
                   </button>
-                  <button mat-button color="red" (click)="eliminar(row.idRol)">
+                  <button mat-icon-button matTooltip="Eliminar" color="red" (click)="eliminar(row.idRol)">
                       <mat-icon>delete</mat-icon>
                   </button>
               </mat-cell>
@@ -38,7 +39,7 @@
       </mat-table>
       <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
   </div>
-  <button mat-fab color="accent" style="float:right" (click)="openDialogNew()">
+  <button mat-fab color="accent" style="float:right" (click)="openDialog(roles)">
       <mat-icon>create</mat-icon>
   </button>
 </div>

@@ -21,49 +21,49 @@
   <div class="mat-elevation-z8">
       <mat-table [dataSource]="dataSource" matSort>
           <ng-container matColumnDef="fechaCierre">
-              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="20%"> FECHA </mat-header-cell>
-              <mat-cell fxFlex="20%" *matCellDef="let element"> {{element.fechaCierre | date:'dd/MM/yyyy h:mma'}} </mat-cell>
-              <mat-footer-cell *matFooterCellDef fxFlex="20%"></mat-footer-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="20%" fxFlex.xs="100%"> FECHA </mat-header-cell>
+              <mat-cell fxFlex="20%" fxFlex.xs="100%" *matCellDef="let element"> {{element.fechaCierre | date:'dd/MM/yyyy h:mma'}} </mat-cell>
+              <mat-footer-cell *matFooterCellDef fxFlex="20%" fxFlex.xs="100%"></mat-footer-cell>
           </ng-container>
 
           <ng-container matColumnDef="montoInicioTurno">
-            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="13%"> MONTO DE INICIO DE TURNO </mat-header-cell>
-            <mat-cell fxFlex="13%" *matCellDef="let element"> {{element.montoInicioTurno | number : '1.2-2'}} </mat-cell>
-            <mat-footer-cell *matFooterCellDef fxFlex="13%"></mat-footer-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="13%" fxFlex.xs="100%"> MONTO DE INICIO DE TURNO </mat-header-cell>
+            <mat-cell fxFlex="13%" fxFlex.xs="100%" *matCellDef="let element"> {{element.montoInicioTurno | number : '1.2-2'}} </mat-cell>
+            <mat-footer-cell *matFooterCellDef fxFlex="13%" fxFlex.xs="100%"></mat-footer-cell>
           </ng-container>
 
           <ng-container matColumnDef="montoTotalRegistrado">
-              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="15%"> MONTO TOTAL REGISTRADO </mat-header-cell>
-              <mat-cell fxFlex="15%" *matCellDef="let element"> {{element.montoTotalRegistrado | number : '1.2-2'}} </mat-cell>
-              <mat-footer-cell *matFooterCellDef fxFlex="15%"></mat-footer-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="15%" fxFlex.xs="100%"> MONTO TOTAL REGISTRADO </mat-header-cell>
+              <mat-cell fxFlex="15%" fxFlex.xs="100%" *matCellDef="let element"> {{element.montoTotalRegistrado | number : '1.2-2'}} </mat-cell>
+              <mat-footer-cell *matFooterCellDef fxFlex="15%" fxFlex.xs="100%"></mat-footer-cell>
           </ng-container>
 
           <ng-container matColumnDef="montoTotalDia">
-            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="15%"> MONTO TOTAL DEL DIA </mat-header-cell>
-            <mat-cell fxFlex="15%" *matCellDef="let element"> {{element.montoTotalDia | number : '1.2-2'}} </mat-cell>
-            <mat-footer-cell *matFooterCellDef fxFlex="15%">MONTO TOTAL EN CAJA</mat-footer-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="15%" fxFlex.xs="100%"> MONTO TOTAL DEL DIA </mat-header-cell>
+            <mat-cell fxFlex="15%" fxFlex.xs="100%" *matCellDef="let element"> {{element.montoTotalDia | number : '1.2-2'}} </mat-cell>
+            <mat-footer-cell *matFooterCellDef fxFlex="15%" fxFlex.xs="100%">MONTO TOTAL EN CAJA</mat-footer-cell>
           </ng-container>
 
           <ng-container matColumnDef="conteoFinTurno">
-            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="15%"> CONTEO FIN DE TURNO </mat-header-cell>
-            <mat-cell fxFlex="15%" *matCellDef="let element"> {{element.conteoFinTurno | number : '1.2-2'}} </mat-cell>
-            <mat-footer-cell *matFooterCellDef fxFlex="15%">{{total+montoInicioTurno | number : '1.2-2'}}</mat-footer-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="15%" fxFlex.xs="100%"> CONTEO FIN DE TURNO </mat-header-cell>
+            <mat-cell fxFlex="15%" fxFlex.xs="100%" *matCellDef="let element"> {{element.conteoFinTurno | number : '1.2-2'}} </mat-cell>
+            <mat-footer-cell *matFooterCellDef fxFlex="15%" fxFlex.xs="100%">{{total+montoInicioTurno | number : '1.2-2'}}</mat-footer-cell>
           </ng-container>
 
         <ng-container matColumnDef="estadoCaja">
-          <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="15%"> ESTADO CAJA </mat-header-cell>
-          <mat-cell fxFlex="15%" *matCellDef="let element"> {{element.estadoCaja}} </mat-cell>
-          <mat-footer-cell *matFooterCellDef fxFlex="15%"></mat-footer-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="15%" fxFlex.xs="100%"> ESTADO CAJA </mat-header-cell>
+          <mat-cell fxFlex="15%" fxFlex.xs="100%" *matCellDef="let element"> {{element.estadoCaja}} </mat-cell>
+          <mat-footer-cell *matFooterCellDef fxFlex="15%" fxFlex.xs="100%"></mat-footer-cell>
         </ng-container>
 
         <ng-container matColumnDef="acciones">
-          <mat-header-cell *matHeaderCellDef fxFlex="8%">ACCIONES</mat-header-cell>
-          <mat-cell fxFlex="8%" *matCellDef="let row">
+          <mat-header-cell *matHeaderCellDef fxFlex="8%" fxFlex.xs="100%">ACCIONES</mat-header-cell>
+          <mat-cell fxFlex="8%" fxFlex.xs="100%" *matCellDef="let row">
               <button mat-icon-button matTooltip="Cerrar Caja Fuerte" color="primary" (click)="openDialog(row)">
                 <mat-icon>vpn_key</mat-icon>
               </button>
           </mat-cell>
-          <mat-footer-cell *matFooterCellDef fxFlex="8%"></mat-footer-cell>
+          <mat-footer-cell *matFooterCellDef fxFlex="8%" fxFlex.xs="100%"></mat-footer-cell>
       </ng-container>
 
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

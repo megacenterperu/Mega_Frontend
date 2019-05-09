@@ -5,4 +5,5 @@ import { Injectable } from "@angular/core";
 export class Configuration {
   
   public api = `${HOST}${MICRO}`;
+
 }
