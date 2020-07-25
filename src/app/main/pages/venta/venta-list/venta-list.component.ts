@@ -12,8 +12,12 @@ import { DetalleDialogVentaComponent } from './detalle-dialog-venta/detalle-dial
   styleUrls: ['./venta-list.component.scss']
 })
 export class VentaListComponent implements OnInit {
+  
+  SelectFocus: string;
   dialogRef: MatDialogRef<DialogConfirmationComponent>;
   lista: any[] = [];
+  idSucursal;
+  //displayedColumns: string[] = ['cliente.nombre','cliente.fechaIngreso', 'fecha','pagoMensual', 'montoTotal','descripcion', 'numeroComprobante','estadoComprobante', 'acciones'];
   displayedColumns: string[] = ['cliente.nombre', 'fecha', 'montoTotal','descripcion', 'numeroComprobante','estadoComprobante', 'acciones'];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
@@ -22,11 +26,32 @@ export class VentaListComponent implements OnInit {
   constructor(private dataService: DataService, private snackBar: MatSnackBar,public dialog: MatDialog) { }
 
   ngOnInit() {
-    this.dataService.ventas().getAll().subscribe(data => this.setData(data));
+    this.dataService.perfiles().perfilCambio.subscribe(response => {
+      this.idSucursal = response.idSucursal;
+      this.dataService.ventas().findByIdSucursal(this.idSucursal).subscribe(data => this.setData(data));
+    });
+    const d= this.dataService.logins().getUserData();
+    if (d) {
+      this.idSucursal = d.idSucursal;
+      this.dataService.ventas().findByIdSucursal(this.idSucursal).subscribe(data => {
+        this.setData(data)
+        this.dataSource.filterPredicate=(dato, filter: string)=>{
+          const dataStr = dato.cliente.persona.nombre.toLowerCase()+dato.cliente.persona.numeroDocumento+dato.numeroComprobante;
+        return dataStr.indexOf(filter) !== -1;
+        };
+      });
+      this.dataService.providers().cambio.subscribe(data => this.setData(data));
+      this.dataService.providers().mensaje.subscribe(data => {
+        this.snackBar.open(data, 'Mensaje', { duration: 3000 });
+      });
+    }else{
+      //console.log('noseee');
+    }
+    /*this.dataService.ventas().getAllfindByIdSucursal().subscribe(data =>this.setData(data));
     this.dataService.providers().cambio.subscribe(data => this.setData(data));
     this.dataService.providers().mensaje.subscribe(data => {
       this.snackBar.open(data, 'Mensaje', { duration: 3000 });
-    });
+    });*/
   }
 
   setData(data) {
@@ -50,7 +75,7 @@ export class VentaListComponent implements OnInit {
       if(result) {
         this.dataService.ventas().delete(id).subscribe(r => {
           this.snackBar.open("Venta Eliminado", 'Aviso', { duration: 2000 });
-          this.dataService.ventas().getAll().subscribe(data => this.setData(data));
+          this.dataService.ventas().getAllfindByIdSucursal().subscribe(data => this.setData(data));
         });
       }
       this.dialogRef = null;
@@ -76,5 +101,9 @@ export class VentaListComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
     });
+  }
+
+  selectRow(event) {
+    this.SelectFocus=event.idVenta;
   }
 }

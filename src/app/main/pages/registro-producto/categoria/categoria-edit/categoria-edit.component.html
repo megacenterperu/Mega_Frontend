@@ -1,25 +1,38 @@
 <div class="page-layout blank p-24" megaPerfectScrollbar>
-  <mat-toolbar>Ingrese los datos de Categoria</mat-toolbar>
-  
+  <mat-toolbar>Registrar Dolencias y su Receta Medica</mat-toolbar>
   <br />
-
   <form class="container" [formGroup]="form" (ngSubmit)="operar()" #f="ngForm">
-
-    <mat-form-field>
-      <input matInput placeholder="Descripcion" required formControlName="descripcion">
-    </mat-form-field>
-
-    <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
-      <mat-icon>done</mat-icon>
-      <span>Aceptar</span>
-    </button>
-
-    <button mat-raised-button color="accent" (click)="cancel()" type="button">
-      <mat-icon>close</mat-icon>
-      <span>Cancelar</span>
-    </button>
+    <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="50%" fxFlex.xs="100%">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Dolencia y/o Propiedad</mat-label>
+        <input matInput placeholder="Marca Producto" required formControlName="dolenciaPropiedad">
+      </mat-form-field>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="100%" fxFlex.xs="100%">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Receta Medica y/o Indicaciones</mat-label>
+          <textarea style="height: 150px;" matInput placeholder="Receta Medica y/o Indicaciones" required formControlName="descripcion" maxlength="500"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="15%" fxFlex.xs="100%" class="field-container">
+        <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
+          <mat-icon>done</mat-icon>
+          <span>Aceptar</span>
+        </button>
+      </div>
+      <div fxFlex="1%;" fxFlex.xs="5%"></div>
+      <div fxFlex="15%" fxFlex.xs="100%" class="field-container">
+        <button mat-raised-button color="accent" (click)="cancel()" type="button">
+          <mat-icon>close</mat-icon>
+          <span>Cancelar</span>
+        </button>
+      </div>
+    </div>
   </form>
-
   <br />
-
 </div>

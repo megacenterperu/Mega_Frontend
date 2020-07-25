@@ -1,7 +1,8 @@
-import { USER_DATA } from 'src/config/auth.config';
+import { USER_DATA, TOKEN_NAME } from 'src/config/auth.config';
 import { GenericService } from './generic.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { HttpHeaders } from '@angular/common/http';
 const basePath = "compras";
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,18 @@ export class CompraService {
 
   getAll(): Observable<any> {
     return this.generic.all(basePath).get();
+  }
+
+  getAllfindByIdSucursal(): Observable<any>{
+    const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+    return this.generic.all(basePath).all("list-compra").all(user.idSucursal).get();
+  }
+
+  listarCompraProductoMes(data:any): Observable<any>{
+    const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+    data.idSucursal=user.idSucursal;
+    return this.generic.all(basePath).all("listarCompraProductosMes").post(data);
+
   }
   
   getAllDetalle(id: number): Observable<any> {
@@ -42,4 +55,13 @@ export class CompraService {
     return this.generic.all(basePath).one("eliminar", id).delete();
   }
 
+  reportCompraProductoMes(data:any): Observable<any>{
+    let access_token = JSON.parse(sessionStorage.getItem(TOKEN_NAME)).access_token;
+    const movimiento = this.generic.all(basePath).all("reporte-producto-comprado-mes");
+    return movimiento.http.post(movimiento.path,data, {
+      responseType: 'blob',
+      headers: new HttpHeaders().set('Authorization', `bearer ${access_token}`).set('Content-Type', 'application/json')
+    });
+  }
+  
 }

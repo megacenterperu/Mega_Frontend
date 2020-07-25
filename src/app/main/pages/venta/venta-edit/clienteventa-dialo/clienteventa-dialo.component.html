@@ -7,15 +7,20 @@
     <div formGroupName="persona">
       <div mat-dialog-content>
         <mat-form-field fxFlex="100%">
-          <mat-label>Nombre y Apellidos</mat-label>
-          <input matInput placeholder="Nombre y Apellido" required formControlName="nombre">
+          <mat-label>Numero Documento</mat-label>
+          <input matInput placeholder="Numero Documento" #message required formControlName="numeroDocumento" minLength="8" maxlength="11" (keydown.enter)="onKeydown($event)">
+          <mat-hint align="start"><mat-label style="color: forestgreen;">Min 8 - Max 11 caracteres</mat-label> </mat-hint>
+          <mat-hint align="end"><mat-label style="color: forestgreen;">{{message.value.length}} / 11</mat-label></mat-hint>
         </mat-form-field>
+        <button mat-icon-button matTooltip="Buscar" color="warn" type="button" (click)="getConsulta()">
+          <mat-icon>search</mat-icon>
+        </button>
       </div>
       <div mat-dialog-content>
         <mat-form-field fxFlex="100%">
           <mat-label>Tipo Documento</mat-label>
           <mat-select placeholder="Tipo Documento" formControlName="tipoDocumeto">
-            <mat-option *ngFor="let tipoDocumeto of tipodocumentos" [value]="tipoDocumeto">
+            <mat-option *ngFor="let tipoDocumeto of tipodocumentos" [value]="tipoDocumeto" (click)="validar($event)">
               {{tipoDocumeto.abreviatura}}
             </mat-option>
           </mat-select>
@@ -23,18 +28,14 @@
       </div>
       <div mat-dialog-content>
         <mat-form-field fxFlex="100%">
-          <mat-label>Numero Documento</mat-label>
-          <input matInput placeholder="Numero Documento" required formControlName="numeroDocumento" type="number"
-            minLength="8" maxlength="20">
+          <mat-label>Nombre y Apellidos</mat-label>
+          <input matInput placeholder="Nombre y Apellido" required formControlName="nombre">
         </mat-form-field>
-          <button mat-icon-button matTooltip="Buscar" color="warn" type="button" (click)="getConsulta()">
-            <mat-icon>search</mat-icon>
-          </button>
       </div>
       <div mat-dialog-content>
         <mat-form-field fxFlex="100%">
           <mat-label>N° Celular</mat-label>
-          <input matInput placeholder="N° Celular" formControlName="telfMovil" type="number">
+          <input matInput placeholder="N° Celular" formControlName="telfMovil">
         </mat-form-field>
       </div>
       <div mat-dialog-content>

@@ -16,6 +16,11 @@ export class TipoproductoService {
     return this.generic.all(basePath).get();
   }
 
+  getAllfindByIdSucursal(): Observable<any>{
+    const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+    return this.generic.all(basePath).all("list-tipoproducto").all(user.idSucursal).get();
+  }
+
   getAllPageable(p: number, s: number): Observable<any> {
     return this.generic.all(basePath).all(`pageable?page=${p}&size=${s}`).get();
   }
@@ -27,12 +32,14 @@ export class TipoproductoService {
   create(data: any): Observable<any> {
     const user = JSON.parse(sessionStorage.getItem(USER_DATA));
     data.idRegUsuaRegistra=user.idUsuario;
+    data.idSucursal=user.idSucursal;
     return this.generic.all(basePath).all("registrar").post(data);
   }
 
   update(data: any): Observable<any> {
     const user = JSON.parse(sessionStorage.getItem(USER_DATA));
     data.idRegUsuaModifica=user.idUsuario;
+    data.idSucursal=user.idSucursal;
     return this.generic.all(basePath).all("actualizar").put(data);
   }
 

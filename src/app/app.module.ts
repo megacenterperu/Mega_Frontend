@@ -12,6 +12,7 @@ import { ConfigService } from './shared/services/config.service';
 import { NavigationService } from './shared/services/navigation.service';
 import { SharedModule } from './shared/shared.module';
 import { Configuration } from '../config/mega.config';
+import { MAT_DATE_LOCALE } from '@angular/material';
 
 
 
@@ -34,7 +35,8 @@ import { Configuration } from '../config/mega.config';
     SplashScreenService,
     ConfigService,
     NavigationService,
-    Configuration    
+    Configuration,
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'}    
   ],
   bootstrap: [AppComponent]
 })

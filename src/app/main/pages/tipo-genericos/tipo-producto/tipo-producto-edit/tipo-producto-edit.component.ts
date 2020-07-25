@@ -55,16 +55,16 @@ export class TipoProductoEditComponent implements OnInit {
   operar(){
     if(this.edicion){
       this.dataService.tipoProductos().update(this.form.value).subscribe(data =>{
-        console.log(data);
-        this.dataService.tipoProductos().getAll().subscribe(tp =>{
+        //console.log(data);
+        this.dataService.tipoProductos().getAllfindByIdSucursal().subscribe(tp =>{
           this.dataService.providers().cambio.next(tp);
           this.dataService.providers().mensaje.next("se Actualizo con éxito!");
         });
       });
     }else{
       this.dataService.tipoProductos().create(this.form.value).subscribe(data =>{
-        console.log(data);
-        this.dataService.tipoProductos().getAll().subscribe(tdoc =>{
+      //  console.log(data);
+        this.dataService.tipoProductos().getAllfindByIdSucursal().subscribe(tdoc =>{
           this.dataService.providers().cambio.next(tdoc);
           this.dataService.providers().mensaje.next("Se Registro con éxito!");
         });

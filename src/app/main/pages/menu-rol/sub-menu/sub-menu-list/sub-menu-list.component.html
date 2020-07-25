@@ -1,0 +1,59 @@
+<div class="page-layout blank p-24" megaPerfectScrollbar>
+  <mat-toolbar>Lista de SubMenus</mat-toolbar>
+  <div fxLayout="row" fxLayout.xs="column">
+      <mat-form-field fxFlex="40%" appearance="outline">
+          <mat-label>Buscar SubMenu</mat-label>
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar SubMenu">
+      </mat-form-field>
+  </div>
+  <div class="mat-elevation-z8">
+      <mat-table [dataSource]="dataSource" matSort>
+          <ng-container matColumnDef="id">
+              <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="title">
+              <mat-header-cell *matHeaderCellDef mat-sort-header> TITLE </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.title}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="type">
+              <mat-header-cell *matHeaderCellDef mat-sort-header> TYPE </mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.type}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="icon">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> ICONO </mat-header-cell>
+            <mat-cell *matCellDef="let element"> <mat-icon>{{element.icon}}</mat-icon></mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="url">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> URL </mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.url}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="acciones">
+              <mat-header-cell *matHeaderCellDef>ACCIONES</mat-header-cell>
+              <mat-cell *matCellDef="let row">
+                  <button mat-icon-button matTooltip="Asignar Rol" color="primary" [routerLink]="['asignacion', row.idSubMenu]">
+                      <mat-icon>folder_shared</mat-icon>
+                  </button>
+                  <!-- <button mat-icon-button matTooltip="Editar" color="primary" [routerLink]="['edicion', row.idSubMenu]">
+                        <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button matTooltip="Eliminar" color="red" (click)="eliminar(row.idSubMenu)">
+                      <mat-icon>delete</mat-icon>
+                  </button> -->
+              </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <!--<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>-->
+      <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" [length]="cantidad" (page)="mostrarMas($event)"></mat-paginator>
+  </div>
+  <button mat-fab color="accent" style="float:right" routerLink='./nuevo'>
+      <mat-icon>create</mat-icon>
+  </button>
+</div>

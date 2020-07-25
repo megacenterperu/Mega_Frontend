@@ -1,7 +1,7 @@
 import { ActivatedRoute, Router, Params } from "@angular/router";
 import { FormGroup, Validators, FormBuilder } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
-import { DataService } from "../../../../../core/data/data.service";
+import { DataService } from "src/app/core/data/data.service";
 
 @Component({
   selector: "ms-categoria-edit",
@@ -14,10 +14,7 @@ export class CategoriaEditComponent implements OnInit {
   edicion: boolean = false;
 
   constructor(
-    private dataService: DataService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private formBuilder: FormBuilder
+    private dataService: DataService,private route: ActivatedRoute,private router: Router,private formBuilder: FormBuilder
   ) {}
 
   ngOnInit() {
@@ -31,14 +28,15 @@ export class CategoriaEditComponent implements OnInit {
 
   initFormBuilder(){
     this.form=this.formBuilder.group({
-      idCategoria:[null],
+      idDolenciaProducto:[null],
+      dolenciaPropiedad:[null,Validators.compose([Validators.required])],
       descripcion:[null,Validators.compose([Validators.required])]
     });
   }
 
   private loadDataFrom(){
     if(this.edicion){
-      this.dataService.categorias().findById(this.id).subscribe(data =>{
+      this.dataService.dolenciaProductos().findById(this.id).subscribe(data =>{
         this.form.patchValue(data);
       });
     }
@@ -54,17 +52,15 @@ export class CategoriaEditComponent implements OnInit {
 
   operar(){
     if(this.edicion){
-      this.dataService.categorias().update(this.form.value).subscribe(data =>{
-        console.log(data);
-        this.dataService.categorias().getAll().subscribe(cat =>{
+      this.dataService.dolenciaProductos().update(this.form.value).subscribe(data =>{
+        this.dataService.dolenciaProductos().getAllfindByIdSucursal().subscribe(cat =>{
           this.dataService.providers().cambio.next(cat);
-          this.dataService.providers().mensaje.next("se Actualizo con éxito!");
+          this.dataService.providers().mensaje.next("Se Actualizo con éxito!");
         });
       });
     }else{
-      this.dataService.categorias().create(this.form.value).subscribe(data =>{
-        console.log(data);
-        this.dataService.categorias().getAll().subscribe(cate =>{
+      this.dataService.dolenciaProductos().create(this.form.value).subscribe(data =>{
+        this.dataService.dolenciaProductos().getAllfindByIdSucursal().subscribe(cate =>{
           this.dataService.providers().cambio.next(cate);
           this.dataService.providers().mensaje.next("Se Registro con éxito!");
         });

@@ -39,7 +39,9 @@
         <mat-header-cell *matHeaderCellDef fxFlex="13%" fxFlex.xs="100%"> PREC. VENTA </mat-header-cell>
         <mat-cell fxFlex="13%" fxFlex.xs="100%" *matCellDef="let element; let i = index">
             <mat-form-field class="field-container">
-              <input matInput name="precioVenta" [(ngModel)]="element.precioVenta">
+              <input [disabled]="is_edit=='false' ? true : null" matInput name="precioVenta" [(ngModel)]="element.precioVenta">
+              <!-- <span *ngIf="userName">{{userName | uppercase }}</span>
+              <span *ngIf="!userName">Anonimo</span> -->
             </mat-form-field>
         </mat-cell>
       </ng-container>

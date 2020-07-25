@@ -1,6 +1,6 @@
 import { TOKEN_NAME, HOST, MICRO } from './../../../config/auth.config';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { Perfil } from '../model/Perfil';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { GenericService } from './generic.service';
@@ -20,4 +20,8 @@ export class PerfilService {
       headers: new HttpHeaders().set('Authorization', `bearer ${access_token}`).set('Content-Type', 'application/json')
     });
   }
+
+  /*buscar(data:any): Observable<any>{
+    return this.generic.all(basePath).all("user").post(data);
+  }*/
 }

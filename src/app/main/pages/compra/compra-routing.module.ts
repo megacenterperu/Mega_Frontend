@@ -4,6 +4,7 @@ import { CompraListComponent } from './compra-list/compra-list.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DetalleDialogoCompraComponent } from './compra-list/detalle-dialogo-compra/detalle-dialogo-compra.component';
+import { ProveedorDialogComponent } from './compra-edit/proveedor-dialog/proveedor-dialog.component';
 
 
 const routes: Routes = [
@@ -19,6 +20,8 @@ const routes: Routes = [
     { path: 'nuevo', component: CompraEditComponent },
 
     { path: 'NuevoPaciente', component: ProductoDialogoComponent },
+
+    { path: 'NuevoProveedor', component: ProveedorDialogComponent },
 
     { path: 'VerdetalleCompra', component: DetalleDialogoCompraComponent }
 ];

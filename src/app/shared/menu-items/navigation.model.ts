@@ -2,63 +2,65 @@ export class NavigationModel {
     public model: any[];
 
     constructor() {
-        this.model = [
+        /*this.model = [
             {
-                'id': 'ventas',
+                'id': 'idMenuVentas',
                 'title': 'VENTAS',
                 'type': 'collapse',
                 'icon': 'shopping_cart',
                 'children': [
-                    /*{
-                        'id': 'persona',
-                        'title': 'PERSONA',
-                        'type': 'item',
-                        'icon': 'email',
-                        'url': '/ventas/persona',
-                        'badge': {
-                            'title': 25,
-                            'bg': '#F44336',
-                            'fg': '#FFFFFF'
-                        }
-                    },*/
                     {
-                        'id': 'persona',
+                        'id': 'idCliente',
                         'title': 'CLIENTE',
                         'type': 'item',
                         'icon': 'group_add',
                         'url': '/ventas/cliente',
                     },
                     {
-                        'id': 'venta',
+                        'id': 'idVenta',
                         'title': 'VENTA',
                         'type': 'item',
                         'icon': 'add_shopping_cart',
                         'url': '/ventas/venta'
                     },
                     {
-                        'id': 'proforma',
+                        'id': 'idVentaDirecta',
+                        'title': 'VENTA DIRECTA',
+                        'type': 'item',
+                        'icon': 'add_shopping_cart',
+                        'url': '/ventas/ventadirecta'
+                    },
+                    {
+                        'id': 'idProforma',
                         'title': 'PROFORMA',
                         'type': 'item',
                         'icon': 'add_shopping_cart',
                         'url': '/ventas/proforma'
+                    },
+                    {
+                        'id': 'idGuiaRemision',
+                        'title': 'GRE REMITENTE',
+                        'type': 'item',
+                        'icon': 'add_shopping_cart',
+                        'url': '/ventas/guia'
                     }
                 ]
             },
             {
-                'id': 'persona',//el nombre del grupo o menu donde van estar
+                'id': 'idMenuCompra',//el nombre del grupo o menu donde van estar
                 'title': 'COMPRAS',
                 'type': 'collapse',
                 'icon': 'local_shipping',
                 'children': [
                     {
-                        'id': 'proveedor',
+                        'id': 'idProveedor',
                         'title': 'PROVEEDOR',
                         'type': 'item',
                         'icon': 'people',
                         'url': '/ventas/proveedor'
                     },
                     {
-                        'id': 'compra',
+                        'id': 'idCompra',
                         'title': 'COMPRA',
                         'type': 'item',
                         'icon': 'store',//NOMBRE DEL ICONO
@@ -67,7 +69,7 @@ export class NavigationModel {
                 ]
             },
             {
-                'id': 'idmenuCaja',
+                'id': 'idMenuCaja',
                 'title': 'CAJA',
                 'type': 'collapse',
                 'icon': 'phonelink_lock',
@@ -87,7 +89,7 @@ export class NavigationModel {
                         'url': '/ventas/admincaja/cerrarcaja'
                     },
                     {
-                        'id': 'IdCerrarCaja',
+                        'id': 'IdCerrarCajafuerte',
                         'title': 'CERRAR CAJA FUERTE',
                         'type': 'item',
                         'icon': 'phonelink_lock',
@@ -96,20 +98,20 @@ export class NavigationModel {
                 ]
             },
             {
-                'id': 'idmenuT',//el nombre del grupo o menu donde van estar
+                'id': 'idMenuTipo',//el nombre del grupo o menu donde van estar
                 'title': 'TIPOS GENERICOS',
                 'type': 'collapse',
                 'icon': 'important_devices',
                 'children':[
                     /*{
-                        'id': 'tipoproducto',
+                        'id': 'idTipoproducto',
                         'title': 'Tipo Producto',
                         'type': 'item',
                         'icon': 'store',//NOMBRE DEL ICONO
                         'url': '/ventas/tipo/t-produto'// RUTA DEL MODULO por ahora no existe
-                    },*/
+                    },
                     {
-                        'id': 'tipodocumento',
+                        'id': 'idTipodocumento',
                         'title': 'Tipo Documento',
                         'type': 'item',
                         'icon': 'store',//NOMBRE DEL ICONO
@@ -118,34 +120,34 @@ export class NavigationModel {
                 ]
             },
             {
-                'id': 'idmenuProducto',
+                'id': 'idMenuProducto',
                 'title': 'ALMACEN',
                 'type': 'collapse', 
                 'icon': 'store',
                 'children':[
                     {
-                        'id': 'tipoproducto',
+                        'id': 'idTipoproducto',
                         'title': 'Tipo Producto',
                         'type': 'item',
                         'icon': 'store',//NOMBRE DEL ICONO
                         'url': '/ventas/rproducto/t-produto'// RUTA DEL MODULO por ahora no existe
                     },
-                    /*{
-                        'id': 'categoria',
-                        'title': 'Categoria',
+                    {
+                        'id': 'idColorProducto',
+                        'title': 'Color de Producto',
                         'type': 'item',
                         'icon': 'category',
                         'url': '/ventas/rproducto/r-categoria'
-                    },*/
+                    },
                     {
-                        'id': 'unidadmedida',
+                        'id': 'idUnidadMedida',
                         'title': 'Unidad Medida',
                         'type': 'item',
                         'icon': 'note_add',
                         'url': '/ventas/rproducto/r-unidadmedida'
                     },
                     {
-                        'id': 'producto',
+                        'id': 'idProducto',
                         'title': 'Registrar Producto',
                         'type': 'item',
                         'icon': 'note_add',
@@ -154,20 +156,20 @@ export class NavigationModel {
                 ]
             },
             {
-                'id': 'idmenuOrganizacion',
+                'id': 'idMenuOrganizacion',
                 'title': 'ORGANIZACION',
                 'type': 'collapse', 
                 'icon': 'domain',
                 'children':[
                     {
-                        'id': 'organizacion',
+                        'id': 'idOrganizacion',
                         'title': 'Empresa',
                         'type': 'item',
                         'icon': 'location_city',
                         'url': '/ventas/organizacion/empresa'
                     },
                     {
-                        'id': 'sucursal',
+                        'id': 'idSucursal',
                         'title': 'Sucursal',
                         'type': 'item',
                         'icon': 'domain',
@@ -176,13 +178,13 @@ export class NavigationModel {
                 ]
             },
             {
-                'id': 'admintrarpersonal',
+                'id': 'idMenuAdminPersonal',
                 'title': 'ADMIN PERSONAL',
                 'type': 'collapse',
                 'icon': 'group',
                 'children': [
                     {
-                        'id': 'personal',
+                        'id': 'idPersonal',
                         'title': 'PERSONAL',
                         'type': 'item',
                         'icon': 'group_add',
@@ -191,7 +193,7 @@ export class NavigationModel {
                 ]
             },
             {
-                'id': 'idAdminUsuario',
+                'id': 'idMenuAdminUsuario',
                 'title': 'ADMIN USUARIO',
                 'type': 'collapse', 
                 'icon': 'laptop',
@@ -213,7 +215,7 @@ export class NavigationModel {
                 ]
             },
             {
-                'id': 'idConsultas',
+                'id': 'idMenuConsultas',
                 'title': 'CONSULTAS',
                 'type': 'collapse', 
                 'icon': 'local_library',
@@ -252,24 +254,105 @@ export class NavigationModel {
                         'type': 'item',
                         'icon': 'file_copy',
                         'url': '/ventas/consulta/listVentaPorAnular'
-                    }
+                    },
+                    {
+                        'id': 'idVentaPorMes',
+                        'title': 'Ventas por Mes',
+                        'type': 'item',
+                        'icon': 'file_copy',
+                        'url': '/ventas/consulta/listVentaPorMes'
+                    },
+                    {
+                        'id': 'idComprapormes',
+                        'title': 'Compras de producto por Mes',
+                        'type': 'item',
+                        'icon': 'trending_up',
+                        'url': '/ventas/consulta/listCompraPorMes'
+                    },
                 ]
             },
             {
-                'id': 'idReportes',
+                'id': 'idMenuReportes',
                 'title': 'REPORTES',
                 'type': 'collapse',
                 'icon': 'picture_as_pdf',
                 'children': [
                     {
-                        'id': 'reporteproforma',
-                        'title': 'REPORTE PROFORMA',
+                        'id': 'IdReporteVentaDia',
+                        'title': 'Reporte de Ventas por dia',
                         'type': 'item',
                         'icon': 'people',
-                        'url': '/ventas/reportes'
+                        'url': '/ventas/reportes/reportVentaDia'
+                    },
+                    {
+                        'id': 'IdReporteVentaMes',
+                        'title': 'Reporte de Ventas por Mes',
+                        'type': 'item',
+                        'icon': 'people',
+                        'url': '/ventas/reportes/reportVentaMes'
+                    },
+                    {
+                        'id': 'IdReporteProdMasVendido',
+                        'title': 'Reporte de Salida Producto',
+                        'type': 'item',
+                        'icon': 'people',
+                        'url': '/ventas/reportes/reportProductoMasVenta'
+                    }
+                ]
+            },
+            {
+                'id': 'idMenuAdminMenu',
+                'title': 'ADMIN MENU',
+                'type': 'collapse', 
+                'icon': 'laptop',
+                'children':[
+                    {
+                        'id': 'idMenu',
+                        'title': 'Menu',
+                        'type': 'item',
+                        'icon': 'category',
+                        'url': '/ventas/menu/listMenu'
+                    },
+                    {
+                        'id': 'idSubMenu',
+                        'title': 'Sub Menu',
+                        'type': 'item',
+                        'icon': 'folder',
+                        'url': '/ventas/menu/ListSubMenu'
+                    }
+                ]
+            },
+            {
+                'id': 'idMenuAdminUsuarioAdmin',
+                'title': 'ADMIN USUARIOADMIN',
+                'type': 'collapse', 
+                'icon': 'laptop',
+                'children':[
+                    {
+                        'id': 'idUsuarioAdmin',
+                        'title': 'Usuario Admin',
+                        'type': 'item',
+                        'icon': 'category',
+                        'url': '/ventas/listUsuarioAdmin'
+                        'url': '/ventas/personal',
+                    }
+                ]
+            },
+            {
+                'id': 'idMenuAdminPersonalDBA',
+                'title': 'ADMIN PERSONAL DBA',
+                'type': 'collapse',
+                'icon': 'group',
+                'children': [
+                    {
+                        'id': 'idPersonalBDA',
+                        'title': 'PERSONAL DBA',
+                        'type': 'item',
+                        'icon': 'group_add',
+                        'url': '/ventas/listpersonaladmin',
                     }
                 ]
             }
-        ];
+        ];*/
     }
 }

@@ -9,61 +9,62 @@
       </mat-form-field>
     </div>
   </div>
-  <div class="mat-elevation-z8">
-    <mat-table [dataSource]="dataSource" matSort>
-      <ng-container matColumnDef="fecha">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="13%"> FECHA PROF </mat-header-cell>
-        <mat-cell fxFlex="13%" *matCellDef="let element"> {{element.fecha | date: 'dd/MM/yyyy'}} </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="cliente.persona.nombre">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="27%"> CLIENTE </mat-header-cell>
-        <mat-cell fxFlex="27%" *matCellDef="let element"> {{element.cliente.persona.nombre}} </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="numeroProforma">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="12%"> NUMERO PROF </mat-header-cell>
-        <mat-cell fxFlex="12%" *matCellDef="let element"> {{element.numeroProforma}} </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="acuenta">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%"> A CUENTA </mat-header-cell>
-        <mat-cell fxFlex="10%" *matCellDef="let element"> {{element.acuenta | number : '1.2-2'}} </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="saldo">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%"> SALDO </mat-header-cell>
-        <mat-cell fxFlex="10%" *matCellDef="let element"> {{element.saldo | number : '1.2-2'}} </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="total">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%"> MONTO TOTAL </mat-header-cell>
-        <mat-cell fxFlex="10%" *matCellDef="let element"> {{element.total | number : '1.2-2'}} </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="acciones">
-        <mat-header-cell *matHeaderCellDef fxFlex="18%">ACCIONES</mat-header-cell>
-        <mat-cell fxFlex="18%" *matCellDef="let row">
-          <button mat-icon-button matTooltip="Editar" color="primary" [routerLink]="['./edicion', row.idProforma]">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button matTooltip="Eliminar" color="warn" (click)="eliminar(row.idProforma)">
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-icon-button matTooltip="Ver Detalle" color="primary" (click)="openDialog(row)">
-            <mat-icon>visibility</mat-icon>
-          </button>
-          <button mat-icon-button matTooltip="PDF" color="warn" (click)="print(row.idProforma)">
-            <mat-icon>local_printshop</mat-icon>
-          </button>
-        </mat-cell>
-      </ng-container>
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  <div ngClass.xs="tabla">
+    <div class="mat-elevation-z8" ngClass.xs="fondo-tabla">
+      <mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="fecha">
+          <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="13%"> FECHA PROF </mat-header-cell>
+          <mat-cell fxFlex="13%" *matCellDef="let element"> {{element.fecha | date: 'dd/MM/yyyy'}} </mat-cell>
+        </ng-container>
+        
+        <ng-container matColumnDef="cliente.persona.nombre">
+          <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="27%"> CLIENTE </mat-header-cell>
+          <mat-cell fxFlex="27%" *matCellDef="let element"> {{element.cliente.persona.nombre}} </mat-cell>
+        </ng-container>
+      
+            <ng-container matColumnDef="numeroProforma">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="12%"> NUMERO PROF </mat-header-cell>
+              <mat-cell fxFlex="12%" *matCellDef="let element"> {{element.numeroProforma}} </mat-cell>
+            </ng-container>
+      
+            <ng-container matColumnDef="acuenta">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%"> A CUENTA </mat-header-cell>
+              <mat-cell fxFlex="10%" *matCellDef="let element"> {{element.acuenta | number : '1.2-2'}} </mat-cell>
+            </ng-container>
+      
+            <ng-container matColumnDef="saldo">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%"> SALDO </mat-header-cell>
+              <mat-cell fxFlex="10%" *matCellDef="let element"> {{element.saldo | number : '1.2-2'}} </mat-cell>
+            </ng-container>
+      
+            <ng-container matColumnDef="total">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%"> MONTO TOTAL </mat-header-cell>
+              <mat-cell fxFlex="10%" *matCellDef="let element"> {{element.total | number : '1.2-2'}} </mat-cell>
+            </ng-container>
+      
+            <ng-container matColumnDef="acciones">
+              <mat-header-cell *matHeaderCellDef fxFlex="18%">ACCIONES</mat-header-cell>
+              <mat-cell fxFlex="18%" *matCellDef="let row">
+                <!-- <button mat-icon-button matTooltip="Editar" color="primary" >
+                  <mat-icon>edit</mat-icon>
+                </button> -->
+                <button mat-icon-button matTooltip="Ver Detalle" color="primary" (click)="openDialog(row)">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="PDF" color="warn" (click)="print(row.idProforma)">
+                  <mat-icon>local_printshop</mat-icon>
+                </button>
+                <!-- <button mat-icon-button matTooltip="Eliminar" color="warn" >
+                  <mat-icon>delete</mat-icon>
+                </button> -->
+              </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="row.idProforma == SelectFocus ? 'focusSelect fila': 'fila'" (click)="selectRow(row)"></mat-row>
+          </mat-table>
+          <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>
   </div>
-
   <button mat-fab color="accent" style="float:right" routerLink='./nuevo'>
     <mat-icon>create</mat-icon>
   </button>

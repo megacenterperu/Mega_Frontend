@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 // Import Mega main library
 @import "app/shared/scss/core";
+@import '~material-design-icons/iconfont/material-icons.css';
 
 .container {
     display: flex;
@@ -32,4 +33,19 @@ input.right::-webkit-inner-spin-button {
 
 input.right {
   -moz-appearance: textfield;
+}
+
+:root {
+  --ColorFocus: #fbec88 ;
+  --ColorHover: #f5f5f5 ;
+}
+
+.tabla{
+  overflow-x: scroll;
+  
+}
+
+.fondo-tabla {
+  min-width: 800px;
+
 }

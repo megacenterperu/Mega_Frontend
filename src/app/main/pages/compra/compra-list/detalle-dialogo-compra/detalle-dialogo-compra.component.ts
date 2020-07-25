@@ -30,7 +30,7 @@ export class DetalleDialogoCompraComponent implements OnInit {
   }
 
   setData(data) {
-    console.log(data);
+    //console.log(data);
     let r = data;
     this.cantidad = JSON.parse(JSON.stringify(data)).length;
     this.dataSource = new MatTableDataSource(r);

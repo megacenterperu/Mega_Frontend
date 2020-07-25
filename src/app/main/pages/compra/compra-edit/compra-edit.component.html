@@ -3,27 +3,29 @@
   <br />
   <form class="container" [formGroup]="form" #f="ngForm">
     <div fxLayout="row" fxLayout.xs="column">
-      <div fxFlex="60%" fxFlex.xs="100%">
-        <mat-form-field class="field-container">
-          <input type="text" placeholder="Proveedor- Compra" aria-label="nombreComercial" matInput [formControl]="myControlProveedor" 
-          required formControlName="proveedor" [matAutocomplete]="autoProveedor">
-          <mat-autocomplete #autoProveedor="matAutocomplete" [displayWith]="displayFn">
-            <mat-option *ngFor="let pro of filteredOptions | async" [value]="pro">
-              {{pro.nombreComercial}} {{pro.razonSocial}}
-            </mat-option>
-          </mat-autocomplete>
-          <mat-icon matSuffix>perm_identityt</mat-icon>
-        </mat-form-field>
+      <mat-form-field class="field-container" fxFlex="50%" fxFlex.xs="100%">
+        <input type="text" placeholder="Proveedor- Compra" aria-label="razonSocial" matInput [formControl]="myControlProveedor" required formControlName="proveedor" [matAutocomplete]="autoProveedor">
+        <mat-autocomplete #autoProveedor="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let pro of filteredOptions | async" [value]="pro">
+            {{pro.persona.numeroDocumento}} - {{pro.razonSocial}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+      <div fxFlex="8%;" fxFlex.xs="100%">
+        <button mat-mini-fab matTooltip="Agregar Nuevo Proveedor, Precione F3" color="accent" type="button" (click)="openDialog(prov)">
+          <mat-icon>person_add</mat-icon>
+        </button>
       </div>
-      <div fxFlex="40%" fxFlex.xs="100%">
-        <mat-form-field class="field-container">
-          <mat-select placeholder="Sucursal" required formControlName="sucursal">
-            <mat-option *ngFor="let sucursal of sucursales" [value]="sucursal">
-              {{sucursal.nombre}}
-            </mat-option>
-          </mat-select>
-          <mat-icon matSuffix>store</mat-icon>
-        </mat-form-field>
+      <div fxFlex="42%" fxFlex.xs="100%">
+          <mat-form-field class="field-container">
+              <mat-select placeholder="Para el Almacen de" required formControlName="sucursal">
+                <mat-option *ngFor="let sucursal of sucursales" [value]="sucursal">
+                  {{sucursal.nombre}}
+                </mat-option>
+              </mat-select>
+              <mat-icon matSuffix>store</mat-icon>
+            </mat-form-field>
       </div>
     </div>
     <div fxLayout="row" fxLayout.xs="column">
@@ -37,7 +39,7 @@
           <mat-icon matSuffix>arrow_downward</mat-icon>
         </mat-form-field>
       </div>
-      <div fxFlex="30%" fxFlex.xs="100%">
+      <div fxFlex="28%" fxFlex.xs="100%">
         <mat-form-field class="of-full-width i-space">
           <input matInput formControlName="fecha" [matDatepicker]="picker" [max]="maxDate" placeholder="Fecha Compra"
             required>
@@ -45,13 +47,13 @@
           <mat-datepicker touchUi="true" #picker></mat-datepicker>
         </mat-form-field>
       </div>
-      <div fxFlex="20%" fxFlex.xs="100%">
+      <div fxFlex="21%" fxFlex.xs="100%">
         <mat-form-field class="field-container">
           <input matInput placeholder="Guia de Remision" required formControlName="guiaRemision" maxlength="20">
           <mat-icon matSuffix>list_alt</mat-icon>
         </mat-form-field>
       </div>
-      <div fxFlex="20%" fxFlex.xs="100%">
+      <div fxFlex="21%" fxFlex.xs="100%">
         <mat-form-field class="field-container">
           <input matInput placeholder="Numero Comprobante" required formControlName="numeroComprobante" maxlength="20">
           <mat-icon matSuffix>create</mat-icon>
@@ -71,7 +73,7 @@
           <mat-card-actions>
             <button matPrefix mat-raised-button color="warn" type="button" (click)="AgregarProducto()">
               <mat-icon>add</mat-icon>
-              Agregar Producto
+              F1 Agregar Producto
             </button>
           </mat-card-actions>
         </div>
@@ -85,19 +87,22 @@
           <mat-header-cell *matHeaderCellDef fxFlex="30%" fxFlex.xs="100%"> PRODUCTO / SERVICIO </mat-header-cell>
         </ng-container>
         <ng-container matColumnDef="marcaProducto">
-          <mat-header-cell *matHeaderCellDef fxFlex="20%" fxFlex.xs="100%"> MARCA </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef fxFlex="15%" fxFlex.xs="100%"> MARCA </mat-header-cell>
         </ng-container>
         <ng-container matColumnDef="cantidaditem">
-          <mat-header-cell *matHeaderCellDef fxFlex="10%" fxFlex.xs="100%">CANTIDAD</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef fxFlex="9%" fxFlex.xs="100%">CANTIDAD</mat-header-cell>
         </ng-container>
         <ng-container matColumnDef="precioItem">
-          <mat-header-cell *matHeaderCellDef fxFlex="13%" fxFlex.xs="100%">PRECIO DE COMPRA </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef fxFlex="10%" fxFlex.xs="100%">PREC. DE COMPRA </mat-header-cell>
+        </ng-container>
+        <ng-container matColumnDef="precioVentaItem">
+          <mat-header-cell *matHeaderCellDef fxFlex="9%" fxFlex.xs="100%">PRECIO. DE VENTA </mat-header-cell>
         </ng-container>
         <ng-container matColumnDef="importeTotalItem">
-          <mat-header-cell *matHeaderCellDef fxFlex="9%" fxFlex.xs="100%"> IMPORTE </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef fxFlex="8%" fxFlex.xs="100%"> IMPORTE </mat-header-cell>
         </ng-container>
         <ng-container matColumnDef="acciones">
-          <mat-header-cell *matHeaderCellDef fxFlex="6%" fxFlex.xs="100%">ACCION</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef fxFlex="7%" fxFlex.xs="100%"></mat-header-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
@@ -108,24 +113,27 @@
         <div *ngFor="let unit of detalleCompra.controls; let i=index">
           <div [formGroupName]="i">
             <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="2%" fxLayoutAlign="start stretch">
-              <div formGroupName="productoT" fxFlex="70%" fxFlex.xs="100%">
+              <div formGroupName="productoT" fxFlex.xs="100%">
                 <mat-form-field fxFlex="20%" fxFlex.xs="100%">
                   <input matInput formControlName="codProducto">
                 </mat-form-field>
-                <mat-form-field fxFlex="50%" fxFlex.xs="100%">
+                <mat-form-field fxFlex="55%" fxFlex.xs="100%">
                   <input matInput formControlName="nombre">
                 </mat-form-field>
-                <mat-form-field fxFlex="30%" fxFlex.xs="100%">
+                <mat-form-field fxFlex="25%" fxFlex.xs="100%">
                   <input matInput formControlName="marcaProducto">
                 </mat-form-field>
               </div>
-              <mat-form-field fxFlex="10%" fxFlex.xs="grow">
+              <mat-form-field fxFlex="7.8%" fxFlex.xs="grow">
                 <input matInput type="number" formControlName="cantidaditem" required>
               </mat-form-field>
-              <mat-form-field fxFlex="10%" fxFlex.xs="grow">
+              <mat-form-field fxFlex="7.8%" fxFlex.xs="grow">
                 <input matInput class="right" type="number" formControlName="precioItem" required>
               </mat-form-field>
-              <mat-form-field fxFlex="10%" fxFlex.xs="grow">
+              <mat-form-field fxFlex="7.8%" fxFlex.xs="grow">
+                <input matInput class="right" type="number" formControlName="precioVentaItem" required>
+              </mat-form-field>
+              <mat-form-field fxFlex="7.8%" fxFlex.xs="grow">
                 <input matInput class="right" formControlName="importeTotal">
                 <span matPrefix>s/.&nbsp;</span>
               </mat-form-field>
@@ -154,11 +162,11 @@
       <mat-card-actions>
         <button mat-raised-button color="primary" type="button" (click)="save()" [disabled]="!form.valid">
           <mat-icon>done</mat-icon>
-          <span>Aceptar</span>
+          <span>F2 Aceptar</span>
         </button>
         <button mat-raised-button color="accent" (click)="cancel()" type="button">
           <mat-icon>close</mat-icon>
-          <span>Cancelar</span>
+          <span>F4 Cancelar</span>
         </button>
       </mat-card-actions>
     </mat-card>

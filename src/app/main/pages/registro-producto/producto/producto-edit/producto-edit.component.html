@@ -3,10 +3,24 @@
 
   <form class="example-form" [formGroup]="form" (ngSubmit)="operar()" #f="ngForm">
     <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="12%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Precio por Paquete</mat-label>
+          <input #init autocomplete="off" matInput type="number" placeholder="Cod Producto" formControlName="precioCompraPaquete">
+        </mat-form-field>
+      </div>
+      <div fxFlex="12%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Cantidad x Paquete</mat-label>
+          <input #init autocomplete="off" matInput type="number" placeholder="Cod Producto" formControlName="cantidadPaquete">
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayout.xs="column">
       <div fxFlex="25%;" fxFlex.xs="50%">
         <mat-form-field class="field-container" appearance="outline">
           <mat-label>Cod Producto</mat-label>
-          <input matInput placeholder="Cod Producto" required formControlName="codProducto">
+          <input matInput placeholder="Cod Producto" required formControlName="codProducto" #firstname>
         </mat-form-field>
       </div>
       <div fxFlex="50%;" fxFlex.xs="50%">
@@ -26,8 +40,9 @@
     <div fxLayout="row" fxLayout.xs="column">
       <div fxFlex="25%;" fxFlex.xs="50%">
         <mat-form-field class="field-container" appearance="outline">
-          <mat-label>Modelo Producto</mat-label>
-          <input matInput placeholder="Modelo Producto" required formControlName="modeloProducto">
+          <input matInput formControlName="fechaVencimiento" [matDatepicker]="picker" placeholder="Fecha Ingreso">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker  #picker></mat-datepicker>
         </mat-form-field>
       </div>
       <div fxFlex="25%;" fxFlex.xs="50%">
@@ -39,17 +54,23 @@
       <div fxFlex="25%;" fxFlex.xs="50%">
         <mat-form-field class="field-container" appearance="outline">
           <mat-label>Precio Compra</mat-label>
-          <input matInput placeholder="Precio Compra" required formControlName="precioCompra">
+          <input matInput type="number" placeholder="Precio Compra" required formControlName="precioCompra">
         </mat-form-field>
       </div>
       <div fxFlex="25%;" fxFlex.xs="50%">
         <mat-form-field class="field-container" appearance="outline">
-          <mat-label>Precio Venta</mat-label>
-          <input matInput placeholder="Precio Venta" required formControlName="precioVenta">
+          <mat-label>% de Utilidad</mat-label>
+          <input matInput type="number" placeholder="% de Utilidad" formControlName="porcentajeUtelidad">
         </mat-form-field>
       </div>
     </div>
     <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="25%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Precio Venta</mat-label>
+          <input matInput type="number" placeholder="Precio Venta" required formControlName="precioVenta">
+        </mat-form-field>
+      </div>
       <div fxFlex="25%;" fxFlex.xs="50%">
         <mat-form-field class="field-container" appearance="outline">
           <mat-label>Unidad Medida</mat-label>
@@ -60,20 +81,13 @@
             </mat-select>
         </mat-form-field>
       </div>
-      <!-- <div fxFlex="25%;" fxFlex.xs="50%">
-        <mat-form-field class="field-container" appearance="outline">
-          <mat-label>Categoria</mat-label>
-          <mat-select placeholder="Categoria" formControlName="categoria" [compareWith]="compareCategoria">
-            <mat-option *ngFor="let Categoria of lstcategorias" [value]="Categoria">
-              {{Categoria.descripcion}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div> -->
       <div fxFlex="25%;" fxFlex.xs="50%">
         <mat-form-field class="field-container" appearance="outline">
           <mat-label>Tipo Producto</mat-label>
           <mat-select placeholder="Tipo Producto" formControlName="tipoProducto" [compareWith]="compareTipoProducto">
+            <div style="margin: 10px">
+              <input matInput  placeholder="buscar" (keyup)="buscarTipoProducto($event)" />
+            </div>
             <mat-option *ngFor="let Tipoproducto of lsttipoProductos" [value]="Tipoproducto">
               {{Tipoproducto.descripcion}}
             </mat-option>
@@ -83,46 +97,99 @@
       <div fxFlex="25%;" fxFlex.xs="50%">
         <mat-form-field class="field-container" appearance="outline">
           <mat-label>Almacen de</mat-label>
-          <mat-select placeholder="Almacen de" formControlName="organizacion" [compareWith]="compareOrganizacion">
+          <mat-select placeholder="Almacen de" formControlName="sucursal" [compareWith]="compareOrganizacion">
             <mat-option *ngFor="let Organizacion of lstorganizacions" [value]="Organizacion">
-              {{Organizacion.nombreComercial}}
+              {{Organizacion.nombre}}
             </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
+    </div>
+    <!-- opcional comentar -->
+    <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="25%;" fxFlex.xs="50%" fxLayout="row" style="position: relative;">
+
+        <mat-form-field class="field-container" appearance="outline">
+          <input placeholder="Dolencia y/o Propiedad del Producto" class="autocomplete-autor" aria-label="nombre" matInput [formControl]="myControlDolencia"
+            required formControlName="dolenciaProducto" [matAutocomplete]="autoDolencia" #firstname2 >
+          <mat-autocomplete #autoDolencia="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngFor="let listDolencia of filteredOptions | async" [value]="listDolencia" class="pintarselector">
+              {{listDolencia.dolenciaPropiedad}}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-icon matSuffix>arrow_drop_down</mat-icon>
+        </mat-form-field>
+
+        <div fxLayoutAlign="center start" >
+          <button mat-mini-fab style="margin-top: 10PX;" color="warn" type="button" (click)="openDialogDolencia()">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div fxFlex="1%;" fxFlex.xs="50%"></div>
+      
+      <div fxFlex="34%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Presentacion</mat-label>
+          <input matInput placeholder="Presentacion" required formControlName="presentacion">
+        </mat-form-field>
+      </div>
+      
+      <div fxFlex="15%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Numero de Lote</mat-label>
+          <input matInput placeholder="Numero de Lote" required formControlName="numeroLote">
+        </mat-form-field>
+      </div>
+      
       <div fxFlex="25%;" fxFlex.xs="50%">
         <mat-form-field class="field-container" appearance="outline">
-          <mat-label>Estado Producto</mat-label>
-          <mat-select placeholder="Estado Producto" formControlName="estadoProducto" [compareWith]="compareestadoProducto">
-            <mat-option *ngFor="let estadoprod of listestados" [value]="estadoprod">{{estadoprod}}</mat-option>
-          </mat-select>
+          <mat-label>Laboratorio</mat-label>
+          <input matInput placeholder="Laboratorio" required formControlName="laboratorio">
         </mat-form-field>
       </div>
     </div>
-    <!-- opcional -->
-    <!-- <div fxLayout="row" fxLayout.xs="column">
+    <div fxLayout="row" fxLayout.xs="column">
       <div fxFlex="25%;" fxFlex.xs="50%">
         <mat-form-field class="field-container" appearance="outline">
-          <mat-label>Estado Producto</mat-label>
-            <mat-select placeholder="Estado Producto" formControlName="estadoProducto" [compareWith]="compareestadoProducto">
-              <mat-option *ngFor="let estadoprod of listestados" [value]="estadoprod">{{estadoprod}}</mat-option>
-            </mat-select>
+          <mat-label>Area</mat-label>
+          <input matInput placeholder="Area" required formControlName="area">
         </mat-form-field>
       </div>
-    </div> -->
-
+        <div fxFlex="25%;" fxFlex.xs="50%">
+          <mat-form-field class="field-container" appearance="outline">
+            <mat-label>Estado Producto</mat-label>
+            <mat-select placeholder="Estado Producto" formControlName="estadoProducto">
+              <mat-option *ngFor="let estadoprod of listestados" [value]="estadoprod">
+                {{estadoprod}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxFlex="25%;" fxFlex.xs="50%">
+          <mat-form-field class="field-container" appearance="outline">
+            <mat-label>Tipo Afectacion del IGV</mat-label>
+            <mat-select placeholder="Tipo Afectacion del IGV" formControlName="tipoAfectacionIgv" [compareWith]="compareTipoAfectacionIgv">
+              <mat-option *ngFor="let TipoAfecto of lsttipoAfectacion" [value]="TipoAfecto">
+                {{TipoAfecto.descripcion}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+    </div>
+    <!-- opcional -->
     <div fxLayout="row" fxLayout.xs="column">
       <div fxFlex="20%;" fxFlex.xs="50%" class="field-container">
         <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
           <mat-icon>done</mat-icon>
-          <span>Aceptar</span>
+          <span>F2 Aceptar</span>
         </button>
       </div>
       <div fxFlex="1%;" fxFlex.xs="5%"></div>
       <div fxFlex="20%;" fxFlex.xs="50%" class="field-container">
         <button mat-raised-button color="accent" (click)="cancel()" type="button">
           <mat-icon>close</mat-icon>
-          <span>Cancelar</span>
+          <span>F3 Cancelar</span>
         </button>
       </div>
     </div>

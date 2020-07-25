@@ -1,0 +1,101 @@
+<mat-toolbar>Lista De productos</mat-toolbar>
+<mat-dialog-content class="mat-typography">
+  <div fxLayout="row" fxLayout.xs="column">
+    <div fxFlex="50%;" fxFlex.xs="50%">
+      <mat-form-field class="field-container" appearance="outline">
+        <mat-label>Buscar Producto</mat-label>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar Producto por Codigo, Nombre y Marca">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+  </div>
+  <div ngClass.xs="tabla">
+      <div class="mat-elevation-z8" ngClass.xs="mat-elevation-z8 fondo-tabla">
+          <mat-table [dataSource]="dataSource" matSort>
+        
+            <ng-container matColumnDef="codProducto">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%" fxFlex.xs="100%"> CODIGO </mat-header-cell>
+              <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.codProducto}} </mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="unidadMedida.codUnidadmedida">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="6%" fxFlex.xs="100%"> UNID. </mat-header-cell>
+              <mat-cell fxFlex="6%" fxFlex.xs="100%" *matCellDef="let element"> {{element.unidadMedida.codUnidadmedida}} </mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="nombre">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="30%" fxFlex.xs="100%"> DESCRIPCION </mat-header-cell>
+              <mat-cell fxFlex="30%" fxFlex.xs="100%" *matCellDef="let element"> {{element.nombre}} 
+                <div class="container-hidden" >
+                  <div class="conta" >
+                    <h4 style ="color: #1877F2; text-align:center">{{element.dolenciaProducto.dolenciaPropiedad}}</h4>
+                    <mat-divider></mat-divider>
+                    <div style="padding-top:10px; text-align:justify" >{{element.dolenciaProducto.descripcion}}</div>
+                  </div>
+                </div>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="marcaProducto">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%" fxFlex.xs="100%"> MARCA </mat-header-cell>
+              <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.marcaProducto}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="laboratorio">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%" fxFlex.xs="100%"> LABORATORIO </mat-header-cell>
+              <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.laboratorio}} </mat-cell>
+            </ng-container>
+
+            <!-- <ng-container matColumnDef="dolenciaProducto.descripcion">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%" fxFlex.xs="100%"> DOLENCIA </mat-header-cell>
+              <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.dolenciaProducto.descripcion}} </mat-cell>
+            </ng-container> -->
+
+            <!-- opcional comentar -->
+            <ng-container matColumnDef="tipoAfectacionIgv.descripcion">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="8%" fxFlex.xs="100%"> TIPO IGV</mat-header-cell>
+              <mat-cell fxFlex="8%" fxFlex.xs="100%" *matCellDef="let element"> {{element.tipoAfectacionIgv.descripcion}} </mat-cell>
+            </ng-container>
+            <!-- opcional -->
+        
+            <ng-container matColumnDef="stock">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="6%" fxFlex.xs="100%"> STOCK </mat-header-cell>
+              <mat-cell fxFlex="6%" fxFlex.xs="100%" *matCellDef="let element"> {{element.stock}} </mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="cantidad">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="6%" fxFlex.xs="100%">CANT.</mat-header-cell>
+              <mat-cell fxFlex="6%" fxFlex.xs="100%" *matCellDef="let element; let i = index">
+                  <mat-form-field class="field-container">
+                    <input matInput name="cantidad" [(ngModel)]="element.cantidad">
+                  </mat-form-field>
+              </mat-cell>
+            </ng-container> 
+        
+            <ng-container matColumnDef="precioVenta">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="7%" fxFlex.xs="100%">P. VENTA</mat-header-cell>
+              <mat-cell fxFlex="7%" fxFlex.xs="100%" *matCellDef="let element; let i = index">
+                  <mat-form-field class="field-container">
+                    <input [disabled]="!tienePermiso" matInput name="precioVenta" [(ngModel)]="element.precioVenta">
+                  </mat-form-field>
+              </mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="acciones">
+              <mat-header-cell *matHeaderCellDef fxFlex="7%" fxFlex.xs="100%">ACCIONES</mat-header-cell>
+              <mat-cell fxFlex="7%" fxFlex.xs="100%" *matCellDef="let row">
+                <button mat-icon-button matTooltip="Agregar" color="primary" (click)="agregar(row)">
+                  <mat-icon>add_shopping_cart</mat-icon>
+                </button>
+              </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" style="position: relative;" tabindex="0" [ngClass]="row.idProducto == SelectFocus ? 'focusSelect fila': 'fila'" (click)="selectRow(row)"></mat-row>
+          </mat-table>
+          <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="accent" mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

@@ -16,6 +16,15 @@
         <input matInput placeholder="Sueldo" required formControlName="sueldo">
       </mat-form-field>
 
+      <mat-form-field>
+          <mat-label>Personal de</mat-label>
+          <mat-select placeholder="Personal de" formControlName="sucursal" [compareWith]="compareOrganizacion">
+            <mat-option *ngFor="let Organizacion of lstorganizacions" [value]="Organizacion">
+              {{Organizacion.nombre}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
     </div>
 
     <div formGroupName="persona" class="container">
@@ -34,9 +43,8 @@
       <mat-form-field>
         <input matInput placeholder="Numero Documento" required formControlName="numeroDocumento" minLength="8"
           maxlength="20">
-
       </mat-form-field>
-
+    
       <mat-form-field>
         <input matInput placeholder="N° Celular" required formControlName="telfMovil" type="number">
       </mat-form-field>

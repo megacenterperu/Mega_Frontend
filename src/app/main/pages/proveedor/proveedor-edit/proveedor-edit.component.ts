@@ -1,9 +1,8 @@
-import { Observable } from 'rxjs';
+import { USER_DATA } from 'src/config/auth.config';
 import { Router, Params, ActivatedRoute } from '@angular/router';
-import { DataService } from './../../../../core/data/data.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { startWith, map, filter } from 'rxjs/operators';
+import { DataService } from 'src/app/core/data/data.service';
 
 @Component({
   selector: 'ms-proveedor-edit',
@@ -43,11 +42,12 @@ export class ProveedorEditComponent implements OnInit {
   }
 
   initFormBuilder() {
+    const user = JSON.parse(sessionStorage.getItem(USER_DATA));
     this.form = this.formBuilder.group({
       persona: this.formBuilder.group({
         idPersona: [null],
         nombre: [null,Validators.compose([Validators.required])],
-        numeroDocumento: [null,Validators.compose([Validators.required])],
+        numeroDocumento: [null, Validators.compose([Validators.required, Validators.minLength(8), Validators.maxLength(11)])],
         telfMovil: [null, Validators.compose([Validators.required])],
         direccion: [null, Validators.compose([Validators.required])],
         email: [null],
@@ -55,6 +55,7 @@ export class ProveedorEditComponent implements OnInit {
       }),
       proveedor: this.formBuilder.group({
         idProveedor: [null],
+        idSucursal: [user.idSucursal],
         nombreComercial: [null, Validators.compose([Validators.required])],
         razonSocial: [null, Validators.compose([Validators.required])],
         telfEmpresa: [null],
@@ -77,10 +78,12 @@ export class ProveedorEditComponent implements OnInit {
   }*/
 
   private loadDataFrom() {
+    const user = JSON.parse(sessionStorage.getItem(USER_DATA));
     if (this.edicion) {
       this.dataService.proveedores().findById(this.id).subscribe(data => {
           this.form.controls.proveedor.patchValue({
             idProveedor: data.idProveedor,
+            idSucursal:user.idSucursal,
             nombreComercial:data.nombreComercial,
             razonSocial:data.razonSocial,
             telfEmpresa:data.telfEmpresa,
@@ -147,7 +150,7 @@ export class ProveedorEditComponent implements OnInit {
     if (this.edicion) {
       //update
       this.dataService.proveedores().update(this.form.value).subscribe(data => {
-        this.dataService.proveedores().getAll().subscribe(p => {
+        this.dataService.proveedores().getAllfindByIdSucursal().subscribe(p => {
           this.dataService.providers().cambio.next(p);
           this.dataService.providers().mensaje.next('Se Actualizo con éxito!')
         });
@@ -155,12 +158,32 @@ export class ProveedorEditComponent implements OnInit {
     } else {
       //insert
       this.dataService.proveedores().create(this.form.value).subscribe(data => {
-        this.dataService.proveedores().getAll().subscribe(p => {
+        this.dataService.proveedores().getAllfindByIdSucursal().subscribe(p => {
           this.dataService.providers().cambio.next(p);
           this.dataService.providers().mensaje.next('Se Registro con éxito!');
         });
       });
     }
     this.cancel();
+  }
+
+  getConsulta() {
+    let ruc=this.form.controls.persona.get('numeroDocumento').value;
+    var rucs=new String(ruc);
+      if(rucs.length > 8){
+        this.dataService.proveedores().getRuc(this.form.value.persona.numeroDocumento).subscribe(data=>{
+          this.form.controls.persona.patchValue({
+            numeroDocumento:data.ruc,
+            direccion:data.direccion+' '+data.departamento+' - '+data.provincia+' - '+data.distrito
+          });
+          this.form.controls.proveedor.patchValue({
+            nombreComercial:data.nombreComercial,
+            razonSocial:data.razonSocial
+          });
+          
+        },error => {
+          this.dataService.providers().mensaje.next('RUC invalido o no encontrado')
+        });
+      }
   }
 }

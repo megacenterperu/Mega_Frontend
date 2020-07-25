@@ -55,7 +55,7 @@ export class UnidadmedidaEditComponent implements OnInit {
   operar(){
     if(this.edicion){
       this.dataService.unidadMedidas().update(this.form.value).subscribe(data =>{
-        console.log(data);
+       // console.log(data);
         this.dataService.unidadMedidas().getAll().subscribe(cat =>{
           this.dataService.providers().cambio.next(cat);
           this.dataService.providers().mensaje.next("se Actualizo con éxito!");
@@ -63,7 +63,7 @@ export class UnidadmedidaEditComponent implements OnInit {
       });
     }else{
       this.dataService.unidadMedidas().create(this.form.value).subscribe(data =>{
-        console.log(data);
+    //    console.log(data);
         this.dataService.unidadMedidas().getAll().subscribe(cate =>{
           this.dataService.providers().cambio.next(cate);
           this.dataService.providers().mensaje.next("Se Registro con éxito!");

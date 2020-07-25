@@ -53,7 +53,7 @@
         <div fxFlex="30%;" fxFlex.xs="50%">
           <mat-form-field class="field-container" appearance="outline">
             <mat-label>Buscar Producto</mat-label>
-            <input type="text" matInput (keyup)="buscarProducto($event)" placeholder="Cod Producto">
+            <input type="text" matInput (keyup)="buscarProducto($event)" placeholder="Cod Producto" #firstname>
             <mat-icon matSuffix>search</mat-icon>
           </mat-form-field>
         </div>

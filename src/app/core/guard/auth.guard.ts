@@ -11,7 +11,7 @@ export class AuthGuard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         let rpta=this.dataService.logins().estaLogeado();
-        console.log("estadoLogin: "+rpta)
+       // console.log("estadoLogin: "+rpta)
         if(!rpta){
             sessionStorage.clear();
             this.router.navigate(['/login'], { queryParams: { returnUrl: state.url }});

@@ -1,7 +1,8 @@
+import { USER_DATA } from 'src/config/auth.config';
 import { GenericService } from './generic.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-const basePath = "categorias";
+const basePath = "dolenciaProductos";
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,11 @@ export class CategoriaService {
     return this.generic.all(basePath).get();
   }
 
+  getAllfindByIdSucursal(): Observable<any>{
+    const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+    return this.generic.all(basePath).all("list-colorproducto").all(user.idSucursal).get();
+  }
+
   getAllPageable(p: number, s: number): Observable<any> {
     return this.generic.all(basePath).all(`pageable?page=${p}&size=${s}`).get();
   }
@@ -23,10 +29,14 @@ export class CategoriaService {
   }
 
   create(data: any): Observable<any> {
+    const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+    data.idSucursal=user.idSucursal;
     return this.generic.all(basePath).all("registrar").post(data);
   }
 
   update(data: any): Observable<any> {
+    const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+    data.idSucursal=user.idSucursal;
     return this.generic.all(basePath).all("actualizar").put(data);
   }
 

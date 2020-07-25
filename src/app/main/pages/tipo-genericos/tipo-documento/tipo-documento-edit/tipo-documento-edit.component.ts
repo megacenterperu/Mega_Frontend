@@ -56,7 +56,7 @@ export class TipoDocumentoEditComponent implements OnInit {
   operar(){
     if(this.edicion){
       this.dataService.tipoDocumentos().update(this.form.value).subscribe(data =>{
-        console.log(data);
+       // console.log(data);
         this.dataService.tipoDocumentos().getAll().subscribe(td =>{
           this.dataService.providers().cambio.next(td);
           this.dataService.providers().mensaje.next("se Actualizo con éxito!");
@@ -64,7 +64,7 @@ export class TipoDocumentoEditComponent implements OnInit {
       });
     }else{
       this.dataService.tipoDocumentos().create(this.form.value).subscribe(data =>{
-        console.log(data);
+    //    console.log(data);
         this.dataService.tipoDocumentos().getAll().subscribe(tipodoc =>{
           this.dataService.providers().cambio.next(tipodoc);
           this.dataService.providers().mensaje.next("Se Registro con éxito!");

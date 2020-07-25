@@ -1,3 +1,4 @@
+import { USER_DATA } from 'src/config/auth.config';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatTableDataSource, MatPaginator, MatSort, MatSnackBar } from '@angular/material';
@@ -22,7 +23,8 @@ export class ProductoPrecioListComponent implements OnInit {
   constructor(private dataService:DataService,private formBuilder: FormBuilder, private snackBar:MatSnackBar) { }
 
   ngOnInit() {
-    this.dataService.productos().listPrecioProductoAlamacen().subscribe(data => this.setData(data));
+    const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+    this.dataService.productos().listPrecioProductoAlamacen(user.idSucursal).subscribe(data => this.setData(data));
   }
 
   setData(data) {

@@ -3,21 +3,25 @@
   <br />
   <form class="example-form" [formGroup]="form" (ngSubmit)="save()" #f="ngForm">
     <div formGroupName="cliente">
-
+      <div fxLayout="row" fxLayout.xs="column">
+        <div fxFlex="50%" fxFlex.xs="50%">
+            <mat-checkbox formControlName="isdefaultCliente">No Seleccionar</mat-checkbox>
+        </div>
+      </div>
     </div>
     <div formGroupName="persona" class="container">
       <div fxLayout="row" fxLayout.xs="column">
         <div fxFlex="34%;" fxFlex.xs="50%">
           <mat-form-field class="field-container" appearance="outline">
             <mat-label>Nombre y Apellidos</mat-label>
-            <input matInput placeholder="Nombre y Apellido" required formControlName="nombre" maxlength="50">
+            <input matInput placeholder="Nombre y Apellido" required formControlName="nombre" >
           </mat-form-field>
         </div>
         <div fxFlex="33%;" fxFlex.xs="50%">
           <mat-form-field class="field-container" appearance="outline">
             <mat-label>Tipo Documento</mat-label>
             <mat-select placeholder="Tipo Documento" formControlName="tipoDocumeto">
-              <mat-option *ngFor="let tipoDocumeto of tipodocumentos" [value]="tipoDocumeto">
+              <mat-option *ngFor="let tipoDocumeto of tipodocumentos" [value]="tipoDocumeto" (click)="validar($event)">
                 {{tipoDocumeto.abreviatura}}
               </mat-option>
             </mat-select>
@@ -26,8 +30,10 @@
         <div fxFlex="33%;" fxFlex.xs="50%">
           <mat-form-field class="field-container" appearance="outline">
             <mat-label>Numero Documento</mat-label>
-            <input matInput placeholder="Numero Documento" required formControlName="numeroDocumento" type="number" minLength="8"
-              maxlength="20">
+            <input matInput #message required formControlName="numeroDocumento" minLength="8" maxlength="11" placeholder="Numero Documento" (keydown.enter)="onKeydown($event)">
+            <mat-icon mat-icon-button matTooltip="CONSULTA SUNAT(RUC) - RENIEC(DNI)" matSuffix color="warn" (click)="getConsulta()">search</mat-icon>
+            <mat-hint align="start"><mat-label style="color: forestgreen;">Minimo 8 - Maximo 11 caracteres</mat-label> </mat-hint>
+            <mat-hint align="end"><mat-label style="color: forestgreen;">{{message.value.length}} / 11</mat-label></mat-hint>
           </mat-form-field>
         </div>
       </div>
@@ -35,7 +41,7 @@
         <div fxFlex="34%;" fxFlex.xs="50%">
           <mat-form-field class="field-container" appearance="outline">
             <mat-label>N° Celular</mat-label>
-            <input matInput placeholder="N° Celular" formControlName="telfMovil" type="number">
+            <input matInput placeholder="N° Celular" formControlName="telfMovil">
           </mat-form-field>
         </div>
         <div fxFlex="33%;" fxFlex.xs="50%">
@@ -52,7 +58,6 @@
         </div>
       </div>
     </div>
-
     <div fxLayout="row" fxLayout.xs="column">
       <div fxFlex="20%;" fxFlex.xs="50%" class="field-container">
         <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">

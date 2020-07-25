@@ -1,0 +1,88 @@
+<div class="page-layout blank p-24" megaPerfectScrollbar>
+    <mat-toolbar>LISTA DE VENTAS POR MES</mat-toolbar>
+    <form [formGroup]="form" (ngSubmit)="buscar()">
+      <div fxLayout="row" fxLayout.xs="column">
+        <mat-form-field fxFlex="20%;" fxFlex.xs="50%" appearance="outline">
+          <mat-label>Escoge fecha inicio</mat-label>
+          <input matInput [matDatepicker]="picker" [max]="maxFecha" placeholder="Escoge la fecha inicial" formControlName="fechaConsulta">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <div fxFlex="1%" fxFlex.xs="50%"></div>
+        <mat-form-field fxFlex="20%;" fxFlex.xs="50%" appearance="outline">
+          <mat-label>Escoge fecha final</mat-label>
+          <input matInput [matDatepicker]="picker2" placeholder="Escoge la fecha final" formControlName="fechaSgte">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+        <div fxFlex="1%" fxFlex.xs="50%"></div>
+        <div fxFlex="15%;" fxFlex.xs="50%">
+          <button  mat-fab matTooltip="Escoje de que fecha a que fecha desea consultar" color="accent" type="submit">
+            <mat-icon>search</mat-icon>
+          </button>
+          <div fxFlex="5%" fxFlex.xs="50%"></div>
+          <button mat-fab matTooltip="Descargar en Excel" color="warn" type="button" (click)="descargarExcel()">
+            <mat-icon>cloud_download</mat-icon>
+          </button>
+        </div>
+      </div>
+    </form>
+    <div class="example-container mat-elevation-z8 ">
+      <mat-table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="fecha">
+          <mat-header-cell *matHeaderCellDef fxFlex="12%" fxFlex.xs="100%">FECHA</mat-header-cell>
+          <mat-cell fxFlex="12%" fxFlex.xs="100%" *matCellDef="let element">{{ element.fecha | date: "dd/MM/yyyy" }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef fxFlex="12%"></mat-footer-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="serieComprobante">
+          <mat-header-cell *matHeaderCellDef fxFlex="10%" fxFlex.xs="100%">SERIE</mat-header-cell>
+          <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element">{{element.serieComprobante}}</mat-cell>
+          <mat-footer-cell *matFooterCellDef fxFlex="10%"></mat-footer-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="numeroComprobante">
+          <mat-header-cell *matHeaderCellDef fxFlex="14%" fxFlex.xs="100%">N° COMPROBANTE</mat-header-cell>
+          <mat-cell fxFlex="14%" fxFlex.xs="100%" *matCellDef="let element">{{element.numeroComprobante }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef fxFlex="14%"></mat-footer-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="cliente.persona.numeroDocumento">
+          <mat-header-cell *matHeaderCellDef fxFlex="16%" fxFlex.xs="100%">RUC/DNI</mat-header-cell>
+          <mat-cell fxFlex="16%" fxFlex.xs="100%" *matCellDef="let element">{{ element.cliente.persona.numeroDocumento }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef fxFlex="16%"></mat-footer-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="cliente.persona.nombre">
+          <mat-header-cell *matHeaderCellDef fxFlex="31%" fxFlex.xs="100%">RAZON SOCIAL</mat-header-cell>
+          <mat-cell fxFlex="31%" fxFlex.xs="100%" *matCellDef="let element">{{ element.cliente.persona.nombre }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef fxFlex="31%"></mat-footer-cell>
+        </ng-container>
+        
+        <ng-container matColumnDef="tipocambio.idTipocambio">
+          <mat-header-cell *matHeaderCellDef fxFlex="10%" fxFlex.xs="100%">TIPO CAMBIO</mat-header-cell>
+          <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element">{{element.tipocambio.idTipocambio}}</mat-cell>
+          <mat-footer-cell *matFooterCellDef fxFlex="10%"></mat-footer-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="tipocambio.nombre">
+          <mat-header-cell *matHeaderCellDef fxFlex="10%" fxFlex.xs="100%">MONEDA</mat-header-cell>
+          <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element">{{element.tipocambio.nombre}}</mat-cell>
+          <mat-footer-cell *matFooterCellDef fxFlex="10%">TOTAL</mat-footer-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="montoTotal">
+          <mat-header-cell *matHeaderCellDef fxFlex="10%" fxFlex.xs="100%">IMPORTE</mat-header-cell>
+          <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element">{{ element.montoTotal | number: "1.2-2" }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef fxFlex="10%">{{total | number : '1.2-2'}}</mat-footer-cell>
+        </ng-container>
+  
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
+      </mat-table>
+      <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator> -->
+    </div>
+  </div>
+  

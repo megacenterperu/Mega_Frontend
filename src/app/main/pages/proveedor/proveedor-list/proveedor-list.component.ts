@@ -1,7 +1,6 @@
-
+import { DataService } from 'src/app/core/data/data.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatSort, MatSnackBar } from '@angular/material';
-import { DataService } from '../../../../core/data/data.service';
 
 @Component({
   selector: 'ms-proveedor-list',
@@ -19,7 +18,13 @@ export class ProveedorListComponent implements OnInit {
   constructor(private dataService: DataService, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
-    this.dataService.proveedores().getAll().subscribe(data => this.setData(data));
+    this.dataService.proveedores().getAllfindByIdSucursal().subscribe(data => {
+      this.setData(data)
+      this.dataSource.filterPredicate=(dato, filter: string)=>{
+        const dataStr = dato.persona.nombre.toLowerCase()+dato.persona.numeroDocumento.toLowerCase()+dato.razonSocial.toLowerCase()+dato.nombreComercial.toLowerCase();
+        return dataStr.indexOf(filter) !== -1;
+      };
+    });
     this.dataService.providers().cambio.subscribe(data => this.setData(data));
     this.dataService.providers().mensaje.subscribe(data => {
       this.snackBar.open(data, 'Aviso', { duration: 2000 });
@@ -43,7 +48,7 @@ export class ProveedorListComponent implements OnInit {
     if (confirm('¿Seguro que quieres Eliminar?')) {
       this.dataService.proveedores().delete(id).subscribe(r => {
         this.snackBar.open("Proveedor Eliminado", 'Aviso', { duration: 2000 });
-        this.dataService.proveedores().getAll().subscribe(data => this.setData(data));
+        this.dataService.proveedores().getAllfindByIdSucursal().subscribe(data => this.setData(data));
       });
     }
   }

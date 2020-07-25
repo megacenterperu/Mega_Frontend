@@ -42,7 +42,7 @@ export class MainComponent implements OnInit, OnDestroy {
   ngOnInit() {  
     let token = sessionStorage.getItem(TOKEN_NAME);
     this.isLogin= token != null;
-    console.log(this.isLogin)
+  //  console.log(this.isLogin)
   }
 
   ngOnDestroy() {

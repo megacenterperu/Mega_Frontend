@@ -17,9 +17,9 @@ export class NavigationComponent implements OnDestroy {
     constructor(private navigationService: NavigationService) {
         this.navigationModelChangeSubscription =
             this.navigationService.onNavigationModelChange
-                .subscribe((navigationModel) => {
+                .subscribe((navigationModel) => {                   
                     this.navigationModel = navigationModel;
-                    console.log(navigationModel);
+                  //  console.log(navigationModel);
                 });
     }
 

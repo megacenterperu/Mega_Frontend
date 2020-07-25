@@ -1,3 +1,4 @@
+import { USER_DATA } from 'src/config/auth.config';
 import { GenericService } from './generic.service';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
@@ -21,11 +22,21 @@ export class UsuarioService {
     return this.generic.all(basePath).all(`pageable?page=${p}&size=${s}`).get();
   }
 
+  findByIdSucursal(data:any): Observable<any>{
+    return this.generic.all(basePath).all("list-user").all(data).get();
+  }
+
   findById(id: number): Observable<any> {
     return this.generic.one(basePath, id).get();
   }
 
+  hasEditPermision(id: number): Observable<any> {
+    return this.generic.all(basePath).one("has-edit-permision", id).get();
+  }
+
   create(data: any): Observable<any> {
+    const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+    data.idSucursal=user.idSucursal;
     return this.generic.all(basePath).all("registrar").post(data);
   }
 

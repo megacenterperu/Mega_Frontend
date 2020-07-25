@@ -1,0 +1,13 @@
+.right.mat-cell {
+    display: flex;
+    justify-content: flex-end;
+}
+.right.mat-header-cell {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 0;
+    padding-left: 24px;
+}
+.right.mat-header-cell:last-child {
+    margin-right: 0;
+}

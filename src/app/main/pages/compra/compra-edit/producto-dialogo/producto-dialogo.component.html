@@ -15,32 +15,50 @@
     </ng-container>
 
     <ng-container matColumnDef="nombre">
-      <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="32%" fxFlex.xs="100%"> PRODUCTO </mat-header-cell>
-      <mat-cell fxFlex="32%" fxFlex.xs="100%" *matCellDef="let element"> {{element.nombre}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="27%" fxFlex.xs="100%"> PRODUCTO </mat-header-cell>
+      <mat-cell fxFlex="27%" fxFlex.xs="100%" *matCellDef="let element"> {{element.nombre}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="marcaProducto">
-      <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="18%" fxFlex.xs="100%"> MARCA </mat-header-cell>
-      <mat-cell fxFlex="18%" fxFlex.xs="100%" *matCellDef="let element"> {{element.marcaProducto}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="12%" fxFlex.xs="100%"> MARCA </mat-header-cell>
+      <mat-cell fxFlex="12%" fxFlex.xs="100%" *matCellDef="let element"> {{element.marcaProducto}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="laboratorio">
+      <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%" fxFlex.xs="100%"> LABORATORIO </mat-header-cell>
+      <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.laboratorio}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="cantidaditem">
-      <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%" fxFlex.xs="100%">CANTIDAD</mat-header-cell>
-      <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element; let i = index">
-        <input matInput name="cantidaditem" [(ngModel)]="element.cantidaditem">          
+      <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="6%" fxFlex.xs="100%">CANT.</mat-header-cell>
+      <mat-cell fxFlex="6%" fxFlex.xs="100%" *matCellDef="let element; let i = index">
+        <mat-form-field class="field-container">
+          <input matInput name="cantidaditem" [(ngModel)]="element.cantidaditem"> 
+        </mat-form-field>
       </mat-cell>
     </ng-container>   
 
     <ng-container matColumnDef="precioCompra">
-      <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%" fxFlex.xs="100%">PRECIO DE COMPRA </mat-header-cell>
-      <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element; let i = index">
-        <input matInput name="precioCompra" [(ngModel)]="element.precioCompra">          
+      <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="9%" fxFlex.xs="100%">P. COMPRA </mat-header-cell>
+      <mat-cell fxFlex="9%" fxFlex.xs="100%" *matCellDef="let element; let i = index">
+        <mat-form-field class="field-container">
+          <input matInput name="precioCompra" [(ngModel)]="element.precioCompra"> 
+        </mat-form-field>
       </mat-cell>
-    </ng-container>   
+    </ng-container>
+    
+    <ng-container matColumnDef="precioVenta">
+      <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="8%" fxFlex.xs="100%">P. VENTA </mat-header-cell>
+      <mat-cell fxFlex="8%" fxFlex.xs="100%" *matCellDef="let element; let i = index">
+        <mat-form-field class="field-container">
+          <input matInput name="precioVenta" [(ngModel)]="element.precioVenta"> 
+        </mat-form-field>     
+      </mat-cell>
+    </ng-container>
          
     <ng-container matColumnDef="acciones">
-      <mat-header-cell *matHeaderCellDef fxFlex="10%" fxFlex.xs="100%">ACCIONES</mat-header-cell>
-      <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let row">
+      <mat-header-cell *matHeaderCellDef fxFlex="8%" fxFlex.xs="100%">ACCIONES</mat-header-cell>
+      <mat-cell fxFlex="8%" fxFlex.xs="100%" *matCellDef="let row">
         <button mat-icon-button matTooltip="Agregar" color="primary" (click)="agregar(row)">
           <mat-icon >add_shopping_cart</mat-icon>
         </button>

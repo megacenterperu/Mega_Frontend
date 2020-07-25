@@ -1,0 +1,63 @@
+<div class="page-layout blank p-24" megaPerfectScrollbar>
+  <mat-toolbar>LISTA DEL PERSONAL</mat-toolbar>
+  <div fxLayout="row" fxLayout.xs="column">
+    <mat-form-field fxFlex="40%" appearance="outline">
+      <mat-label>Buscar Personal</mat-label>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar Personal">
+    </mat-form-field>
+  </div>
+  <div class="mat-elevation-z8">
+    <mat-table [dataSource]="dataSource" matSort>
+
+      <ng-container matColumnDef="persona.nombre">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="25%" fxFlex.xs="100%"> NOMBRE PERSONAL </mat-header-cell>
+        <mat-cell fxFlex="25%" fxFlex.xs="100%" *matCellDef="let element"> {{element.persona.nombre}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="persona.telfMovil">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="9%" fxFlex.xs="100%"> TELF. MOVIL </mat-header-cell>
+        <mat-cell fxFlex="9%" fxFlex.xs="100%" *matCellDef="let element"> {{element.persona.telfMovil}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="persona.numeroDocumento">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%" fxFlex.xs="100%"> RUC/DNI </mat-header-cell>
+        <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.persona.numeroDocumento}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="persona.direccion">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="30%" fxFlex.xs="100%"> DIRECCION </mat-header-cell>
+        <mat-cell fxFlex="30%" fxFlex.xs="100%" *matCellDef="let element"> {{element.persona.direccion}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="fechaIngreso">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="11%" fxFlex.xs="100%"> FECHA INGRESO </mat-header-cell>
+        <mat-cell fxFlex="11%" fxFlex.xs="100%" *matCellDef="let element"> {{element.fechaIngreso | date: 'dd/MM/yyyy'}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="sucursal.nombre">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="15%" fxFlex.xs="100%"> SUCURSAL </mat-header-cell>
+        <mat-cell fxFlex="15%" fxFlex.xs="100%" *matCellDef="let element"> {{element.sucursal.nombre}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="acciones">
+        <mat-header-cell *matHeaderCellDef fxFlex="10%" fxFlex.xs="100%">ACCIONES</mat-header-cell>
+        <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let row">
+          <button mat-icon-button matTooltip="Editar" color="primary" [routerLink]="['./edicion', row.idPersonal]">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Eliminar" color="warn" focusable="false" (click)="eliminar(row.idPersonal)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+
+  <button mat-fab color="accent" style="float:right" routerLink='./nuevo'>
+    <mat-icon>create</mat-icon>
+  </button>
+</div>
+</div>

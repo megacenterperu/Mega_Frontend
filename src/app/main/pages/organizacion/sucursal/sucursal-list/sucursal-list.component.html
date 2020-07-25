@@ -7,19 +7,24 @@
     </div>
     <div class="mat-elevation-z8">
         <mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="organizacion.razonSocial">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> EMPRESA </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.organizacion.razonSocial}} </mat-cell>
+            </ng-container>
+
             <ng-container matColumnDef="nombre">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> NOMBRE SUCURSAL </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header>SUCURSAL </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element.nombre}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="ruc">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>RUC </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.ruc}} </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="direccion">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> DIRECCION </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element.direccion}} </mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="organizacion.nombreComercial">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> ORGANIZACION </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.organizacion.nombreComercial}} </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="acciones">

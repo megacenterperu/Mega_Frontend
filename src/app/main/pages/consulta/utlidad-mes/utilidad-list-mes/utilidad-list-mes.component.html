@@ -16,12 +16,16 @@
         <mat-datepicker #picker2></mat-datepicker>
       </mat-form-field>
       <div fxFlex="1%" fxFlex.xs="50%"></div>
-      <div fxFlex="15%;" fxFlex.xs="50%">
+      <div fxFlex="20%;" fxFlex.xs="50%">
         <button  mat-fab matTooltip="Escoje de que fecha a que fecha desea consultar" color="accent" type="submit">
           <mat-icon>search</mat-icon>
         </button>
         <div fxFlex="5%" fxFlex.xs="50%"></div>
         <button mat-fab matTooltip="Imprimir Salidad de Productos" color="warn"  type="button" (click)="print()">
+          <mat-icon>print</mat-icon>
+        </button>
+        <div fxFlex="5%" fxFlex.xs="50%"></div>
+        <button mat-fab matTooltip="Imprimir Lista Egresos" color="warn"  type="button" (click)="printEgreso()">
           <mat-icon>print</mat-icon>
         </button>
       </div>

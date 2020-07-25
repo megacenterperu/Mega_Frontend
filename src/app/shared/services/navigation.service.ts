@@ -1,21 +1,41 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { NavigationModel } from '../menu-items/navigation.model';
+//import { NavigationModel } from '../menu-items/navigation.model';
+import { DataService } from 'src/app/core/data/data.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NavigationService {
 
+  menus: any[] = [];
   onNavCollapseToggle = new EventEmitter<any>();
   onNavCollapseToggled = new EventEmitter<any>();
   onNavigationModelChange: BehaviorSubject<any> = new BehaviorSubject({});
-  navigationModel: NavigationModel;
+  navigationModel: any[] = [];
   flatNavigation: any[] = [];
 
-  constructor() {
-    this.navigationModel = new NavigationModel();
-    this.onNavigationModelChange.next(this.navigationModel.model);
+  constructor(private dataService: DataService) {
+   // this.navigationModel = new NavigationModel();
+   
+   /*const data= this.dataService.logins().getUserData();   
+    this.dataService.menus().listarPorUsuario(data.usuario).subscribe(d=>{  
+      this.navigationModel=d;
+      this.onNavigationModelChange.next(d);
+    });*/
+
+    this.dataService.menus().menuCambio.subscribe(data => {
+      this.menus = data;
+      this.navigationModel= this.menus;
+      this.onNavigationModelChange.next(this.menus);
+    });
+    const data= this.dataService.logins().getUserData();  
+    if(data){
+      this.dataService.menus().listarPorUsuario(data.usuario).subscribe(d=>{  
+        this.navigationModel=d;
+        this.onNavigationModelChange.next(d);
+      })
+    }
   }
 
   /**
@@ -24,7 +44,8 @@ export class NavigationService {
    * @returns {any[]}
    */
   getNavigationModel() {
-    return this.navigationModel.model;
+   // return this.navigationModel.model;
+    return this.navigationModel;
   }
 
   /**
@@ -34,7 +55,8 @@ export class NavigationService {
    */
   setNavigationModel(model) {
     this.navigationModel = model;
-    this.onNavigationModelChange.next(this.navigationModel.model);
+    //this.onNavigationModelChange.next(this.navigationModel.model);
+    this.onNavigationModelChange.next(this.navigationModel);
   }
 
   /**
@@ -112,7 +134,8 @@ export class NavigationService {
    */
   findNavigationItemById(location, navigation?) {
     if (!navigation) {
-      navigation = this.navigationModel.model;
+      navigation = this.navigationModel;
+     // navigation = this.navigationModel.model;
     }
 
     // Iterate through the given navigation
@@ -143,7 +166,8 @@ export class NavigationService {
    */
   getFlatNavigation(navigationItems?) {
     if (!navigationItems) {
-      navigationItems = this.navigationModel.model;
+     // navigationItems = this.navigationModel.model;
+      navigationItems = this.navigationModel;
     }
 
     for (const navItem of navigationItems) {

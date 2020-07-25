@@ -1,3 +1,4 @@
+import { USER_DATA } from 'src/config/auth.config';
 import { Injectable } from '@angular/core';
 import { GenericService } from './generic.service';
 import { Observable } from 'rxjs';
@@ -12,6 +13,15 @@ export class ClienteService {
 
   getAll(): Observable<any> {
     return this.generic.all(basePath).get();
+  }
+
+  findByIdSucursal(data:any): Observable<any>{
+    return this.generic.all(basePath).all("listarCliente").all(data).get();
+  }
+
+  getAllfindByIdSucursal(): Observable<any>{
+    const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+    return this.generic.all(basePath).all("listarCliente").all(user.idSucursal).get();
   }
   
   getRuc(numeroruc: string): Observable<any> {

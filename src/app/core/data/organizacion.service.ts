@@ -15,6 +15,10 @@ export class OrganizacionService {
     //return this.generic.all(basePath).all("listar").get();
   }
 
+  getRuc(numeroruc: string): Observable<any> {
+    return this.generic.getRuc(numeroruc);
+  }
+  
   getAllPageable(p: number, s: number): Observable<any> {
     return this.generic.all(basePath).all(`pageable?page=${p}&size=${s}`).get();
   }

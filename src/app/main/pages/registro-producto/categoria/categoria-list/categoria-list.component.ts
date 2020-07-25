@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import {MatTableDataSource,MatPaginator,MatSort,MatSnackBar} from "@angular/material";
-import { DataService } from "../../../../../core/data/data.service";
+import { DataService } from "src/app/core/data/data.service";
 
 @Component({
   selector: "ms-categoria-list",
@@ -8,8 +8,10 @@ import { DataService } from "../../../../../core/data/data.service";
   styleUrls: ["./categoria-list.component.scss"]
 })
 export class CategoriaListComponent implements OnInit {
+  SelectFocus: string;
+  
   lista: any[] = [];
-  displayedColumns: string[] = ['idCategoria',"descripcion", "acciones"];
+  displayedColumns: string[] = ["dolenciaPropiedad","descripcion", "acciones"];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
   @ViewChild(MatPaginator)
@@ -20,7 +22,7 @@ export class CategoriaListComponent implements OnInit {
   constructor(private dataService:DataService, private snackBar:MatSnackBar ) {}
 
   ngOnInit() {
-    this.dataService.categorias().getAll().subscribe(data => this.setData(data));
+    this.dataService.dolenciaProductos().getAllfindByIdSucursal().subscribe(data => this.setData(data));
     this.dataService.providers().cambio.subscribe(data => this.setData(data));
     this.dataService.providers().mensaje.subscribe(data => {
       this.snackBar.open(data, "Mensaje", { duration: 3000 });
@@ -43,10 +45,14 @@ export class CategoriaListComponent implements OnInit {
 
   eliminar(id) {
     if(confirm('¿Seguro que quieres Eliminar?')){
-    this.dataService.categorias().delete(id).subscribe(datas => {
-        this.snackBar.open("Categoria Eliminado", "Mensaje", {duration: 3000});
-        this.dataService.categorias().getAll().subscribe(data => this.setData(data));
+    this.dataService.dolenciaProductos().delete(id).subscribe(datas => {
+        this.snackBar.open("Dolencia del Producto Eliminado", "Mensaje", {duration: 3000});
+        this.dataService.dolenciaProductos().getAllfindByIdSucursal().subscribe(data => this.setData(data));
       });
     }
+  }
+
+  selectRow(event) {
+    this.SelectFocus=event.idDolenciaProducto;
   }
 }

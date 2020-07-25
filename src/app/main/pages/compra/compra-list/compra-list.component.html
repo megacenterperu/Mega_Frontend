@@ -9,37 +9,41 @@
     </div>
     <div class="mat-elevation-z8">
         <mat-table [dataSource]="dataSource" matSort>
-            <ng-container matColumnDef="proveedor.nombreComercial">
+            <ng-container matColumnDef="proveedor.razonSocial">
                 <mat-header-cell *matHeaderCellDef fxFlex="25%" fxFlex.xs="100%"> PROVEEDOR </mat-header-cell>
-                <mat-cell fxFlex="25%" fxFlex.xs="100%" *matCellDef="let element"> {{element.proveedor.nombreComercial}} </mat-cell>
+                <mat-cell fxFlex="25%" fxFlex.xs="100%" *matCellDef="let element"> {{element.proveedor.razonSocial}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="sucursal.nombre">
-                <mat-header-cell *matHeaderCellDef fxFlex="25%" fxFlex.xs="100%"> SUCURSAL </mat-header-cell>
-                <mat-cell fxFlex="25%" fxFlex.xs="100%" *matCellDef="let element"> {{element.sucursal.nombre}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef fxFlex="20%" fxFlex.xs="100%"> SUCURSAL </mat-header-cell>
+                <mat-cell fxFlex="20%" fxFlex.xs="100%" *matCellDef="let element"> {{element.sucursal.nombre}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="fecha">
-                <mat-header-cell *matHeaderCellDef fxFlex="15%" fxFlex.xs="100%"> FECHA DE COMPRA </mat-header-cell>
-                <mat-cell fxFlex="15%" fxFlex.xs="100%" *matCellDef="let element"> {{element.fecha | date: 'dd/MM/yyyy'}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef fxFlex="10%" fxFlex.xs="100%"> FECHA DE COMPRA </mat-header-cell>
+                <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.fecha | date: 'dd/MM/yyyy'}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="tipocomprobante.descripcion">
+                <mat-header-cell *matHeaderCellDef fxFlex="10%" fxFlex.xs="100%"> TIPO DE COMPROBANTE </mat-header-cell>
+                <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.tipocomprobante.descripcion}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="numeroComprobante">
+                <mat-header-cell *matHeaderCellDef fxFlex="10%" fxFlex.xs="100%"> N° DE COMPROBANTE </mat-header-cell>
+                <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.numeroComprobante}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="montoTotal">
                 <mat-header-cell *matHeaderCellDef fxFlex="10%" fxFlex.xs="100%"> MONTO TOTAL </mat-header-cell>
-                <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.montoTotal}} </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="guiaRemision">
-                <mat-header-cell *matHeaderCellDef fxFlex="10%" fxFlex.xs="100%"> N° GUIA REMISION </mat-header-cell>
-                <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.guiaRemision}} </mat-cell>
+                <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element"> {{element.montoTotal | number : '1.2-2'}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="acciones">
                 <mat-header-cell *matHeaderCellDef fxFlex="15%" fxFlex.xs="100%">ACCIONES</mat-header-cell>
                 <mat-cell fxFlex="15%" fxFlex.xs="100%" *matCellDef="let row">
-                    <button  mat-icon-button matTooltip="Editar" color="primary" [routerLink]="['./edicion', row.idCompra]">
+                    <button type="button"  mat-icon-button matTooltip="Ver Detalle" color="accent" (click)="verDetalle(row)">
+                        <mat-icon>visibility</mat-icon>
+                    </button>
+                    <button  mat-icon-button matTooltip="Editar" color="primary">
                         <mat-icon>edit</mat-icon>
                     </button>
                     <button type="button"  mat-icon-button matTooltip="Eliminar" color="warn" (click)="eliminar(row.idCompra)">
                         <mat-icon>delete</mat-icon>
-                    </button>
-                    <button type="button"  mat-icon-button matTooltip="Ver Detalle" color="accent" (click)="verDetalle(row)">
-                        <mat-icon>visibility</mat-icon>
                     </button>
                 </mat-cell>
             </ng-container>
@@ -48,7 +52,7 @@
         </mat-table>
         <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
         
-        <button mat-fab color="warn" style="float:right" routerLink='./nuevo'>
+        <button mat-fab color="warn" matTooltip="Agregar Nueva Compra, Precione F1" style="float:right" routerLink='./nuevo'>
             <mat-icon>add</mat-icon>
         </button>
     </div>

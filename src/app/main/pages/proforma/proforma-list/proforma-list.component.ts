@@ -11,6 +11,7 @@ import { Proforma } from 'src/app/core/model/Proforma';
 })
 export class ProformaListComponent implements OnInit {
 
+  SelectFocus: string;
   lista: any[] = [];
   displayedColumns: string[] = ['fecha', 'cliente.persona.nombre', 'numeroProforma', 'acuenta','saldo','total', 'acciones'];
   dataSource: MatTableDataSource<any>;
@@ -21,7 +22,13 @@ export class ProformaListComponent implements OnInit {
   constructor(private dataService: DataService, private snackBar: MatSnackBar,public dialog: MatDialog) { }
 
   ngOnInit() {
-    this.dataService.proformas().getAll().subscribe(data =>this.setData(data));
+    this.dataService.proformas().getAllfindByIdSucursal().subscribe(data =>{
+      this.setData(data)
+      this.dataSource.filterPredicate=(dato, filter: string)=>{
+        const dataStr = dato.cliente.persona.nombre.toLowerCase()+dato.cliente.persona.numeroDocumento.toLowerCase()+dato.numeroProforma.toLowerCase();
+      return dataStr.indexOf(filter) !== -1;
+      };
+    });
     this.dataService.providers().cambio.subscribe(data => this.setData(data));
     this.dataService.providers().mensaje.subscribe(data => {
       this.snackBar.open(data, 'Mensaje', { duration: 3000 });
@@ -73,6 +80,10 @@ export class ProformaListComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
     });
+  }
+
+  selectRow(event) {
+    this.SelectFocus=event.idProforma;
   }
 
 }

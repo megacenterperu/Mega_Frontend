@@ -99,4 +99,20 @@ export class UtilidadListMesComponent implements OnInit {
     }
   }
 
+  printEgreso() {
+    if (this.form.valid) {
+      this.dataService.egresos().reportEgresoMes(this.form.value).subscribe((response) => {
+        var blob = new Blob([response], { type: 'application/pdf' });
+        const blobUrl = URL.createObjectURL(blob);
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = blobUrl;
+        document.body.appendChild(iframe);
+        iframe.contentWindow.print();
+      });
+    }else{
+      this.dataService.providers().mensaje.next('Todos los campos son requeridos')
+    }
+  }
+
 }

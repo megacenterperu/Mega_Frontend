@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { DataService } from "src/app/core/data/data.service";
-import { LoginService } from "src/app/core/data/login.service";
 import { Router } from "@angular/router";
 
 @Component({
@@ -11,12 +10,17 @@ import { Router } from "@angular/router";
 export class ToolbarComponent implements OnInit {
   showLoadingBar: boolean;
 
+  menus: any[] = [];
   userName;
   userRoles: any[] = [];
 
   constructor(private dataService: DataService, private router: Router) {}
 
   ngOnInit() {
+    /*this.dataService.menus().menuCambio.subscribe(data => {
+      this.menus = data;
+      //console.log(data);
+    });*/
     this.dataService.perfiles().perfilCambio.subscribe(response => {
       this.userName = response.usuario;
       this.userRoles = response.roles;

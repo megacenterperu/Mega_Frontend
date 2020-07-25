@@ -1,0 +1,74 @@
+<div class="page-layout blank p-24" megaPerfectScrollbar>
+    <mat-toolbar>Ingrese los datos de la Empresa</mat-toolbar>
+    <br />
+    <form class="container" [formGroup]="form" (ngSubmit)="operar()" #f="ngForm">
+      <div fxLayout="row" fxLayout.xs="column">
+        <div fxFlex="20%" fxFlex.xs="100%">
+          <!-- <mat-form-field class="field-container" appearance="outline">
+            <mat-label>Numero de RUC</mat-label>
+            <input matInput #message placeholder="Numero de RUC" required formControlName="ruc" minLength="11" maxlength="11" >
+            <mat-hint align="start"><mat-label style="color: forestgreen;">Min 11 - Max 11 caracteres</mat-label> </mat-hint>
+            <mat-hint align="end"><mat-label style="color: forestgreen;">{{message.value.length}} / 11</mat-label></mat-hint>
+          </mat-form-field> -->
+
+          <mat-form-field class="field-container" appearance="outline">
+              <mat-label>Numero de RUC</mat-label>
+              <input matInput #message placeholder="Numero RUC" required formControlName="ruc" minLength="11" maxlength="11" >
+              <mat-icon mat-icon-button matTooltip="CONSULTA SUNAT(RUC) - RENIEC(DNI)" matSuffix color="warn" (click)="getConsulta()">search</mat-icon>
+              <mat-hint align="start"><mat-label style="color: forestgreen;">Min 11 - Max 11 caracteres</mat-label> </mat-hint>
+              <mat-hint align="end"><mat-label style="color: forestgreen;">{{message.value.length}} / 11</mat-label></mat-hint>
+            </mat-form-field>
+
+        </div>
+        <div fxFlex="40%" fxFlex.xs="100%">
+            <mat-form-field class="field-container" appearance="outline">
+              <mat-label>Razon Social</mat-label>
+              <input matInput placeholder="RazonSocial" required formControlName="razonSocial">
+            </mat-form-field>
+          </div>
+        <div fxFlex="40%" fxFlex.xs="100%">
+          <mat-form-field class="field-container" appearance="outline">
+            <mat-label>Nombre Comercial</mat-label>
+            <input matInput placeholder="nombreComercial" required formControlName="nombreComercial">
+          </mat-form-field>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayout.xs="column">
+        <div fxFlex="20%" fxFlex.xs="100%">
+          <mat-form-field class="field-container" appearance="outline">
+            <mat-label>Telefono</mat-label>
+            <input matInput placeholder="telefono" required formControlName="telefono">
+          </mat-form-field>
+        </div>
+        <div fxFlex="40%" fxFlex.xs="100%">
+          <mat-form-field class="field-container" appearance="outline">
+            <mat-label>Direccion</mat-label>
+            <input matInput placeholder="Direccion" required formControlName="direccion">
+          </mat-form-field> 
+        </div>
+        <div fxFlex="40%" fxFlex.xs="100%">
+          <mat-form-field class="field-container" appearance="outline">
+            <mat-label>Correo</mat-label>
+            <input matInput placeholder="email" required formControlName="email">
+          </mat-form-field>
+        </div>
+      </div>
+      
+      <div fxLayout="row" fxLayout.xs="column">
+        <div fxFlex="15%" fxFlex.xs="100%" class="field-container">
+          <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
+            <mat-icon>done</mat-icon>
+            <span>Aceptar</span>
+          </button>
+        </div>
+        <div fxFlex="1%;" fxFlex.xs="5%"></div>
+        <div fxFlex="15%" fxFlex.xs="100%" class="field-container">
+          <button mat-raised-button color="accent" (click)="cancel()" type="button">
+            <mat-icon>close</mat-icon>
+            <span>Cancelar</span>
+          </button>
+        </div>
+      </div>
+    </form>
+    <br />
+  </div>

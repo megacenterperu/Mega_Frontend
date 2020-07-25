@@ -117,20 +117,23 @@
       <label>DATOS DEL RESUMEN</label>
       <mat-card>
         <div fxFlex="20%;" fxFlex.xs="50%">
-          <mat-label>MONTO TOTAL REGISTRADO </mat-label>
-          {{total-totalEgreso | number : '1.2-2'}}
+          <mat-label style="color: black;">MONTO TOTAL REGISTRADO:</mat-label>
+          <br>
+          <span *ngIf="this.tienePermiso" style="color: green; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">{{total - totalEgreso | number: "1.2-2"}}</span>
         </div>
         <div fxFlex="20%;" fxFlex.xs="50%">
-          <mat-label>MONTO DE INICIO DE TURNO </mat-label>
-          {{montoInicioTurno | number : '1.2-2'}}
+          <mat-label>MONTO DE INICIO DE TURNO:</mat-label>
+          <br>
+          <span style="color: crimson; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">{{ montoInicioTurno | number: "1.2-2" }}</span>
         </div>
         <div fxFlex="18%;" fxFlex.xs="50%">
-          <mat-label>MONTO TOTAL DEL DIA </mat-label>
-          {{(total-totalEgreso + montoInicioTurno) | number : '1.2-2'}}
+          <mat-label>MONTO TOTAL DEL DIA:</mat-label>
+          <br>
+          <span *ngIf="this.tienePermiso" style="color: blue; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">{{ total - totalEgreso + montoInicioTurno | number: "1.2-2" }}</span>
         </div>
         <div fxFlex="22%;" fxFlex.xs="50%">
           <mat-form-field>
-            <input matInput placeholder="CONTEO FIN DE TURNO" [(ngModel)]="montoTotalDia" required>
+            <input #init autocomplete="off" matInput placeholder="CONTEO FIN DE TURNO" [(ngModel)]="montoTotalDia" required>
           </mat-form-field>
         </div>
         <div fxFlex="20%;" fxFlex.xs="50%">

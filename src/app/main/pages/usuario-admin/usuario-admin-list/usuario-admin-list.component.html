@@ -1,0 +1,59 @@
+<div class="page-layout blank p-24" megaPerfectScrollbar>
+  <mat-toolbar>Lista de Usuarios Para DBA</mat-toolbar>
+  <div fxLayout="row" fxLayout.xs="column">
+      <mat-form-field fxFlex="40%" appearance="outline">
+          <mat-label>Buscar Usuario</mat-label>
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar Usuario">
+      </mat-form-field>
+  </div>
+  <div ngClass.xs="tabla">
+      <div class="mat-elevation-z8" ngClass.xs="fondo-tabla">
+          <mat-table [dataSource]="dataSource" matSort>
+              <ng-container matColumnDef="personal.persona.nombre">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> PERSONAL </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.personal.persona.nombre}} </mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="personal.persona.numeroDocumento">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> N° DE DOCUMENTO </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.personal.persona.numeroDocumento}} </mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="username">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> USUARIO </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.username}} </mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="enabled">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> ESTADO </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span *ngIf="element.enabled">ACTIVO</span>
+                        <span *ngIf="!element.enabled">INACTIVO</span>
+                    </mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="acciones">
+                    <mat-header-cell *matHeaderCellDef>ACCIONES</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <button mat-icon-button matTooltip="Asignar Rol" color="primary" [routerLink]="['asignacion', row.idUsuario]">
+                            <mat-icon>folder_shared</mat-icon>
+                        </button>
+                        <button mat-icon-button matTooltip="Editar" color="primary" [routerLink]="['edicion', row.idUsuario]">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button matTooltip="Eliminar" color="red" (click)="eliminar(row.idUsuario)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="row.idUsuario == SelectFocus ? 'focusSelect fila': 'fila'" (click)="selectRow(row)"></mat-row>
+            </mat-table>
+            <!--<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>-->
+            <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" [length]="cantidad" (page)="mostrarMas($event)"></mat-paginator>
+        </div>
+    </div>
+    <button mat-fab color="accent" style="float:right" routerLink='./nuevo'>
+        <mat-icon>create</mat-icon>
+    </button>
+</div>

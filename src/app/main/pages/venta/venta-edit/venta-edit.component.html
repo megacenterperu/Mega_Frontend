@@ -5,7 +5,7 @@
     <div fxLayout="row" fxLayout.xs="column">
       <div fxFlex="35%;" fxFlex.xs="50%">
         <mat-form-field class="field-container">
-          <input type="text" placeholder="Cliente- Venta" aria-label="nombre" matInput [formControl]="myControlCliente"
+          <input placeholder="Cliente- Venta" aria-label="nombre" matInput [formControl]="myControlCliente"
             required formControlName="cliente" [matAutocomplete]="autoCliente">
           <mat-autocomplete #autoCliente="matAutocomplete" [displayWith]="displayFn">
             <mat-option *ngFor="let cli of filteredOptions | async" [value]="cli">
@@ -50,24 +50,13 @@
           <mat-icon matSuffix>arrow_downward</mat-icon>
         </mat-form-field>
       </div>
-      <!-- <div>
-        <mat-form-field>
-          <mat-label>Select an option</mat-label>
-          <mat-select [(value)]="selected">
-            <mat-option>None</mat-option>
-            <mat-option value="option1">Option 1</mat-option>
-            <mat-option value="option2">Option 2</mat-option>
-            <mat-option value="option3">Option 3</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div> -->
     </div>
     <br>
     <mat-card>
       <div fxLayout="row" fxLayout.xs="column">
         <div fxFlex="50%;" fxFlex.xs="50%">
           <mat-form-field>
-            <input formControlName="search" type="text" matInput (keyup)="buscarProducto($event)" placeholder="Buscar Producto por Codigo">
+            <input formControlName="search" type="text" matInput (keyup)="buscarProducto($event)" placeholder="Buscar Producto por Codigo" #firstname>
             <mat-icon matSuffix>search</mat-icon>
           </mat-form-field>
         </div>
@@ -87,13 +76,16 @@
         <ng-container matColumnDef="nombre">
           <mat-header-cell *matHeaderCellDef fxFlex="38%"> PRODUCTO / SERVICIO </mat-header-cell>
         </ng-container>
-         <ng-container matColumnDef="unidadMedida">
+        <ng-container matColumnDef="unidadMedida">
           <mat-header-cell *matHeaderCellDef fxFlex="14%"> UNIDAD MEDIDA </mat-header-cell>
         </ng-container>
         <ng-container matColumnDef="cantidad">
           <mat-header-cell *matHeaderCellDef fxFlex="10%">CANTIDAD</mat-header-cell>
         </ng-container>
-        <ng-container matColumnDef="precio">
+        <ng-container matColumnDef="tipoAfectacionIgv">
+          <mat-header-cell *matHeaderCellDef fxFlex="10%">TIPO IGV</mat-header-cell>
+        </ng-container>
+        <ng-container matColumnDef="precioT">
           <mat-header-cell *matHeaderCellDef fxFlex="13%">PRECIO DE VENTA </mat-header-cell>
         </ng-container>
         <ng-container matColumnDef="importeTotalItem">
@@ -105,7 +97,6 @@
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
       </mat-table>
-
       <mat-divider></mat-divider>
       <div formArrayName="detalleVenta">
         <div *ngFor="let unit of detalleVenta.controls; let i=index">
@@ -113,23 +104,26 @@
             <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="2%" fxLayoutAlign="start stretch">
               <div formGroupName="productoT" fxFlex="60%">
                 <mat-form-field fxFlex="30%">
-                  <input matInput formControlName="codProducto">
+                  <input matInput formControlName="codProducto" style="color:black">
                 </mat-form-field>
                 <mat-form-field fxFlex="70%">
-                  <input matInput formControlName="nombre">
+                  <input matInput formControlName="nombre" style="color:black">
                 </mat-form-field>
               </div>
               <mat-form-field fxFlex="10%">
-                <input matInput formControlName="unidadMedida">
+                <input matInput formControlName="unidadMedida" style="color:black">
               </mat-form-field>
               <mat-form-field fxFlex="10%" fxFlex.xs="grow">
-                <input matInput type="number" formControlName="cantidad" required>
+                <input matInput type="number" formControlName="cantidad" required style="color:black">
+              </mat-form-field>
+              <mat-form-field fxFlex="10%">
+                <input matInput formControlName="tipoAfectacionIgv" style="color:black">
               </mat-form-field>
               <mat-form-field fxFlex="10%" fxFlex.xs="grow">
-                <input matInput class="right" type="number" formControlName="precio" required>
+                <input matInput type="number" class="right" type="number" formControlName="precioT" required style="color:black">
               </mat-form-field>
               <mat-form-field fxFlex="10%" fxFlex.xs="grow">
-                <input matInput class="right" formControlName="importeTotalItem">
+                <input matInput type="number" class="right" formControlName="importeTotalItem" style="color:black">
                 <span matPrefix>s/.&nbsp;</span>
               </mat-form-field>
               <button type="button" mat-icon-button matTooltip="Eliminar" color="warn" (click)="eliminar(i)">
@@ -142,21 +136,29 @@
       <mat-divider></mat-divider>
 
       <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="end">
-        <div fxFlex="0.5%" fxFlex.xs="grow" fxLayoutAlign="end">NETO:</div>
+        <div fxFlex="15%" fxFlex.xs="grow" fxLayoutAlign="end">Operacion Gravada:</div>
         <div fxFlex="5%" fxFlex.xs="grow" fxLayoutAlign="end">{{form.get('subTotal').value | number : '1.2-2'}}</div>
       </div>
       <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="end">
-        <div fxFlex="0.5%" fxFlex.xs="grow" fxLayoutAlign="end">IGV:</div>
+        <div fxFlex="15%" fxFlex.xs="grow" fxLayoutAlign="end">Operacion Exonerada:</div>
+        <div fxFlex="5%" fxFlex.xs="grow" fxLayoutAlign="end">{{form.get('docuExonerada').value | number : '1.2-2'}}</div>
+      </div>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="end">
+        <div fxFlex="15%" fxFlex.xs="grow" fxLayoutAlign="end">Operacion Inafecta:</div>
+        <div fxFlex="5%" fxFlex.xs="grow" fxLayoutAlign="end">{{form.get('docuInafecta').value | number : '1.2-2'}}</div>
+      </div>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="end">
+        <div fxFlex="15%" fxFlex.xs="grow" fxLayoutAlign="end">IGV:</div>
         <div fxFlex="5%" fxFlex.xs="grow" fxLayoutAlign="end">{{form.get('igv').value | number : '1.2-2'}}</div>
       </div>
       <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="end">
-        <div fxFlex="0.5%" fxFlex.xs="grow" fxLayoutAlign="end">TOTAL:</div>
+        <div fxFlex="15%" fxFlex.xs="grow" fxLayoutAlign="end">Importe Total: PEN</div>
         <div fxFlex="5%" fxFlex.xs="grow" fxLayoutAlign="end">{{form.get('montoTotal').value | number : '1.2-2'}}</div>
       </div>
       <mat-divider></mat-divider>
       <!-- <mat-card-actions fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutAlign="end"> -->
       <mat-card-actions>
-        <button mat-raised-button color="primary" type="button" [disabled]="!form.valid" (click)="save()">
+        <button mat-raised-button color="primary" type="button" [disabled]="!form.valid" (click)="openDialogPago()">
           <mat-icon>done</mat-icon>
           <span>Aceptar</span>
         </button>

@@ -9,7 +9,10 @@ const routes: Routes = [
   { path: 'listProductoAlmacen', loadChildren: '../../../main/pages/consulta/precio-producto-almacen/precio-producto-almacen.module#PrecioProductoAlmacenModule' },
   {path:'listVentaUsuario', loadChildren: '../../../main/pages/consulta/venta-porusuario/venta-porusuario.module#VentaPorusuarioModule' },
   {path:'listVentaPorAnular', loadChildren: '../../../main/pages/consulta/anular-comprobante/anular-comprobante.module#AnularComprobanteModule' },
-  { path: 'MensajeDialog', component: DialogConfirmationComponent }
+  { path: 'MensajeDialog', component: DialogConfirmationComponent },
+  {path:'listVentaPorMes', loadChildren: '../../../main/pages/consulta/declaracion-venta-compra/declaracion-venta-compra.module#DeclaracionVentaCompraModule' },
+  {path:'listCompraPorMes', loadChildren: '../../../main/pages/consulta/compra-mes/compra-mes.module#CompraMesModule' }
+
 
 ];
 

@@ -1,3 +1,4 @@
+import { USER_DATA } from 'src/config/auth.config';
 import { Injectable } from '@angular/core';
 import { GenericService } from './generic.service';
 import { Observable } from 'rxjs';
@@ -12,6 +13,11 @@ export class SucursalService {
 
   getAll(): Observable<any> {
     return this.generic.all(basePath).get();
+  }
+
+  getAllfindByIdSucursal(): Observable<any>{
+    const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+    return this.generic.all(basePath).all("list-sucursal").all(user.idSucursal).get();
   }
 
   getAllPageable(p: number, s: number): Observable<any> {

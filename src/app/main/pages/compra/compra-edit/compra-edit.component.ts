@@ -2,21 +2,27 @@ import { Params } from '@angular/router';
 import { startWith, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { DataService } from './../../../../core/data/data.service';
 import { Observable } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ProductoDialogoComponent } from './producto-dialogo/producto-dialogo.component';
-import { MatDialog, MatTableDataSource, MatPaginator, MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material';
+import { Proveedor } from 'src/app/core/model/proveedor.model';
+import { ProveedorDialogComponent } from './proveedor-dialog/proveedor-dialog.component';
+import { DataService } from 'src/app/core/data/data.service';
 
 @Component({
   selector: 'ms-compra-edit',
   templateUrl: './compra-edit.component.html',
-  styleUrls: ['./compra-edit.component.scss']
+  styleUrls: ['./compra-edit.component.scss'],
+  host: {
+    '(document:keydown)': 'handleKeyboardEvents($event)'
+  }
 })
 export class CompraEditComponent implements OnInit {
 
   maxDate: Date = new Date();
+  prov: Proveedor;
   id: number;
   form: FormGroup;
   edicion: boolean = false;
@@ -25,13 +31,12 @@ export class CompraEditComponent implements OnInit {
   sucursales: any[] = [];
   filteredOptions: Observable<any[]>;
   myControlProveedor: FormControl = new FormControl();
-  displayedColumns: string[] = ['codProducto', 'nombre', 'marcaProducto', 'cantidaditem', 'precioItem', 'importeTotalItem', 'acciones'];
+  displayedColumns: string[] = ['codProducto', 'nombre', 'marcaProducto', 'cantidaditem', 'precioItem', 'precioVentaItem', 'importeTotalItem', 'acciones'];
   constructor(
     private dataService: DataService,
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private router: Router,
-    /*private snackBar:MatSnackBar,*/
     private formBuilder: FormBuilder) { }
 
 
@@ -42,16 +47,17 @@ export class CompraEditComponent implements OnInit {
     this.listaSucrusal();
     this.listaTipoComprobante();
     this.dataService.providers().dialogo.subscribe(data => {
-      let item=this.detalleCompra.value.filter((test, index, array) =>
-      index === array.findIndex((findTest) =>
-      findTest.producto.idProducto === data.producto.idProducto));
-      if(item.length>0){
+      let item = this.detalleCompra.value.filter((test, index, array) =>
+        index === array.findIndex((findTest) =>
+          findTest.producto.idProducto === data.producto.idProducto));
+      if (item.length > 0) {
         this.dataService.providers().mensaje.next('El producto ya fue agreagado')
         return;
-      }  
+      }
       const formGroup = this.addDetalleFormControl();
       formGroup.patchValue({
         precioItem: +data.precioItem,
+        precioVentaItem: data.precioVentaItem,
         cantidaditem: data.cantidaditem,
         importeTotalItem: +data.importeTotalItem.toFixed(2),
         producto: data.producto,
@@ -60,7 +66,7 @@ export class CompraEditComponent implements OnInit {
     });
     /*this.dataService.providers().mensaje.subscribe(data => {
       this.snackBar.open(data, 'Aviso', { duration: 4000 });
-    });*/  
+    });*/
 
     this.route.params.subscribe((params: Params) => {
       this.id = params['id'];
@@ -105,6 +111,7 @@ export class CompraEditComponent implements OnInit {
     const formGroup = this.formBuilder.group({
       idDetalleCompra: [null],
       precioItem: [0, Validators.compose([Validators.required])],
+      precioVentaItem: [0, Validators.compose([Validators.required])],
       cantidaditem: [0, Validators.compose([Validators.required])],
       importeTotal: [{ value: '', disabled: true }, Validators.compose([Validators.required])],
       importeTotalItem: [null, Validators.compose([Validators.required])],
@@ -148,7 +155,7 @@ export class CompraEditComponent implements OnInit {
     this.detalleCompra.controls.forEach(formControl => {
       const precio = formControl.get("precioItem").value || 0;
       const cantidad = formControl.get("cantidaditem").value || 0;
-      total = total+ parseFloat(precio) * parseFloat(cantidad);
+      total = total + parseFloat(precio) * parseFloat(cantidad);
       /*const igvItem = total * 0.18;
       neto += subTotal;
       igv += igvItem;
@@ -156,7 +163,7 @@ export class CompraEditComponent implements OnInit {
       total += totalItem;*/
 
     });
-    const neto = total/1.18;
+    const neto = total / 1.18;
     const igv = neto * 0.18;
     this.form.patchValue({
       montoTotal: +total.toFixed(2),
@@ -171,13 +178,31 @@ export class CompraEditComponent implements OnInit {
 
   filter(val: any) {
     if (val != null && val.idProveedor > 0) {
+      this.listaProveedors();
       return this.proveedores.filter(option =>
-        option.nombreComercial.toLowerCase().includes(val.nombreComercial.toLowerCase()) || option.razonSocial.includes(val.razonSocial));
+        option.razonSocial.toLowerCase().includes(val.razonSocial.toLowerCase()) || option.persona.numeroDocumento.includes(val.persona.numeroDocumento));
     } else {
+      this.listaProveedors();
       return this.proveedores.filter(option =>
-        option.nombreComercial.toLowerCase().includes(val.toLowerCase()) || option.razonSocial.includes(val));
+        option.razonSocial.toLowerCase().includes(val.toLowerCase()) || option.persona.numeroDocumento.includes(val));
     }
   }
+
+  displayFn(val: any) {
+    return val ? `${val.razonSocial}` : val;
+  }
+
+  /*filter(val: any) {
+    if (val != null && val.idCliente > 0) {
+      this.listaClientes();
+      return this.clientes.filter(option =>
+        option.persona.nombre.toLowerCase().includes(val.persona.nombre.toLowerCase()) || option.persona.numeroDocumento.includes(val.persona.numeroDocumento));
+    } else {
+      this.listaClientes();
+      return this.clientes.filter(option =>
+        option.persona.nombre.toLowerCase().includes(val.toLowerCase()) || option.persona.numeroDocumento.includes(val));
+    }
+  }*/
 
   private loadDataFrom() {
     if (this.edicion) {
@@ -186,17 +211,15 @@ export class CompraEditComponent implements OnInit {
       });
     }
   }
+
   listaProveedors() {
-    this.dataService.proveedores().getAll().subscribe(data => {
+    this.dataService.proveedores().getAllfindByIdSucursal().subscribe(data => {
       this.proveedores = data
     });
   }
 
-  displayFn(val: any) {
-    return val ? `${val.nombreComercial}` : val;
-  }
   listaSucrusal() {
-    this.dataService.sucursales().getAll().subscribe(data => {
+    this.dataService.sucursales().getAllfindByIdSucursal().subscribe(data => {
       this.sucursales = data
     });
   }
@@ -216,9 +239,18 @@ export class CompraEditComponent implements OnInit {
   }
 
   AgregarProducto() {
-    const dialogRef = this.dialog.open(ProductoDialogoComponent,{width: '900px'});
+    const dialogRef = this.dialog.open(ProductoDialogoComponent, { width: '950px' });
     dialogRef.afterClosed().subscribe(result => {
-    //  console.log(`Dialog result: ${result}`);
+      //  console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  openDialog(proveedor: Proveedor): void {
+    let prov = proveedor != null ? proveedor : new Proveedor();
+    let dialogRef = this.dialog.open(ProveedorDialogComponent, {
+      data: prov
+    });
+    dialogRef.afterClosed().subscribe(result => {
     });
   }
 
@@ -226,14 +258,14 @@ export class CompraEditComponent implements OnInit {
     if (!this.detalleCompra.valid) return;
     if (this.edicion) {
       this.dataService.compras().update(this.form.value).subscribe(data => {
-        this.dataService.compras().getAll().subscribe(p => {
+        this.dataService.compras().getAllfindByIdSucursal().subscribe(p => {
           this.dataService.providers().cambio.next(p);
           this.dataService.providers().mensaje.next('se modifico')
         });
       });
     } else {
       this.dataService.compras().create(this.form.value).subscribe(data => {
-        this.dataService.compras().getAll().subscribe(p => {
+        this.dataService.compras().getAllfindByIdSucursal().subscribe(p => {
           this.dataService.providers().cambio.next(p);
           this.dataService.providers().mensaje.next('se registro');
         });
@@ -248,16 +280,17 @@ export class CompraEditComponent implements OnInit {
         .subscribe(data => {
           let detalle = {
             precioItem: +data.precioCompra.toFixed(2),
+            precioVentaItem: +data.precioVenta.toFixed(2),
             cantidaditem: 1,
             importeTotalItem: +data.precioCompra.toFixed(2),
             importeTotal: +data.precioCompra.toFixed(2),
             producto: data,
             productoT: data
           }
-          let item=this.detalleCompra.value.filter((test, index, array) =>
-          index === array.findIndex((findTest) =>
-          findTest.producto.idProducto === data.idProducto));
-          if(item.length>0){
+          let item = this.detalleCompra.value.filter((test, index, array) =>
+            index === array.findIndex((findTest) =>
+              findTest.producto.idProducto === data.idProducto));
+          if (item.length > 0) {
             this.dataService.providers().mensaje.next('El producto ya fue agreagado')
             return;
           }
@@ -267,6 +300,41 @@ export class CompraEditComponent implements OnInit {
           error => {
             this.dataService.providers().mensaje.next('Producto no encontrado')
           });
+    }
+  }
+
+  handleKeyboardEvents(event: KeyboardEvent) {
+    const key = event.which || event.keyCode;
+    //console.log(key)
+    switch (key) {
+      case 112:
+        event.preventDefault();
+        this.AgregarProducto();
+        break;
+
+      case 113:        
+        //this.dialog.closeAll()
+        if (this.form.invalid) {
+          this.dataService.providers().mensaje.next('Ingrese detalle del COMPRA')
+        } else {
+          event.preventDefault();
+          this.save();
+          //this.openDialogPago();
+        }
+        break;
+
+      case 114:
+        event.preventDefault();
+        this.openDialog(this.prov);
+        break;
+
+      case 115:
+        event.preventDefault();
+        this.cancel();
+        break;
+
+      default:
+        break;
     }
   }
 }

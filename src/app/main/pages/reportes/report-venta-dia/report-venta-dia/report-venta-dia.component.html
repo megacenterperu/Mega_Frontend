@@ -1,0 +1,41 @@
+<div class="page-layout blank p-24" megaPerfectScrollbar>
+  <mat-toolbar>Reporte de Monto Total de Ventas por Dia</mat-toolbar>
+  <form [formGroup]="form" (ngSubmit)="dibujar()">
+    <div fxLayout="row" fxLayout.xs="column">
+      <mat-form-field fxFlex="20%;" fxFlex.xs="50%" appearance="outline">
+        <mat-label>Escoge fecha inicio</mat-label>
+        <input matInput [matDatepicker]="picker" [max]="maxFecha" placeholder="Escoge la fecha inicial" formControlName="fechaConsulta">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <div fxFlex="1%" fxFlex.xs="50%"></div>
+      <mat-form-field fxFlex="20%;" fxFlex.xs="50%" appearance="outline">
+        <mat-label>Escoge fecha final</mat-label>
+        <input matInput [matDatepicker]="picker2" placeholder="Escoge la fecha final" formControlName="fechaSgte">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
+      <div fxFlex="1%" fxFlex.xs="50%"></div>
+      <div fxFlex="20%;" fxFlex.xs="50%">
+        <button  mat-fab matTooltip="Escoje de que fecha a que fecha desea dibujar" color="accent" type="submit">
+          <mat-icon>insert_chart_outlined</mat-icon>
+        </button>
+      </div>
+    </div>
+  </form>
+  <button mat-button color="primary" (click)="cambiar('line')">Lineal</button>
+  <button mat-button color="primary" (click)="cambiar('bar')">Barras</button>
+  <button mat-button color="primary" (click)="cambiar('doughnut')">Rosquilla</button>
+  <button mat-button color="primary" (click)="cambiar('radar')">Radar</button>
+  <button mat-button color="primary" (click)="cambiar('pie')">Pie</button>
+  <button mat-button color="primary" (click)="cambiar('polarArea')">polarArea</button>
+  
+  <div [hidden]="!chart">
+    <canvas id="canvas">{{ chart }}</canvas>
+  </div>
+
+  <!-- <button mat-button color="primary" (click)="generarReporte()" >Mostrar PDF</button>
+  <button mat-button color="primary" (click)="descargarReporte()">Descargar PDF</button>
+  <button mat-button color="primary" (click)="Print()">Imprimir</button> -->
+  <!-- <pdf-viewer [src]="pdfSrc" [render-text]="true" style="display: block;"></pdf-viewer> -->
+</div>

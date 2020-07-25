@@ -8,6 +8,10 @@ import { DataService } from 'src/app/core/data/data.service';
   styleUrls: ['./producto-dialog.component.scss']
 })
 export class ProductoDialogComponent implements OnInit {
+
+  is_edit = true
+  userRoles: any[] = [];
+
   detalle:any[]=[];
   displayedColumns: string[] = ['codProducto', 'nombre', 'marcaProducto', 'stock','cantidad', 'precioVenta', 'acciones'];
   dataSource: MatTableDataSource<any>;
@@ -21,11 +25,11 @@ export class ProductoDialogComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.dataService.productos().getAll().subscribe(data => this.setData(data));
+    this.dataService.productos().getAllfindByIdSucursal().subscribe(data => this.setData(data));
     this.dataService.providers().cambio.subscribe(data => this.setData(data));
     this.dataService.providers().mensaje.subscribe(data => {
       this.snackBar.open(data, 'Aviso', { duration: 4000 });
-      }); 
+    }); 
   }
 
   setData(data) {

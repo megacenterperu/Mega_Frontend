@@ -9,6 +9,7 @@ import { ProductoDialogoComponent } from './compra-edit/producto-dialogo/product
 
 import { SatPopoverModule } from '@ncstate/sat-popover';
 import { DetalleDialogoCompraComponent } from './compra-list/detalle-dialogo-compra/detalle-dialogo-compra.component';
+import { ProveedorDialogComponent } from './compra-edit/proveedor-dialog/proveedor-dialog.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -16,6 +17,6 @@ import { DetalleDialogoCompraComponent } from './compra-list/detalle-dialogo-com
     CompraRoutingModule,
     SatPopoverModule
   ],
-  declarations: [CompraListComponent, CompraEditComponent, CompraWiewComponent, ProductoDialogoComponent, DetalleDialogoCompraComponent, ]
+  declarations: [CompraListComponent, CompraEditComponent, CompraWiewComponent, ProductoDialogoComponent, DetalleDialogoCompraComponent, ProveedorDialogComponent, ]
 })
 export class CompraModule { }

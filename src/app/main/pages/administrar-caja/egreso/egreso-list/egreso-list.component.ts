@@ -1,3 +1,5 @@
+import { USER_DATA, TOKEN_NAME } from 'src/config/auth.config';
+import * as decode from 'jwt-decode';
 import { Component, OnInit, ViewChild } from "@angular/core";
 import {MatTableDataSource,MatPaginator,MatSort,MatSnackBar} from "@angular/material";
 import { DataService } from "src/app/core/data/data.service";
@@ -8,6 +10,7 @@ import { DataService } from "src/app/core/data/data.service";
   styleUrls: ["./egreso-list.component.scss"]
 })
 export class EgresoListComponent implements OnInit {
+  tienePermiso:boolean=false;
   fechaSeleccionada: Date = new Date();
   maxFecha: Date = new Date();
   total: number = 0;
@@ -21,7 +24,9 @@ export class EgresoListComponent implements OnInit {
   constructor(private dataService: DataService,private snackBar: MatSnackBar) {}
 
   ngOnInit() {
-    this.dataService.egresos().getAll().subscribe(data => this.setData(data));
+    const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+    this.hasPermision();
+    this.dataService.egresos().findByIdSucursal(user.idSucursal).subscribe(data => this.setData(data));
     this.dataService.providers().cambio.subscribe(data => this.setData(data));
     this.dataService.providers().mensaje.subscribe(data => {
       this.snackBar.open(data, "Mensaje", { duration: 3000 });
@@ -55,18 +60,31 @@ export class EgresoListComponent implements OnInit {
     this.total =this.getTotalCost(this.dataSource.filteredData);
   }
 
-  eliminar(id) {
-    if (confirm("¿Seguro que quieres Eliminar?")) {
-      this.dataService.unidadMedidas().delete(id).subscribe(datas => {
-          this.snackBar.open("Categoria Eliminado", "Mensaje", {duration: 3000});
-          this.dataService.unidadMedidas().getAll().subscribe(data => this.setData(data));
-        });
+  hasPermision(){
+    let tk = JSON.parse(sessionStorage.getItem(TOKEN_NAME));
+    const decodedToken = decode(tk.access_token);
+    let roles = decodedToken.authorities;
+    if(roles=="USER"){
+      this.tienePermiso=false;
+    }else{
+      this.tienePermiso=true;
     }
   }
 
-  aceptar() {
-    var tzoffset = this.fechaSeleccionada.getTimezoneOffset() * 60000; //offset in milliseconds
-    var localISOTime = new Date(Date.now() - tzoffset).toISOString();
-    //this.consulta.fecha = localISOTime;
+  eliminar(id) {
+    if (confirm("¿Seguro que quieres Eliminar?")) {
+      const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+      if(this.tienePermiso){
+        this.dataService.egresos().delete(id).subscribe(datas => {
+          this.snackBar.open("Categoria Eliminado", "Mensaje", {duration: 3000});
+          this.dataService.egresos().findByIdSucursal(user.idSucursal).subscribe(data => this.setData(data));
+        });
+      }else{
+        this.dataService.egresos().findByIdSucursal(user.idSucursal).subscribe(cat =>{
+          this.dataService.providers().cambio.next(cat);
+          this.dataService.providers().mensaje.next("Acceso Denegado!, Por favor, verifica tus permisos !");
+        });
+      }
+    }
   }
 }

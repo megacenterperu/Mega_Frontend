@@ -1,5 +1,5 @@
-import { Animations } from './../../../shared/utils/animations';
-import { TOKEN_NAME, USER_DATA } from './../../../../config/auth.config';
+import { TOKEN_NAME, USER_DATA } from 'src/config/auth.config';
+import { Animations } from 'src/app/shared/utils/animations';
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/core/data/data.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -46,16 +46,17 @@ export class LoginComponent implements OnInit {
 
         let tk = JSON.parse(sessionStorage.getItem(TOKEN_NAME));
         const decodedToken = decode(tk.access_token);
-        console.log(decodedToken);
-        /*this.menuService.listarPorUsuario(decodedToken.user_name).subscribe(data => {
-          this.menuService.menuCambio.next(data);
-        });*/
+       // console.log(decodedToken);
+        this.dataService.menus().listarPorUsuario(decodedToken.user_name).subscribe(data => {
+          this.dataService.menus().menuCambio.next(data);
+          //sessionStorage.setItem(USER_DATA, JSON.stringify(data));
+        });
         this.dataService.perfiles().buscar().subscribe(response=>{
           this.dataService.perfiles().perfilCambio.next(response);
           sessionStorage.setItem(USER_DATA, JSON.stringify(response));
         });       
 
-        console.log(decodedToken.authorities);
+        //console.log(decodedToken.authorities);
         let roles = decodedToken.authorities;
         for (let i = 0; roles.length; i++) {
           let rol = roles[i];
@@ -63,7 +64,8 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['/ventas/venta']);
             break;
           } else {
-            this.router.navigate(['/ventas/personal']);
+            //this.router.navigate(['/ventas/personal']);
+            this.router.navigate(['/ventas/reportes/reportVentaMes']);
             break;
           }
         }

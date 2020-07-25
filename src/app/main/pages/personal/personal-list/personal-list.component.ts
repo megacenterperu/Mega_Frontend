@@ -1,6 +1,8 @@
+import { filter } from 'rxjs/operators';
+import { DataService } from 'src/app/core/data/data.service';
+import { USER_DATA } from 'src/config/auth.config';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatSort, MatSnackBar } from '@angular/material';
-import { DataService } from '../../../../core/data/data.service';
 
 @Component({
   selector: 'ms-personal-list',
@@ -9,8 +11,10 @@ import { DataService } from '../../../../core/data/data.service';
 })
 export class PersonalListComponent implements OnInit {
 
+  SelectFocus: string;
   lista: any[] = [];
-  displayedColumns: string[] = ['persona.nombre','persona.telfMovil', 'persona.numeroDocumento', 'persona.direccion','fechaIngreso', 'acciones'];
+  idSucursal;
+  displayedColumns: string[] = ['persona.nombre','persona.telfMovil', 'persona.numeroDocumento', 'persona.direccion','fechaIngreso','sucursal.nombre', 'acciones'];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -19,11 +23,25 @@ export class PersonalListComponent implements OnInit {
   constructor(private dataService: DataService, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
-    this.dataService.personales().getAll().subscribe(data =>this.setData(data));
-    this.dataService.providers().cambio.subscribe(data => this.setData(data));
-    this.dataService.providers().mensaje.subscribe(data => {
-      this.snackBar.open(data, 'Mensaje', { duration: 3000 });
+    this.dataService.perfiles().perfilCambio.subscribe(response => {
+      this.idSucursal = response.idSucursal;
+      this.dataService.personales().findByIdSucursal(this.idSucursal).subscribe(data =>this.setData(data));
     });
+    const d= this.dataService.logins().getUserData();
+    if(d){
+      this.idSucursal = d.idSucursal;
+      this.dataService.personales().findByIdSucursal(this.idSucursal).subscribe(data =>{
+        this.setData(data)
+        this.dataSource.filterPredicate=(dato, filter: string)=>{
+          const dataStr = dato.persona.nombre.toLowerCase()+dato.persona.numeroDocumento.toLowerCase();
+        return dataStr.indexOf(filter) !== -1;
+        };
+      });
+      this.dataService.providers().cambio.subscribe(data => this.setData(data));
+      this.dataService.providers().mensaje.subscribe(data => {
+        this.snackBar.open(data, 'Mensaje', { duration: 3000 });
+      });
+    }
   }
 
   setData(data) {
@@ -43,10 +61,15 @@ export class PersonalListComponent implements OnInit {
   eliminar(id) {
     if(confirm('¿Seguro que quieres Eliminar?')){
       this.dataService.personales().delete(id).subscribe(r => {
+        const user = JSON.parse(sessionStorage.getItem(USER_DATA));
         this.snackBar.open("Cliente Eliminado", 'Mensaje', { duration: 3000 });
-          this.dataService.personales().getAll().subscribe(data => this.setData(data));
+          this.dataService.personales().findByIdSucursal(user.idSucursal).subscribe(data => this.setData(data));
       });
     }
+  }
+
+  selectRow(event) {
+    this.SelectFocus=event.idPersonal;
   }
 
 }

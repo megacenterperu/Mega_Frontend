@@ -9,7 +9,7 @@ import { DataService } from 'src/app/core/data/data.service';
 })
 export class ProductoDialogoComponent implements OnInit {
   lista: any[] = [];
-  displayedColumns: string[] = ['codProducto', 'nombre', 'marcaProducto', 'cantidaditem', 'precioCompra', 'acciones'];
+  displayedColumns: string[] = ['codProducto', 'nombre', 'marcaProducto','laboratorio', 'cantidaditem', 'precioCompra','precioVenta', 'acciones'];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
 
@@ -21,7 +21,7 @@ export class ProductoDialogoComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.dataService.productos().getAll().subscribe(data => this.setData(data));
+    this.dataService.productos().getAllfindByIdSucursal().subscribe(data => this.setData(data));
     this.dataService.providers().cambio.subscribe(data => this.setData(data));
     this.dataService.providers().mensaje.subscribe(data => {
       this.snackBar.open(data, 'Aviso', { duration: 4000 });
@@ -43,6 +43,7 @@ export class ProductoDialogoComponent implements OnInit {
     this.dataService.productos().findById(data.idProducto).subscribe(r => {
       let detalle = {
         precioItem: data.precioCompra,
+        precioVentaItem:data.precioVenta,
         cantidaditem: data.cantidaditem,
         importeTotalItem: data.precioCompra * data.cantidaditem,
         producto: r

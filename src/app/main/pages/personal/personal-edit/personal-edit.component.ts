@@ -1,8 +1,9 @@
+import { USER_DATA } from 'src/config/auth.config';
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Observable } from "rxjs";
-import { DataService } from "../../../../core/data/data.service";
 import { ActivatedRoute, Router, Params } from "@angular/router";
+import { DataService } from "src/app/core/data/data.service";
 
 @Component({
   selector: "ms-personal-edit",
@@ -16,6 +17,7 @@ export class PersonalEditComponent implements OnInit {
   form: FormGroup;
   edicion: boolean = false;
   tipodocumentos: any[] = [];
+  lstorganizacions: any[]=[];
   filteredOptions: Observable<any[]>;
 
   constructor(
@@ -28,6 +30,7 @@ export class PersonalEditComponent implements OnInit {
   ngOnInit() {
     this.initFormBuilder();
     this.loadTipodocumento();
+    this.listarOrganizacion();
     this.route.params.subscribe((params: Params) => {
       this.id = params["id"];
       this.edicion = params["id"] != null;
@@ -40,7 +43,8 @@ export class PersonalEditComponent implements OnInit {
       personal: this.formBuilder.group({
         idPersonal: [null],
         fechaIngreso: [new Date(), Validators.compose([Validators.required])],
-        sueldo: [null, Validators.compose([Validators.required])]
+        sueldo: [null, Validators.compose([Validators.required])],
+        sucursal:[null,Validators.compose([Validators.required])]
       }),
       persona: this.formBuilder.group({
         idPersona: [null],
@@ -60,7 +64,8 @@ export class PersonalEditComponent implements OnInit {
           this.form.controls.personal.patchValue({
             idPersonal: data.idPersonal,
             fechaIngreso: new Date(data.fechaIngreso),
-            sueldo: parseFloat(data.sueldo || 0)
+            sueldo: parseFloat(data.sueldo || 0),
+            sucursal:data.sucursal
           });
           this.buildData(data.persona);
         });
@@ -92,6 +97,16 @@ export class PersonalEditComponent implements OnInit {
     return x && y ? x.idTipodocumento === y.idTipodocumento : x === y;
   }
 
+  listarOrganizacion() {
+    this.dataService.sucursales().getAllfindByIdSucursal().subscribe(data => {
+      this.lstorganizacions = data;
+    });
+  }
+
+  compareOrganizacion(x: any, y: any): boolean {
+    return x && y ? x.idSocursal === y.idSocursal : x === y;
+  }
+
   cancel() {
     if (this.edicion) {
       this.router.navigate(["../../"], { relativeTo: this.route });
@@ -104,7 +119,8 @@ export class PersonalEditComponent implements OnInit {
     if (this.edicion) {
       //update
       this.dataService.personales().update(this.form.value).subscribe(data => {
-        this.dataService.personales().getAll().subscribe(p => {
+        const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+        this.dataService.personales().findByIdSucursal(user.idSucursal).subscribe(p => {
           this.dataService.providers().cambio.next(p);
           this.dataService.providers().mensaje.next("Se Actualizo con éxito!");
         });
@@ -112,10 +128,11 @@ export class PersonalEditComponent implements OnInit {
     } else {
       //insert
       this.dataService.personales().create(this.form.value).subscribe(data => {
-          this.dataService.personales().getAll().subscribe(p => {
-            this.dataService.providers().cambio.next(p);
-            this.dataService.providers().mensaje.next("Se Registro con éxito!");
-          });
+        const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+        this.dataService.personales().findByIdSucursal(user.idSucursal).subscribe(p => {
+          this.dataService.providers().cambio.next(p);
+          this.dataService.providers().mensaje.next("Se Registro con éxito!");
+        });
       });
     }
     this.cancel();

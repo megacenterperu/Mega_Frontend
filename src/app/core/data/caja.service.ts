@@ -28,6 +28,7 @@ export class CajaService {
       const user = JSON.parse(sessionStorage.getItem(USER_DATA));
       data.idRegUsuaRegistra=user.idUsuario;
       data.idResponsableCaja=user.idUsuario;
+      data.idSucursal=user.idSucursal;
       return this.generic.all(basePath).all("registrar").post(data);
     }
   
@@ -40,11 +41,15 @@ export class CajaService {
     }
 
     buscar(data:any): Observable<any>{
+      const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+      data.idSucursal=user.idSucursal;
       return this.generic.all(basePath).all("buscar").post(data);
   
     }
 
     buscarMontoInicioTurnoPorFecha(data:any): Observable<any>{
+      const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+      data.idSucursal=user.idSucursal;
       return this.generic.all(basePath).all("buscarMontoInicioTurnoPorFecha").post(data);
     }
 }

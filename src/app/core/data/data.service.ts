@@ -27,6 +27,14 @@ import { LoginService } from './login.service';
 import { PerfilService } from './perfil.service';
 import { UsuarioRolService } from './usuario-rol.service';
 import { AnularcomprobanteService } from './anularcomprobante.service';
+import { MenuRolService } from './menu-rol.service';
+import { MenuService } from './menu.service';
+import { SubMenuService } from './sub-menu.service';
+import { SubMenuRolService } from './sub-menu-rol.service';
+import { GuiaremisionService } from './guiaremision.service';
+import { MotivotrasladoService } from './motivotraslado.service';
+import { TipotransporteService } from './tipotransporte.service';
+import { TipoafectacionService } from './tipoafectacion.service';
 
 @Injectable({
   providedIn: "root"
@@ -39,7 +47,7 @@ export class DataService {
     private tipodocumento: TipodocumentoService,
     private persona: PersonaService,
     private provider: ProviderService,
-    private categoria: CategoriaService,
+    private dolenciaproducto: CategoriaService,
     private unidadmedida: UnidadmedidaService,
     private producto: ProductoService,
     private organizacion: OrganizacionService,
@@ -50,19 +58,27 @@ export class DataService {
     private tipocomprobante: TipoComprobanteService,
     private venta: VentaService,
     private tipopago: TipopagoService,
-    private egreso:EgresoService,
-    private caja:CajaService,
-    private cajafuerte:CajafuerteService,
-    private usuario:UsuarioService,
-    private rol:RolService,
-    private login:LoginService,
-    private perfil:PerfilService,
-    private usuariorol:UsuarioRolService,
-    private anularcomprobante:AnularcomprobanteService
+    private egreso: EgresoService,
+    private caja: CajaService,
+    private cajafuerte: CajafuerteService,
+    private usuario: UsuarioService,
+    private rol: RolService,
+    private login: LoginService,
+    private perfil: PerfilService,
+    private usuariorol: UsuarioRolService,
+    private anularcomprobante: AnularcomprobanteService,
+    private menu: MenuService,
+    private menurol: MenuRolService,
+    private submenu: SubMenuService,
+    private submenurol: SubMenuRolService,
+    private guia: GuiaremisionService,
+    private motivotraslado: MotivotrasladoService,
+    private tipotransporte: TipotransporteService,
+    private tipoafectacion: TipoafectacionService
 
-      
-      ) {}
-  
+
+  ) { }
+
   providers(): ProviderService {
     return this.provider;
   }
@@ -87,8 +103,8 @@ export class DataService {
     return this.persona;
   }
 
-  categorias(): CategoriaService {
-    return this.categoria;
+  dolenciaProductos(): CategoriaService {
+    return this.dolenciaproducto;
   }
 
   unidadMedidas(): UnidadmedidaService {
@@ -113,7 +129,7 @@ export class DataService {
   tipocomprobantes(): TipoComprobanteService {
     return this.tipocomprobante;
   }
-  tipopagos():TipopagoService{
+  tipopagos(): TipopagoService {
     return this.tipopago;
   }
 
@@ -124,44 +140,75 @@ export class DataService {
   personales(): PersonalService {
     return this.personal;
   }
-  
+
   ventas(): VentaService {
     return this.venta;
   }
 
-  egresos(): EgresoService{
+  egresos(): EgresoService {
     return this.egreso;
   }
 
-  cajas(): CajaService{
+  cajas(): CajaService {
     return this.caja;
   }
 
-  cajaFuertes():CajafuerteService{
+  cajaFuertes(): CajafuerteService {
     return this.cajafuerte;
   }
 
-  usuarios():UsuarioService{
+  usuarios(): UsuarioService {
     return this.usuario;
   }
 
-  usuarioroles():UsuarioRolService{
+  usuarioroles(): UsuarioRolService {
     return this.usuariorol;
   }
 
-  roles():RolService{
+  roles(): RolService {
     return this.rol;
   }
 
-  logins():LoginService{
+  logins(): LoginService {
     return this.login;
   }
-  
-  perfiles():PerfilService{
+
+  perfiles(): PerfilService {
     return this.perfil;
   }
 
-  anularComprobantes():AnularcomprobanteService{
+  anularComprobantes(): AnularcomprobanteService {
     return this.anularcomprobante;
+  }
+
+  menus(): MenuService {
+    return this.menu;
+  }
+
+  menuroles(): MenuRolService {
+    return this.menurol;
+  }
+
+  subMenus(): SubMenuService {
+    return this.submenu;
+  }
+  submenuroles(): SubMenuRolService {
+    return this.submenurol;
+  }
+
+  guias(): GuiaremisionService {
+    return this.guia;
+  }
+
+  motivotrastados(): MotivotrasladoService {
+    return this.motivotraslado;
+  }
+
+  tipotransportes(): TipotransporteService {
+    return this.tipotransporte;
+  }
+
+  tipoAfectaciones(): TipoafectacionService {
+    return this.tipoafectacion;
   }
 }

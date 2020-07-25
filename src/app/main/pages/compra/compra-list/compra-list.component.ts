@@ -1,25 +1,29 @@
 import { DetalleDialogoCompraComponent } from './detalle-dialogo-compra/detalle-dialogo-compra.component';
 import { MatTableDataSource, MatPaginator, MatSort, MatSnackBar, MatDialog } from '@angular/material';
-import { DataService } from './../../../../core/data/data.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Compra } from 'src/app/core/model/compra.model';
+import { DataService } from 'src/app/core/data/data.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'ms-compra-list',
   templateUrl: './compra-list.component.html',
-  styleUrls: ['./compra-list.component.scss']
+  styleUrls: ['./compra-list.component.scss'],
+  host: {
+    '(document:keydown)': 'handleKeyboardEvents($event)'
+  }
 })
 export class CompraListComponent implements OnInit {
   lista: any[] = [];
-  displayedColumns: string[] = ['proveedor.nombreComercial', 'sucursal.nombre', 'fecha', 'montoTotal', 'guiaRemision', 'acciones'];
+  displayedColumns: string[] = ['proveedor.razonSocial', 'sucursal.nombre', 'fecha','tipocomprobante.descripcion', 'numeroComprobante', 'montoTotal', 'acciones'];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  constructor(private dataService: DataService, private snackBar: MatSnackBar, public dialog: MatDialog) { }
+  constructor(private dataService: DataService, private route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar, public dialog: MatDialog) { }
 
   ngOnInit() {
-    this.dataService.compras().getAll().subscribe(data => this.setData(data));
+    this.dataService.compras().getAllfindByIdSucursal().subscribe(data => this.setData(data));
     this.dataService.providers().cambio.subscribe(data => this.setData(data));
     this.dataService.providers().mensaje.subscribe(data => {
       this.snackBar.open(data, 'Aviso', { duration: 2000 });
@@ -41,10 +45,12 @@ export class CompraListComponent implements OnInit {
   }
 
   eliminar(id) {
-    this.dataService.compras().delete(id).subscribe(r => {
-      this.snackBar.open("Proveedor Eliminado", 'Aviso', { duration: 2000 });
-      this.dataService.compras().getAll().subscribe(data => this.setData(data));
-    });
+    if(confirm('¿Seguro que quieres Eliminar?')){
+      this.dataService.compras().delete(id).subscribe(r => {
+        this.snackBar.open("Compra Eliminado", 'Aviso', { duration: 2000 });
+        this.dataService.compras().getAllfindByIdSucursal().subscribe(data => this.setData(data));
+      });
+    }
   }
 
   verDetalle(id:Compra) {
@@ -54,5 +60,19 @@ export class CompraListComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
     });
+  }
+
+  handleKeyboardEvents(event: KeyboardEvent) {
+    const key = event.which || event.keyCode;
+    //console.log(key)
+    switch (key) {
+      case 112:
+        event.preventDefault();
+        this.router.navigate(['./nuevo'], { relativeTo: this.route });
+        break;
+
+      default:
+        break;
+    }
   }
 }

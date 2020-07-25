@@ -62,7 +62,7 @@ export class RolListComponent implements OnInit {
     if(confirm('¿Seguro que quieres Eliminar?')){
     this.dataService.roles().delete(id).subscribe(datas => {
         this.snackBar.open("Rol Eliminado", "Mensaje", {duration: 3000});
-        this.dataService.categorias().getAll().subscribe(data => this.setData(data));
+        this.dataService.roles().getAll().subscribe(data => this.setData(data));
       });
     }
   }

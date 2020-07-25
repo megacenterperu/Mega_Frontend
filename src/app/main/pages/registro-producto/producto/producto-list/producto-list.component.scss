@@ -1,0 +1,80 @@
+.jbox-main {
+  .jbox-image {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, background-color 0s, opacity 0s;
+  }
+
+  &:hover {
+    .jbox-image {
+      opacity: 1;
+      visibility: visible;
+      transition: visibility 1s, background-color 3s, opacity 2s;
+      background: linear-gradient(red, white);
+    }
+  }
+}
+
+
+.fila {
+  cursor: pointer;
+
+  &:hover {
+    background: var(--ColorHover);
+    .container-hidden{
+      transform: translate(-50%, 100%) scale(01);
+    }
+  }
+}
+
+.focusSelect {
+  background: var(--ColorFocus);
+  &:hover {
+
+   
+  }
+}
+
+.defaulRow {
+  background: var(--ColorFocus);
+}
+
+.configuration-producto {
+  margin: 10px;
+
+  mat-checkbox {
+    margin: 10px;
+  }
+}
+
+.filter {
+  display: block;
+}
+
+
+mat-cell {
+  overflow: initial !important;
+  position: relative !important ;
+}
+mat-row {
+  position: relative !important ;
+}
+.container-hidden {
+  border: 1px solid #dddfe2;
+  box-shadow: 0 0 20px 3px rgba(0, 0, 0, 0.22) !important;
+  background: white;
+  border-radius: 5px;
+  padding: 10px;
+  font-family: Montserrat, sans-serif;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: translate(-50%, 100%) scale(0);
+  border-radius: 5px;
+  overflow: hidden;
+  transition: 0.222s;
+  z-index: 4;
+  max-height: 300px;
+  overflow: scroll;
+}
+

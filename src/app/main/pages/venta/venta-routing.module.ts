@@ -6,6 +6,7 @@ import { VentaDialogoComponent } from './venta-edit/venta-dialogo/venta-dialogo.
 import { ClienteventaDialoComponent } from './venta-edit/clienteventa-dialo/clienteventa-dialo.component';
 import { DialogConfirmationComponent } from './venta-list/dialog-confirmation/dialog-confirmation.component';
 import { DetalleDialogVentaComponent } from './venta-list/detalle-dialog-venta/detalle-dialog-venta.component';
+import { CobroComponent } from './venta-edit/cobro/cobro.component';
 
 
 const routes: Routes = [
@@ -26,7 +27,9 @@ const routes: Routes = [
 
     { path: 'VerdetalleVenta', component: DetalleDialogVentaComponent },
 
-    { path: 'MensajeConfirmacion', component: DialogConfirmationComponent }
+    { path: 'MensajeConfirmacion', component: DialogConfirmationComponent },
+
+    { path: 'cobro', component: CobroComponent }
 ];
 
 @NgModule({

@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>Detalle de Guia de Remision</h2>
+<mat-dialog-content class="mat-typography">
+  <mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="producto.codProducto">
+      <mat-header-cell *matHeaderCellDef fxFlex="15%"> CODIGO. </mat-header-cell>
+      <mat-cell fxFlex="15%" *matCellDef="let element"> {{element.producto.codProducto}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="producto.nombre">
+      <mat-header-cell *matHeaderCellDef fxFlex="45%"> DESCRIPCION </mat-header-cell>
+      <mat-cell fxFlex="45%" *matCellDef="let element"> {{element.producto.nombre}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="serieProducto">
+      <mat-header-cell *matHeaderCellDef fxFlex="12%"> SERIE </mat-header-cell>
+      <mat-cell fxFlex="12%" *matCellDef="let element"> {{element.serieProducto}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="producto.unidadMedida.codUnidadmedida">
+      <mat-header-cell *matHeaderCellDef fxFlex="10%"> UNIDAD MEDIDA </mat-header-cell>
+      <mat-cell fxFlex="10%" *matCellDef="let element"> {{element.producto.unidadMedida.codUnidadmedida}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="cantidadItem">
+      <mat-header-cell *matHeaderCellDef fxFlex="9%"> CANTIDAD </mat-header-cell>
+      <mat-cell fxFlex="9%" *matCellDef="let element"> {{element.cantidadItem}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="pesoItem">
+      <mat-header-cell *matHeaderCellDef fxFlex="9%">PESO.</mat-header-cell>
+      <mat-cell fxFlex="9%" *matCellDef="let element"> {{element.pesoItem}} </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button color="warn" mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

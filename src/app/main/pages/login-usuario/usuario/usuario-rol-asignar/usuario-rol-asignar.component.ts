@@ -1,3 +1,4 @@
+import { USER_DATA } from 'src/config/auth.config';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Rol } from 'src/app/core/model/rol';
@@ -124,8 +125,8 @@ export class UsuarioRolAsignarComponent implements OnInit {
   save() {
    if(this.asignacion){
     this.dataService.usuarioroles().create(this.form.value).subscribe(data =>{
-      console.log("Usuario ROL: "+this.form.value);
-      this.dataService.usuarios().getAll().subscribe(listrol =>{
+      const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+      this.dataService.usuarios().findByIdSucursal(user.idSucursal).subscribe(listrol =>{
         this.dataService.providers().cambio.next(listrol);
         this.dataService.providers().mensaje.next("Se Registro correctamente!");
       });

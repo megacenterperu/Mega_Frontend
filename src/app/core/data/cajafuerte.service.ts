@@ -15,6 +15,10 @@ export class CajafuerteService {
     return this.generic.all(basePath).get();
      //return this.generic.all(basePath).all("listar").get();
     }
+
+    findByIdSucursal(data:any): Observable<any>{
+      return this.generic.all(basePath).all("idSucursalCajaFuerte").post(data);
+    }
   
     getAllPageable(p: number, s: number): Observable<any> {
       return this.generic.all(basePath).all(`pageable?page=${p}&size=${s}`).get();
@@ -28,6 +32,7 @@ export class CajafuerteService {
       const user = JSON.parse(sessionStorage.getItem(USER_DATA));
       data.idRegUsuaRegistra=user.idUsuario;
       data.idResponsableCajafuerte=user.idUsuario;
+      data.idSucursal=user.idSucursal;
       return this.generic.all(basePath).all("registrar").post(data);
     }
   
@@ -40,6 +45,8 @@ export class CajafuerteService {
     }
 
     buscar(data:any): Observable<any>{
+      const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+      data.idSucursal=user.idSucursal;
       return this.generic.all(basePath).all("buscar").post(data);
     }
 }

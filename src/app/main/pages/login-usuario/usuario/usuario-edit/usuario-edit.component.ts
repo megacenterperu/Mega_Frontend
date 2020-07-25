@@ -1,5 +1,7 @@
+import { USER_DATA, TOKEN_NAME } from 'src/config/auth.config';
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/core/data/data.service';
+import * as decode from 'jwt-decode';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -18,7 +20,7 @@ export class UsuarioEditComponent implements OnInit {
   lstRol: any[]=[];
   filteredOptions: Observable<any[]>;
   hide = true;
-  
+
   constructor(private dataService: DataService,private route: ActivatedRoute,private router: Router,private formBuilder: FormBuilder) { }
 
   ngOnInit() {
@@ -37,7 +39,7 @@ export class UsuarioEditComponent implements OnInit {
       idUsuario:[null],
       username:[null,Validators.compose([Validators.required])],
       password:[null,Validators.compose([Validators.required])],     
-      idPersonal:[null,Validators.compose([Validators.required])],
+      personal:[null,Validators.compose([Validators.required])],
       idRol:[null,Validators.compose([Validators.required])],
       //roles: this.formBuilder.array(null,Validators.compose([Validators.required]))
     });
@@ -52,7 +54,8 @@ export class UsuarioEditComponent implements OnInit {
   }
 
   listarPersonal() {
-    this.dataService.personales().getAll().subscribe(data => {
+    const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+    this.dataService.personales().findByIdSucursal(user.idSucursal).subscribe(data => {
       this.lstPersonal = data;
     });
   }
@@ -81,7 +84,7 @@ export class UsuarioEditComponent implements OnInit {
 
   operar(){
     if(this.edicion){
-      console.log(this.form.value);
+   //   console.log(this.form.value);
       /*this.dataService.usuarios().update(this.form.value).subscribe(data =>{
         this.dataService.usuarios().getAll().subscribe(cat =>{
           this.dataService.providers().cambio.next(cat);
@@ -89,10 +92,11 @@ export class UsuarioEditComponent implements OnInit {
         });
       });*/
     }else{
+      const user = JSON.parse(sessionStorage.getItem(USER_DATA));
       this.dataService.usuarios().create(this.form.value).subscribe(data =>{
-        this.dataService.usuarios().getAll().subscribe(user =>{
-          this.dataService.usuarios().usuarioCambio.next(user);
-          //this.dataService.providers().cambio.next(user);
+        this.dataService.usuarios().findByIdSucursal(user.idSucursal).subscribe(data =>{
+          //this.dataService.usuarios().usuarioCambio.next(data);
+          this.dataService.providers().cambio.next(data);
           this.dataService.providers().mensaje.next("Se Registro con éxito!");
         });
       });

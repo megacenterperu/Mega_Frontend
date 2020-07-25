@@ -1,0 +1,82 @@
+<div class="page-layout blank p-24" megaPerfectScrollbar>
+  <mat-toolbar>Asignar Roles a Menu</mat-toolbar>
+  <form class="example-form" [formGroup]="form" (ngSubmit)="save()" #f="ngForm">
+    <div fxLayout="row" fxLayout.xs="column">
+      <div [hidden]="true">
+        <mat-form-field>
+          <input matInput placeholder="ID" formControlName="idMenu">
+        </mat-form-field>
+      </div>
+      <div fxFlex="45%" fxFlex.xs="100%">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Denominacion del Menu</mat-label>
+          <input matInput placeholder="Denominacion Menu" required formControlName="title">
+        </mat-form-field>
+      </div>
+      <div fxFlex="45%" fxFlex.xs="100%">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Roles</mat-label>
+          <mat-select placeholder="Roles" formControlName="rol" (selectionChange)="changeRol($event.value)">
+            <mat-option *ngFor="let p of allRoles" [value]="p">
+              {{ p.nombre }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div fxFlex="10%" fxFlex.xs="100%">
+        <button mat-fab matTooltip="Agregar" color="accent" type="button" (click)="agregar()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayout.xs="column">
+      <mat-card fxFlex="50%;" fxFlex.xs="50%">
+        <mat-card-content>
+          <mat-list>
+            <h3 mat-subheader>Roles Actuales</h3>
+            <mat-list-item *ngFor="let p of rolesActuales">
+              <mat-icon mat-list-icon>folder</mat-icon>
+              <h4 mat-line>{{p.nombre}}</h4>
+              <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+      <mat-card fxFlex="50%" fxFlex.xs="100%">
+        <mat-card-content>
+          <mat-list formArrayName="roles">
+            <h3 mat-subheader>Nuevos Roles</h3>
+            <ng-template ngFor let-item [ngForOf]="roles.controls" let-i="index">
+              <mat-list-item [formGroupName]="i">
+                <mat-icon mat-list-icon>folder</mat-icon>
+                <div mat-line>
+                  {{roles.value[i].nombre}}
+                </div>
+                <button mat-icon-button color="error" (click)="removeDetalleFormControl(i)">
+                  <mat-icon>clear</mat-icon>
+                </button>
+                <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+              </mat-list-item>
+            </ng-template>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <br>
+    <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="13%" fxFlex.xs="100%" class="field-container">
+        <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
+          <mat-icon>done</mat-icon>
+          <span>Aceptar</span>
+        </button>
+      </div>
+      <div fxFlex="1%;" fxFlex.xs="5%"></div>
+      <div fxFlex="13%" fxFlex.xs="100%" class="field-container">
+        <button mat-raised-button color="warn" (click)="cancel()" type="button">
+          <mat-icon>close</mat-icon>
+          <span>Cancelar</span>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

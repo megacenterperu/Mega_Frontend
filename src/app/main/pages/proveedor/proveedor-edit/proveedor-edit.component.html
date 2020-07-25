@@ -19,9 +19,9 @@
       <div fxLayout="row" fxLayout.xs="column">
         <mat-form-field fxFlex="40%;" fxFlex.xs="50%" appearance="outline">
           <mat-label>Telf Empresa</mat-label>
-          <input matInput placeholder="Telf Empresa" formControlName="telfEmpresa" #telfEmpresa maxlength="9">
+          <input matInput placeholder="Telf Empresa" formControlName="telfEmpresa" #telfEmpresa maxlength="20">
           <mat-icon matSuffix>call</mat-icon>
-          <mat-hint align="end"> Maximum {{telfEmpresa.value.length||0}}/9</mat-hint>
+          <mat-hint align="end"> Maximum {{telfEmpresa.value.length||0}}/20</mat-hint>
         </mat-form-field>
         <div fxFlex="1%" fxFlex.xs="50%"></div>
         <mat-form-field fxFlex="59%;" fxFlex.xs="50%" appearance="outline">
@@ -35,7 +35,7 @@
       <div fxLayout="row" fxLayout.xs="column">
         <mat-form-field fxFlex="30%;" fxFlex.xs="50%" appearance="outline">
           <mat-label>Tipo Documento</mat-label>
-          <mat-select placeholder="Tipo Documento" formControlName="tipoDocumeto">
+          <mat-select placeholder="Tipo Documento" required formControlName="tipoDocumeto">
             <mat-option *ngFor="let tipoDocumeto of tipodocumentos" [value]="tipoDocumeto">
               {{tipoDocumeto.abreviatura}}
             </mat-option>
@@ -44,7 +44,10 @@
         <div fxFlex="1%" fxFlex.xs="50%"></div>
         <mat-form-field fxFlex="29%;" fxFlex.xs="50%" appearance="outline">
           <mat-label>Numero Documento</mat-label>
-          <input matInput placeholder="Numero Documento" required formControlName="numeroDocumento" minLength="8" maxlength="20" type="number">
+          <input matInput #message placeholder="Numero Documento" required formControlName="numeroDocumento" minLength="11" maxlength="11" >
+          <mat-icon mat-icon-button matTooltip="CONSULTA SUNAT(RUC) - RENIEC(DNI)" matSuffix color="warn" (click)="getConsulta()">search</mat-icon>
+          <mat-hint align="start"><mat-label style="color: forestgreen;">Minimo 11 - Maximo 11 caracteres</mat-label> </mat-hint>
+          <mat-hint align="end"><mat-label style="color: forestgreen;">{{message.value.length}} / 11</mat-label></mat-hint>
         </mat-form-field>
         <div fxFlex="1%" fxFlex.xs="50%"></div>
         <mat-form-field fxFlex="39%;" fxFlex.xs="50%" appearance="outline">

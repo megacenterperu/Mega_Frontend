@@ -6,59 +6,65 @@
       <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar Ventas"/>
       <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
+    <div fxFlex="54%" fxFlex.xs="50%"></div>
+    <button mat-fab matTooltip="Generar Nueva Venta" color="accent" style="float:right" routerLink="./nuevo">
+      <mat-icon>add</mat-icon>
+    </button>
   </div>
-  <div class="mat-elevation-z8">
-    <mat-table [dataSource]="dataSource" matSort>
-      <ng-container matColumnDef="cliente.nombre">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="25%" fxFlex.xs="100%">CLIENTE</mat-header-cell>
-        <mat-cell fxFlex="25%" fxFlex.xs="100%" *matCellDef="let element">{{ element.cliente.persona.nombre }}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="fecha">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="12%" fxFlex.xs="100%">FECHA DE VENTA</mat-header-cell>
-        <mat-cell fxFlex="12%" fxFlex.xs="100%" *matCellDef="let element">{{ element.fecha | date: "dd/MM/yyyy" }}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="montoTotal">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%" fxFlex.xs="100%">MONTO TOTAL</mat-header-cell>
-        <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element">{{ element.montoTotal | number: "1.2-2" }}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="descripcion">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="16%" fxFlex.xs="100%">TIPO DE COMPROBANTE</mat-header-cell>
-        <mat-cell fxFlex="16%" fxFlex.xs="100%" *matCellDef="let element">{{ element.tipocomprobante.descripcion }}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="numeroComprobante">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="14%" fxFlex.xs="100%">NUMERO COMPROBANTE</mat-header-cell>
-        <mat-cell fxFlex="14%" fxFlex.xs="100%" *matCellDef="let element">{{ element.tipocomprobante.codTipocomprobante }}-{{element.serieComprobante}}-{{ element.numeroComprobante }}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="estadoComprobante">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="8%" fxFlex.xs="100%"> ESTADO </mat-header-cell>
-        <mat-cell fxFlex="8%" fxFlex.xs="100%" *matCellDef="let element"> {{element.estadoComprobante}} </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="acciones">
-        <mat-header-cell *matHeaderCellDef fxFlex="15%" fxFlex.xs="100%">ACCIONES</mat-header-cell>
-        <mat-cell fxFlex="15%" fxFlex.xs="100%" *matCellDef="let row">
-          <button mat-icon-button matTooltip="Eliminar" color="warn" style="float:right" (click)="eliminar(row.idVenta)">
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-icon-button matTooltip="Ver Detalle" color="primary" (click)="openDialog(row)">
-            <mat-icon>visibility</mat-icon>
-          </button>
-          <button mat-icon-button matTooltip="PDF" color="accent" style="float:right" (click)="print(row.idVenta)">
-            <mat-icon>local_printshop</mat-icon>
-          </button>
-        </mat-cell>
-      </ng-container>
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns" class="example-element-row"></mat-row>
-    </mat-table>
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  <div ngClass.xs="tabla">
+      <div class="mat-elevation-z8" ngClass.xs="mat-elevation-z8 fondo-tabla">
+          <mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="cliente.nombre">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="25%" fxFlex.xs="100%">CLIENTE</mat-header-cell>
+              <mat-cell fxFlex="25%" fxFlex.xs="100%" *matCellDef="let element">{{ element.cliente.persona.nombre }}</mat-cell>
+            </ng-container>
+      
+            <ng-container matColumnDef="fecha">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="12%" fxFlex.xs="100%">FECHA DE VENTA</mat-header-cell>
+              <mat-cell fxFlex="12%" fxFlex.xs="100%" *matCellDef="let element">{{ element.fecha | date: "dd/MM/yyyy" }}</mat-cell>
+            </ng-container>
+      
+            <ng-container matColumnDef="montoTotal">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="10%" fxFlex.xs="100%">MONTO TOTAL</mat-header-cell>
+              <mat-cell fxFlex="10%" fxFlex.xs="100%" *matCellDef="let element">{{ element.montoTotal | number: "1.2-2" }}</mat-cell>
+            </ng-container>
+      
+            <ng-container matColumnDef="descripcion">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="16%" fxFlex.xs="100%">TIPO DE COMPROBANTE</mat-header-cell>
+              <mat-cell fxFlex="16%" fxFlex.xs="100%" *matCellDef="let element">{{ element.tipocomprobante.descripcion }}</mat-cell>
+            </ng-container>
+      
+            <ng-container matColumnDef="numeroComprobante">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="14%" fxFlex.xs="100%">NUMERO COMPROBANTE</mat-header-cell>
+              <mat-cell fxFlex="14%" fxFlex.xs="100%" *matCellDef="let element">{{element.serieComprobante}}-{{ element.numeroComprobante }}</mat-cell>
+            </ng-container>
+      
+            <ng-container matColumnDef="estadoComprobante">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="8%" fxFlex.xs="100%"> ESTADO </mat-header-cell>
+              <mat-cell fxFlex="8%" fxFlex.xs="100%" *matCellDef="let element"> {{element.estadoComprobante}} </mat-cell>
+            </ng-container>
+      
+            <ng-container matColumnDef="acciones">
+              <mat-header-cell *matHeaderCellDef fxFlex="15%" fxFlex.xs="100%">ACCIONES</mat-header-cell>
+              <mat-cell fxFlex="15%" fxFlex.xs="100%" *matCellDef="let row">
+                <button mat-icon-button matTooltip="PDF" color="accent" style="float:right" (click)="print(row.idVenta)">
+                  <mat-icon>local_printshop</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="Ver Detalle" color="primary" (click)="openDialog(row)">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+                <!-- <button mat-icon-button matTooltip="Eliminar" color="warn" style="float:right" (click)="eliminar(row.idVenta)">
+                  <mat-icon>delete</mat-icon>
+                </button> -->
+              </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="row.idVenta == SelectFocus ? 'focusSelect fila': 'fila'" (click)="selectRow(row)"></mat-row>
+          </mat-table>
+          <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>
   </div>
-  <button mat-fab color="accent" style="float:right" routerLink="./nuevo">
+  <!-- <button mat-fab color="accent" style="float:right" routerLink="./nuevo">
     <mat-icon>add</mat-icon>
-  </button>
+  </button> -->
 </div>

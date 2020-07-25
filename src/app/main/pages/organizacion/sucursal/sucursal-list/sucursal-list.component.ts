@@ -9,8 +9,9 @@ import { DataService } from '../../../../../core/data/data.service';
 })
 export class SucursalListComponent implements OnInit {
 
+  idOrganizacion;
   lista:any[]=[];
-  displayedColumns: string[] = ["nombre","direccion","organizacion.nombreComercial", "acciones"];
+  displayedColumns: string[] = ["organizacion.razonSocial","nombre","ruc","direccion", "acciones"];
   dataSource: MatTableDataSource<any>;
   cantidad: number;
   @ViewChild(MatPaginator) paginator: MatPaginator;

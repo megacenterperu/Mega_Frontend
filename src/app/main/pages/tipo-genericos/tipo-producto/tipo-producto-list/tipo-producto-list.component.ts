@@ -18,7 +18,7 @@ export class TipoProductoListComponent implements OnInit {
   constructor(private dataService: DataService, private snackBar:MatSnackBar) {}
 
   ngOnInit() {
-    this.dataService.tipoProductos().getAll().subscribe(data => this.setData(data));
+    this.dataService.tipoProductos().getAllfindByIdSucursal().subscribe(data => this.setData(data));
     this.dataService.providers().cambio.subscribe(data =>this.setData(data));
     this.dataService.providers().mensaje.subscribe(data =>{
       this.snackBar.open(data,'Mensaje',{duration:3000});
@@ -43,7 +43,7 @@ export class TipoProductoListComponent implements OnInit {
     if(confirm('¿Seguro que quieres Eliminar?')){
       this.dataService.tipoProductos().delete(id).subscribe(tipop =>{
         this.snackBar.open('Tipo de Producto Eliminado','Mensaje',{duration:3000});
-        this.dataService.tipoProductos().getAll().subscribe(data => this.setData(data));
+        this.dataService.tipoProductos().getAllfindByIdSucursal().subscribe(data => this.setData(data));
       });
     }
   }

@@ -4,16 +4,15 @@ import { CommonModule } from '@angular/common';
 
 import { ReportesRoutingModule } from './reportes-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { ReportListProformaComponent } from './report-list-proforma/report-list-proforma.component';
 
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule,
     ReportesRoutingModule,
+    SharedModule,
     PdfViewerModule
   ],
-  declarations: [ReportListProformaComponent]
+  declarations: []
 })
 export class ReportesModule { }

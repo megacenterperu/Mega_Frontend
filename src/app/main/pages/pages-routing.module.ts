@@ -13,10 +13,16 @@ const routes: Routes = [
     { path: 'proforma', loadChildren: '../../main/pages/proforma/proforma.module#ProformaModule' },
     { path: 'personal', loadChildren: '../../main/pages/personal/personal.module#PersonalModule' },
     { path: 'venta', loadChildren: '../../main/pages/venta/venta.module#VentaModule'},
+    { path: 'ventadirecta', loadChildren: '../../main/pages/venta-directa/venta-directa.module#VentaDirectaModule'},
     { path: 'reportes', loadChildren: '../../main/pages/reportes/reportes.module#ReportesModule' },
     { path: 'admincaja', loadChildren: '../../main/pages/administrar-caja/administrar-caja.module#AdministrarCajaModule' },
     { path: 'usuario', loadChildren: '../../main/pages/login-usuario/login-usuario.module#LoginUsuarioModule' },
-    { path: 'consulta', loadChildren: '../../main/pages/consulta/consulta.module#ConsultaModule' }
+    { path: 'consulta', loadChildren: '../../main/pages/consulta/consulta.module#ConsultaModule' },
+    { path: 'menu', loadChildren: '../../main/pages/menu-rol/menu-rol.module#MenuRolModule' },
+    { path: 'listUsuarioAdmin', loadChildren: '../../main/pages/usuario-admin/usuario-admin.module#UsuarioAdminModule' },
+    { path: 'listpersonaladmin', loadChildren: '../../main/pages/personal-admin/personal-admin.module#PersonalAdminModule' },
+    { path: 'guia', loadChildren: '../../main/pages/guia-remision/guia-remision.module#GuiaRemisionModule' },
+
 ];
 
 @NgModule({

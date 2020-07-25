@@ -1,3 +1,4 @@
+import { USER_DATA } from 'src/config/auth.config';
 import { DataService } from "src/app/core/data/data.service";
 import { Component, OnInit, Inject } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA} from "@angular/material";
@@ -14,6 +15,7 @@ export class ClienteDialogComponent implements OnInit {
 
   id: number; 
   form: FormGroup;
+  isdefaultCliente: boolean = false;
   edicion: boolean = false;
   tipodocumentos:any[] = [];
   filteredOptions: Observable<any[]>;
@@ -26,6 +28,7 @@ export class ClienteDialogComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.estadoSeleccion(); 
     this.initFormBuilder();
     this.loadTipodocumento();
     this.route.params.subscribe((params: Params) => {
@@ -36,14 +39,17 @@ export class ClienteDialogComponent implements OnInit {
   }
 
   initFormBuilder() {
+    const user = JSON.parse(sessionStorage.getItem(USER_DATA));
     this.form = this.formBuilder.group({
       cliente: this.formBuilder.group({
-        idCliente: [null]      
+        idCliente: [null],
+        idSucursal: [user.idSucursal],
+        isdefaultCliente:[!this.isdefaultCliente]        
       }),
       persona: this.formBuilder.group({
         idPersona: [null],
         nombre: [null, Validators.compose([Validators.required])],
-        numeroDocumento: [null, Validators.compose([Validators.required])],
+        numeroDocumento: [null, Validators.compose([Validators.required, Validators.minLength(8), Validators.maxLength(11)])],
         telfMovil: [null],
         direccion: [null],
         email: [null],
@@ -53,10 +59,13 @@ export class ClienteDialogComponent implements OnInit {
   }
 
   private loadDataFrom() {
+    const user = JSON.parse(sessionStorage.getItem(USER_DATA));
     if (this.edicion) {
       this.dataService.clientes().findById(this.id).subscribe(data => {
         this.form.controls.cliente.patchValue({
-          idCliente:data.idCliente
+          idCliente:data.idCliente,
+          idSucursal:user.idSucursal,
+          isdefaultCliente:data.isdefaultCliente
         });
         this.buildData(data.persona);       
       });     
@@ -76,6 +85,18 @@ export class ClienteDialogComponent implements OnInit {
     this.form.controls.persona.get('tipoDocumeto').setValue(tipoDocumeto);
   }
 
+  onKeydown(event) {
+    this.getConsulta();
+  }
+  
+  estadoSeleccion(){
+    if(this.isdefaultCliente=!null){
+      this.isdefaultCliente=true;
+    }else{
+      this.isdefaultCliente=false;
+    }
+  }
+
   loadTipodocumento() {
     this.dataService.tipoDocumentos().getAll().subscribe(data => {
       this.tipodocumentos = data;
@@ -86,7 +107,7 @@ export class ClienteDialogComponent implements OnInit {
     if (this.edicion) {
       //update
       this.dataService.clientes().update(this.form.value).subscribe(data => {
-        this.dataService.clientes().getAll().subscribe(p => {
+        this.dataService.clientes().getAllfindByIdSucursal().subscribe(p => {
           this.dataService.providers().cambio.next(p);
           this.dataService.providers().mensaje.next('se modifico')
         });
@@ -94,7 +115,7 @@ export class ClienteDialogComponent implements OnInit {
     } else {
       //insert
       this.dataService.clientes().create(this.form.value).subscribe(data => {
-        this.dataService.clientes().getAll().subscribe(p => {
+        this.dataService.clientes().getAllfindByIdSucursal().subscribe(p => {
           this.dataService.providers().cambio.next(p);
           this.dataService.providers().mensaje.next('se registro');
         });
@@ -112,7 +133,7 @@ export class ClienteDialogComponent implements OnInit {
           nombre:data.razonSocial,
           numeroDocumento:data.ruc,
           telfMovil: data.telfMovil,
-          direccion:data.direccion,
+          direccion:data.direccion+' '+data.departamento+' - '+data.provincia+' - '+data.distrito,
           email:data.email
         });
       },error => {

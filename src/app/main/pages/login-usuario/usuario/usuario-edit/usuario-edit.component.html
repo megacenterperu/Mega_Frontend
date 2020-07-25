@@ -5,8 +5,8 @@
         <div fxFlex="35%;" fxFlex.xs="50%">
           <mat-form-field class="field-container" appearance="outline">
             <mat-label>Personal</mat-label>
-              <mat-select placeholder="Personal" formControlName="idPersonal" [compareWith]="comparePersonal">
-                <mat-option *ngFor="let Personal of lstPersonal" [value]="Personal.idPersonal">
+              <mat-select placeholder="Personal" formControlName="personal" [compareWith]="comparePersonal">
+                <mat-option *ngFor="let Personal of lstPersonal" [value]="Personal">
                 {{Personal.persona.nombre}}
               </mat-option>
             </mat-select>

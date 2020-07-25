@@ -1,5 +1,5 @@
 import { startWith, map } from 'rxjs/operators';
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { MatDialog, MatSnackBar } from '@angular/material';
@@ -29,7 +29,8 @@ export class ProformaEditComponent implements OnInit {
   lista: any[] = [];
   displayedColumns: string[] = ["codProducto", "nombre", "marcaProducto", "cantidaditem", "precioitem", 'importetotalitem', "acciones"];
   redundancia:boolean=false;
-
+  @ViewChild('firstname') firstname:any;//ElementRef
+  
   constructor(
     private dataService: DataService,
     private route: ActivatedRoute,
@@ -40,6 +41,7 @@ export class ProformaEditComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.firstname.nativeElement.focus();
     this.initFormBuilder();
     this.generateNumber();
     this.listaClientes();
@@ -204,7 +206,7 @@ export class ProformaEditComponent implements OnInit {
   }
 
   listaClientes() {
-    this.dataService.clientes().getAll().subscribe(data => {
+    this.dataService.clientes().getAllfindByIdSucursal().subscribe(data => {
       this.clientes = data
     });
   }
@@ -265,7 +267,7 @@ export class ProformaEditComponent implements OnInit {
     if (this.edicion) {
       //update
       this.dataService.proformas().update(this.form.value).subscribe(data => {
-        this.dataService.proformas().getAll().subscribe(p => {
+        this.dataService.proformas().getAllfindByIdSucursal().subscribe(p => {
           this.dataService.providers().cambio.next(p);
           this.dataService.providers().mensaje.next('Se modifico')
         });
@@ -276,7 +278,7 @@ export class ProformaEditComponent implements OnInit {
         if (data.idProforma) {
           this.print(data.idProforma);
         }
-        this.dataService.proformas().getAll().subscribe(p => {
+        this.dataService.proformas().getAllfindByIdSucursal().subscribe(p => {
           this.dataService.providers().cambio.next(p);
           this.dataService.providers().mensaje.next('Proforma Generado con exito');
         });

@@ -1,7 +1,9 @@
+import { USER_DATA, TOKEN_NAME } from 'src/config/auth.config';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DataService } from 'src/app/core/data/data.service';
 import { ActivatedRoute, Router, Params } from '@angular/router';
+import * as decode from 'jwt-decode';
 
 @Component({
   selector: 'ms-egreso-edit',
@@ -62,17 +64,29 @@ export class EgresoEditComponent implements OnInit {
 
   operar(){
     if(this.edicion){
-      this.dataService.egresos().update(this.form.value).subscribe(data =>{
-        console.log(data);
-        this.dataService.egresos().getAll().subscribe(cat =>{
-          this.dataService.providers().cambio.next(cat);
-          this.dataService.providers().mensaje.next("se Actualizo con éxito!");
+      const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+      let tk = JSON.parse(sessionStorage.getItem(TOKEN_NAME));
+      const decodedToken = decode(tk.access_token);
+      let roles = decodedToken.authorities;
+      //console.log(roles);
+      if((roles=="ADMIN")||(roles=="USER,ADMIN")||(roles=="ADB,ADMIN")){
+        this.dataService.egresos().update(this.form.value).subscribe(data =>{
+          this.dataService.egresos().findByIdSucursal(user.idSucursal).subscribe(cat =>{
+            this.dataService.providers().cambio.next(cat);
+            this.dataService.providers().mensaje.next("se Actualizo con éxito!");
+          });
         });
-      });
+      }else{
+        this.dataService.egresos().findByIdSucursal(user.idSucursal).subscribe(cat =>{
+          this.dataService.providers().cambio.next(cat);
+          this.dataService.providers().mensaje.next("Acceso Denegado!, Por favor, verifica tus permisos !");
+        });
+      }
     }else{
+      const user = JSON.parse(sessionStorage.getItem(USER_DATA));
       this.dataService.egresos().create(this.form.value).subscribe(data =>{
-        console.log(data);
-        this.dataService.egresos().getAll().subscribe(cate =>{
+     //   console.log(data);
+        this.dataService.egresos().findByIdSucursal(user.idSucursal).subscribe(cate =>{
           this.dataService.providers().cambio.next(cate);
           this.dataService.providers().mensaje.next("Se Registro con éxito!");
         });

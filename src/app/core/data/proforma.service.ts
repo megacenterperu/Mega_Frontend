@@ -1,3 +1,4 @@
+import { USER_DATA } from 'src/config/auth.config';
 import { TOKEN_NAME } from './../../../config/auth.config';
 import { Injectable } from "@angular/core";
 import { GenericService } from "./generic.service";
@@ -17,12 +18,18 @@ export class ProformaService {
     return this.generic.all(basePath).get();
   }
 
+  getAllfindByIdSucursal(): Observable<any>{
+    const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+    return this.generic.all(basePath).all("list-proforma").all(user.idSucursal).get();
+  }
+
   getAllDetalle(id: number): Observable<any> {
     return this.generic.all(basePath).one("proforma-detalle", id).get();
   }
 
   getNumero(): Observable<any> {
-    return this.generic.all(basePath).all("numero-proforma").get();
+    const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+    return this.generic.all(basePath).all("numero-proforma").all(user.idSucursal).get();
   }
 
   getAllPageable(p: number, s: number): Observable<any> {
@@ -34,10 +41,16 @@ export class ProformaService {
   }
 
   create(data: any): Observable<any> {
+    const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+    data.idRegUsuaRegistra=user.idUsuario;
+    data.idSucursal=user.idSucursal;
     return this.generic.all(basePath).all("registrar").post(data);
   }
 
   update(data: any): Observable<any> {
+    const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+    data.idRegUsuaRegistra=user.idUsuario;
+    data.idSucursal=user.idSucursal;
     return this.generic.all(basePath).all("actualizar").put(data);
   }
 

@@ -17,6 +17,7 @@ export class VentaListComponent implements OnInit {
   fecha: Date = new Date();
   maxFecha: Date = new Date();
 
+  SelectFocus: string;
   lista: any[] = [];
   displayedColumns: string[] = ['cliente.nombre', 'fecha','descripcion', 'numeroComprobante', 'montoTotal', 'acciones'];
   displayedColumnsdetalle: string[] = ['cantidad','producto.unidadMedida.codUnidadmedida', 'producto.nombre', 'producto.marcaProducto', 'precio','importeTotal'];
@@ -104,4 +105,8 @@ export class VentaListComponent implements OnInit {
     }
   }
 
+  selectRow(event) {
+    this.SelectFocus=event.idVenta;
+  }
+  
 }

@@ -1,0 +1,67 @@
+<h3 mat-dialog-title>Registro de Provedor</h3>
+<mat-dialog-content>
+  <form class="container" [formGroup]="form" #f="ngForm">
+    <div formGroupName="persona" class="container">
+      <mat-form-field appearance="outline">
+        <mat-label>Numero Documento</mat-label>
+        <input matInput #message placeholder="Numero Documento" required formControlName="numeroDocumento" minLength="11" maxlength="11" >
+        <mat-icon mat-icon-button matTooltip="CONSULTA SUNAT(RUC) - RENIEC(DNI)" matSuffix color="warn" (click)="getConsulta()">search</mat-icon>
+        <mat-hint align="start"><mat-label style="color: forestgreen;">Min 11 - Max 11 caracteres</mat-label> </mat-hint>
+        <mat-hint align="end"><mat-label style="color: forestgreen;">{{message.value.length}} / 11</mat-label></mat-hint>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo Documento</mat-label>
+        <mat-select placeholder="Tipo Documento" required formControlName="tipoDocumeto">
+          <mat-option *ngFor="let tipoDocumeto of tipodocumentos" [value]="tipoDocumeto">
+            {{tipoDocumeto.abreviatura}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div formGroupName="proveedor" class="container">
+      <mat-form-field appearance="outline">
+        <mat-label>Razon Social</mat-label>
+        <input matInput placeholder="Razon Social" required formControlName="razonSocial">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre Comercial</mat-label>
+        <input matInput placeholder="Nombre Comercial" required formControlName="nombreComercial">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Telf Empresa</mat-label>
+        <input matInput placeholder="Telf Empresa" formControlName="telfEmpresa" #telfEmpresa maxlength="20">
+        <mat-hint align="end"> Max {{telfEmpresa.value.length||0}}/20</mat-hint>
+      </mat-form-field>
+    </div>
+    <div formGroupName="persona" class="container">
+      <mat-form-field appearance="outline">
+        <mat-label>Direccion</mat-label>
+        <input matInput placeholder="Direccion" required formControlName="direccion">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre del Personal de Cont</mat-label>
+        <input matInput placeholder="Nombre y Apellido" required formControlName="nombre">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>N° Celular del Personal</mat-label>
+        <input matInput placeholder="N° Celular" required formControlName="telfMovil" type="number">
+      </mat-form-field>
+    </div>
+    <div formGroupName="proveedor" class="container">
+      <mat-form-field appearance="outline">
+        <mat-label>Pagina Web</mat-label>
+        <input matInput placeholder="paginaWeb" formControlName="paginaWeb">
+      </mat-form-field>
+    </div>
+    <div formGroupName="persona" class="container">
+      <mat-form-field appearance="outline">
+        <mat-label>Correo</mat-label>
+        <input matInput placeholder="Correo Electronico" formControlName="email">
+      </mat-form-field>
+    </div>
+</form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" type="button" (click)="save()" [disabled]="f.invalid">Aceptar</button>
+</mat-dialog-actions>

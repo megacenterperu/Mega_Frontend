@@ -1,0 +1,71 @@
+<div class="page-layout blank p-24" megaPerfectScrollbar>
+  <mat-toolbar>Ingrese Usuarios</mat-toolbar>
+  <form class="example-form" [formGroup]="form" (ngSubmit)="operar()" #f="ngForm">
+    <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="35%;" fxFlex.xs="50%">
+
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Personal</mat-label>
+            <mat-select placeholder="Personal" formControlName="personal" [compareWith]="comparePersonal">
+              <div style="margin: 10px">
+                <input matInput  placeholder="buscar" (keyup)="buscarPersonal($event)" />
+              </div>
+              <mat-option *ngFor="let Personal of lstPersonal" [value]="Personal">
+              {{Personal.persona.nombre}} - {{Personal.persona.numeroDocumento}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- <mat-select placeholder="Categoria" [compareWith]="compareCategoria"  formControlName="categoria"  >
+          <div style="margin: 10px">
+            <input matInput  placeholder="buscar" (keyup)="buscarCategoria($event)" />
+          </div>
+          <mat-option *ngFor="let categoria of filtroCategoria" [value]="categoria">
+            {{categoria.categoria}}
+          </mat-option>
+        </mat-select>  -->
+
+      </div>
+      <div fxFlex="30%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Usuario</mat-label>
+          <input matInput placeholder="Usuario" required formControlName="username">
+        </mat-form-field>
+      </div>
+      <div fxFlex="35%;" fxFlex.xs="50%" class="example-container">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput placeholder="Password" required formControlName="password" [type]="hide ? 'password' : 'text'">
+          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="35%;" fxFlex.xs="50%">
+        <mat-form-field class="field-container" appearance="outline">
+          <mat-label>Rol</mat-label>
+          <mat-select placeholder="Rol" formControlName="idRol" [compareWith]="compareRol">
+           <mat-option *ngFor="let Rol of lstRol" [value]="Rol.idRol">
+           {{Rol.descripcion}}
+           </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayout.xs="column">
+      <div fxFlex="20%;" fxFlex.xs="50%" class="field-container">
+        <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
+          <mat-icon>done</mat-icon>
+          <span>Aceptar</span>
+        </button>
+      </div>
+      <div fxFlex="1%;" fxFlex.xs="5%"></div>
+      <div fxFlex="20%;" fxFlex.xs="50%" class="field-container">
+        <button mat-raised-button color="accent" (click)="cancel()" type="button">
+          <mat-icon>close</mat-icon>
+          <span>Cancelar</span>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

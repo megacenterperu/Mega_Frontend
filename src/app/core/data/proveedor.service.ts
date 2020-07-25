@@ -1,3 +1,4 @@
+import { USER_DATA } from 'src/config/auth.config';
 import { map } from 'rxjs/operators';
 import { GenericService } from './generic.service';
 import { Injectable } from '@angular/core';
@@ -13,6 +14,19 @@ export class ProveedorService {
 
   getAll(): Observable<any> {
     return this.generic.all(basePath).get();
+  }
+
+  getAllfindByIdSucursal(): Observable<any>{
+    const user = JSON.parse(sessionStorage.getItem(USER_DATA));
+    return this.generic.all(basePath).all("listarProveedor").all(user.idSucursal).get();
+  }
+
+  getRuc(numeroruc: string): Observable<any> {
+    return this.generic.getRuc(numeroruc);
+  }
+
+  getDni(numerodni: string): Observable<any> {
+    return this.generic.getDni(numerodni);
   }
 
   getAllPageable(p: number, s: number): Observable<any> {
