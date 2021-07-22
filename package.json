@@ -45,7 +45,7 @@
     "node-sass": "^4.13.1",
     "perfect-scrollbar": "^1.4.0",
     "rxjs": "^6.0.0",
-    "xlsx": "^0.14.3",
+    "xlsx": "^0.17.0",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
